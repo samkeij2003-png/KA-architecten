@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects } from '../../data/projects';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return projects.map(p => ({ params: { slug: p.slug }, props: { project: p } }));
+};
+
+const { project } = Astro.props;
+const idx = projects.findIndex(p => p.slug === project.slug);
+const prev = idx > 0 ? projects[idx - 1] : null;
+const next = idx < projects.length - 1 ? projects[idx + 1] : null;
+
+const imagesJson = JSON.stringify(project.images);
+---
+
+<BaseLayout
+  title={`${project.title} · ${project.location} — KA.architecten`}
+  description={project.intro}
+  ogImage={`https://www.ka-architecten.nl${project.cover}`}
+  canonical={`https://www.ka-architecten.nl/projecten/${project.slug}`}
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": project.title,
+    "description": project.intro,
+    "image": `https://www.ka-architecten.nl${project.cover}`,
+    "creator": { "@type": "Person", "name": "Peter Keijsers" },
+    "publisher": { "@type": "Organization", "name": "KA.architecten" },
+    "locationCreated": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": project.location,
+        "addressRegion": project.province,
+        "addressCountry": "NL"
+      }
+    },
+    "dateCreated": project.year,
+  })}</script>
+
+  <article>
+    <section class="section" style="padding-bottom: 32px;">
+      <div class="container">
+        <p class="eyebrow">
+          <a href="/projecten" style="color:inherit; border-bottom: 1px solid var(--hairline);">Projecten</a>
+          &nbsp;·&nbsp;{project.location}
+        </p>
+        <h1 style="margin-top: 12px; max-width: 24ch;">{project.title}</h1>
+        <p class="lead" style="margin-top: 28px;">{project.intro}</p>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 32px;">
+      <div class="container">
+        <div class="detail-hero">
+          <img src={project.cover} alt={`${project.title}, ${project.location}`} />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 32px;">
+      <div class="container detail-grid">
+        <div class="body-text" style="font-size: 17px;">
+          {project.body.map(p => <p>{p}</p>)}
+        </div>
+        <div class="facts">
+          <dl>
+            <dt>Locatie</dt><dd>{project.location}, {project.province}</dd>
+            <dt>Type</dt><dd>{project.type}</dd>
+            <dt>Status</dt><dd>{project.status} · {project.year}</dd>
+            <dt>Architect</dt><dd>{project.architect}</dd>
+            <dt>Aannemer</dt><dd>{project.aannemer}</dd>
+            <dt>Constructeur</dt><dd>{project.constructeur}</dd>
+            <dt>Fotografie</dt><dd>{project.fotograaf}</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {project.images.length > 1 && (
+      <section class="section hairline">
+        <div class="container">
+          <p class="eyebrow mb-md">Beelden</p>
+          <div
+            class="gallery"
+            data-lightbox-group={imagesJson}
+            data-lightbox-caption={project.title}
+          >
+            {project.images.map((src, i) => {
+              const cls = i === 0 ? 'g-wide' : 'g-half';
+              return (
+                <figure class={cls}>
+                  <img src={src} alt={`${project.title} (${i + 1}/${project.images.length})`} loading="lazy" />
+                </figure>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <section class="section hairline">
+    <div class="container">
+      <div class="pager">
+        {prev ? (
+          <a href={`/projecten/${prev.slug}`}>
+            <span class="label">← Vorig project</span>
+            <span class="title">{prev.title}</span>
+          </a>
+        ) : <div />}
+        {next ? (
+          <a class="next" href={`/projecten/${next.slug}`}>
+            <span class="label">Volgend project →</span>
+            <span class="title">{next.title}</span>
+          </a>
+        ) : <div />}
+      </div>
+      <p style="margin-top: 48px;">
+        <a class="link-arrow" href="/contact">Plan een vrijblijvend gesprek →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

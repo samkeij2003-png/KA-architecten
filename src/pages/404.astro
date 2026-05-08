@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Pagina niet gevonden — KA.architecten"
+  noIndex={true}
+>
+  <section class="section">
+    <div class="container center-narrow">
+      <p class="eyebrow">404</p>
+      <h1>Deze pagina bestaat niet (meer).</h1>
+      <p class="lead" style="margin-top: 20px;">
+        Misschien is hij verplaatst, of klopte de link niet helemaal. Probeer het overzicht hieronder.
+      </p>
+      <div style="margin-top: 36px; display:flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn" href="/">Naar home</a>
+        <a class="btn ghost" href="/projecten">Projecten</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

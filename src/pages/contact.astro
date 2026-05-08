@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact — KA.architecten · Tilburg"
+  description="Neem contact op met KA.architecten. Architect Peter Keijsers, Ankeveenstraat 44, Tilburg."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1 style="margin-top: 12px; max-width: 22ch;">Neem contact op.</h1>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container split-2">
+      <div><p class="eyebrow">Bureau</p></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 64px);">
+        <div>
+          <p class="eyebrow" style="margin-bottom: 8px;">Adres</p>
+          <p style="font-size: 17px; line-height: 1.7;">
+            KA.architecten<br />
+            Ankeveenstraat 44<br />
+            5036 CB Tilburg
+          </p>
+          <p class="eyebrow" style="margin: 28px 0 8px;">Telefoon</p>
+          <p><a href="tel:+31621231821" style="font-size: 17px;">06 21 23 18 21</a></p>
+          <p class="eyebrow" style="margin: 28px 0 8px;">E-mail</p>
+          <p><a href="mailto:p.keijsers@ka-architecten.nl" style="font-size: 17px;">p.keijsers@ka-architecten.nl</a></p>
+        </div>
+        <div>
+          <form id="contact-form" novalidate>
+            <p class="eyebrow" style="margin-bottom: 24px;">Stuur een bericht</p>
+            <div class="form-row">
+              <label for="naam">Naam</label>
+              <input id="naam" name="naam" type="text" required placeholder="Uw naam" />
+            </div>
+            <div class="form-row">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" required placeholder="Uw e-mailadres" />
+            </div>
+            <div class="form-row">
+              <label for="onderwerp">Onderwerp</label>
+              <select id="onderwerp" name="onderwerp">
+                <option>Nieuwbouw woning</option>
+                <option>Verbouwing of uitbreiding</option>
+                <option>Utiliteitsbouw</option>
+                <option>Anders</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="bericht">Bericht</label>
+              <textarea id="bericht" name="bericht" rows="5" required placeholder="Vertel kort over uw plek en wensen"></textarea>
+            </div>
+            <button type="submit" class="btn">Verzenden</button>
+          </form>
+          <p id="contact-thanks" style="display:none; padding-top: 20px;">
+            Bedankt voor uw bericht. Peter neemt zo spoedig mogelijk contact met u op.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

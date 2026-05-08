@@ -1,0 +1,20 @@
+{
+  "name": "ka-architecten",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^5.7.0",
+    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/sitemap": "^3.2.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

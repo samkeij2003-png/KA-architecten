@@ -1,0 +1,31 @@
+---
+const navLinks = [
+  { href: '/projecten', label: 'Projecten' },
+  { href: '/diensten', label: 'Diensten' },
+  { href: '/bureau', label: 'Bureau' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <nav class="nav" aria-label="Hoofdmenu">
+    <a class="logo" href="/" aria-label="KA.architecten — home">
+      <span class="amark">KA</span><span class="dot">.</span>architecten
+    </a>
+    <button class="nav-toggle" aria-label="Menu openen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" role="menu">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[{ 'is-active': currentPath.startsWith(href) }]}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </nav>
+</header>

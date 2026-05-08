@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Bureau — KA.architecten · Architect Peter Keijsers, Tilburg"
+  description="KA.architecten is het bureau van Peter Keijsers in Tilburg. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant."
+  ogImage="https://www.ka-architecten.nl/images/architect.png"
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Peter Keijsers",
+    "jobTitle": "Architect",
+    "worksFor": { "@type": "Organization", "name": "KA.architecten" },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Ankeveenstraat 44",
+      "postalCode": "5036 CB",
+      "addressLocality": "Tilburg",
+      "addressCountry": "NL"
+    }
+  })}</script>
+
+  <section class="section">
+    <div class="container split-2">
+      <div><p class="eyebrow">Bureau</p></div>
+      <div>
+        <h1 style="max-width: 18ch;">Architectuur als ambacht.</h1>
+        <p class="lead" style="margin-top: 32px;">
+          KA.architecten is het bureau van <strong>Peter Keijsers</strong> in Tilburg. Woningen, verbouwingen en utiliteitsgebouwen voor opdrachtgevers in Brabant en daarbuiten, sober, persoonlijk en met respect voor de plek.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hairline">
+    <div class="container split-2">
+      <div><p class="eyebrow">Werkwijze</p></div>
+      <div class="body-text" style="font-size: 16px;">
+        <p>
+          Een goed ontwerp begint met luisteren. De plek wordt in kaart gebracht, de wensen van de opdrachtgever, het programma, getoetst aan een heldere ambitie. Pas dan komt de eerste schets.
+        </p>
+        <p>
+          Er is altijd één aanspreekpunt: u praat direct met de architect. Dat bewaakt de samenhang, van eerste massastudie tot bouwbegeleiding op de werf. Korte lijnen, eerlijk overleg, geen verrassingen achteraf.
+        </p>
+        <p>
+          Materialen worden gekozen op duurzame veroudering: handgevormde baksteen, eikenhout, in-situ beton, zink. Ze rijpen mee met het gebouw. Een woning of bedrijfspand dat over twintig jaar nog vertrouwd voelt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hairline">
+    <div class="container split-2">
+      <div><p class="eyebrow">Architect</p></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start;">
+        <div class="body-text" style="font-size: 16px;">
+          <h3 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 12px;">Peter Keijsers</h3>
+          <p>
+            Peter Keijsers studeerde architectuur aan de HTS Bouwkunde en de Academie voor Bouwkunst. Na jarenlange werkervaring in de Brabantse architectuurpraktijk richtte hij KA.architecten op als zelfstandig bureau in Tilburg.
+          </p>
+          <p>
+            Met ruim 30 jaar ervaring in het vak, van particuliere villa's en woningbouw tot kantoor- en bedrijfsgebouwen, brengt hij een brede kennis mee naar elk project. Architectuur is voor Peter een ambacht: een precieze omgang met materiaal, maatvoering en context.
+          </p>
+        </div>
+        <div style="aspect-ratio: 4/5; background: var(--bg-soft); overflow: hidden;">
+          <img
+            src="/images/architect.png"
+            alt="Architect Peter Keijsers — KA.architecten Tilburg"
+            style="width:100%; height:100%; object-fit: cover; object-position: center;"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hairline">
+    <div class="container split-2">
+      <div><p class="eyebrow">Werkgebied</p></div>
+      <div class="body-text" style="font-size: 16px;">
+        <p>
+          Werkzaam vanuit Tilburg in heel Noord-Brabant, met regelmatige opdrachten in onder andere Eindhoven, Helmond, Den Bosch, Breda, Goirle, Oirschot, Udenhout en Haaren. Voor goede opdrachten ook buiten de provincie, zoals het betonnen woonhuis in Zeist.
+        </p>
+        <p style="margin-top: 32px;">
+          <a class="link-arrow" href="/contact">Plan een vrijblijvend gesprek →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
