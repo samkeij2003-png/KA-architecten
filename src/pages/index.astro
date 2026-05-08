@@ -65,14 +65,14 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
         <p class="body-text" style="margin-top: 28px;">
           Architectuur als ambacht: het scheppen van ruimte met eerlijke materialen en zorgvuldige details. Ruimtes die mooier worden met de tijd.
         </p>
-        <p style="margin-top: 28px;"><a class="link-arrow" href="/bureau">Lees meer over het bureau →</a></p>
+        <p style="margin-top: 28px;"><a class="link-arrow" href={pub('/bureau')}>Lees meer over het bureau →</a></p>
       </div>
     </div>
   </section>
 
   <!-- UITGELICHT PROJECT -->
   <section class="featured hairline" style="padding-top: 0;">
-    <a href={`/projecten/${featured.slug}`} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
+    <a href={pub(`/projecten/${featured.slug}`)} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
       <div class="featured-media">
         <img src={pub('/images/zeist-trap.jpg')} alt="Centrale betonnen trap — Betonnen woonhuis Zeist" loading="lazy" />
       </div>
@@ -96,11 +96,11 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
     <div class="container">
       <div class="projects-toolbar">
         <p class="eyebrow">Geselecteerde projecten</p>
-        <a class="link-arrow" href="/projecten">Alle projecten →</a>
+        <a class="link-arrow" href={pub('/projecten')}>Alle projecten →</a>
       </div>
       <div class="projects-grid">
         {grid.map(p => (
-          <a class="project-card" href={`/projecten/${p.slug}`} aria-label={`Project: ${p.title}, ${p.location}`}>
+          <a class="project-card" href={pub(`/projecten/${p.slug}`)} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
               <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
               <div class="project-overlay">

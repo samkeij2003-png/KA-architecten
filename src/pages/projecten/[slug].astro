@@ -46,7 +46,7 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
     <section class="section" style="padding-bottom: 32px;">
       <div class="container">
         <p class="eyebrow">
-          <a href="/projecten" style="color:inherit; border-bottom: 1px solid var(--hairline);">Projecten</a>
+          <a href={pub('/projecten')} style="color:inherit; border-bottom: 1px solid var(--hairline);">Projecten</a>
           &nbsp;·&nbsp;{project.location}
         </p>
         <h1 style="margin-top: 12px; max-width: 24ch;">{project.title}</h1>
@@ -108,20 +108,20 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
     <div class="container">
       <div class="pager">
         {prev ? (
-          <a href={`/projecten/${prev.slug}`}>
+          <a href={pub(`/projecten/${prev.slug}`)}>
             <span class="label">← Vorig project</span>
             <span class="title">{prev.title}</span>
           </a>
         ) : <div />}
         {next ? (
-          <a class="next" href={`/projecten/${next.slug}`}>
+          <a class="next" href={pub(`/projecten/${next.slug}`)}>
             <span class="label">Volgend project →</span>
             <span class="title">{next.title}</span>
           </a>
         ) : <div />}
       </div>
       <p style="margin-top: 48px;">
-        <a class="link-arrow" href="/contact">Plan een vrijblijvend gesprek →</a>
+        <a class="link-arrow" href={pub('/contact')}>Plan een vrijblijvend gesprek →</a>
       </p>
     </div>
   </section>

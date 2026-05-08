@@ -35,7 +35,7 @@ import { pub } from '../../utils/asset';
       </div>
       <div id="projects-grid" class="projects-grid">
         {projects.map(p => (
-          <a class="project-card" href={`/projecten/${p.slug}`} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`}>
+          <a class="project-card" href={pub(`/projecten/${p.slug}`)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
               <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
               <div class="project-overlay">

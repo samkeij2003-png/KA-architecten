@@ -1,4 +1,5 @@
 ---
+import { pub } from '../utils/asset';
 const year = new Date().getFullYear();
 ---
 
@@ -14,9 +15,9 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <h4>Bekijken en contact</h4>
-      <a href="/projecten">Projecten</a>
-      <a href="/bureau">Bureau</a>
-      <a href="/contact">Contact</a>
+      <a href={pub('/projecten')}>Projecten</a>
+      <a href={pub('/bureau')}>Bureau</a>
+      <a href={pub('/contact')}>Contact</a>
     </div>
     <div>
       <h4>Contact</h4>
