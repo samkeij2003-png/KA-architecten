@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pub } from '../utils/asset';
 ---
 
 <BaseLayout
   title="Bureau — KA.architecten · Architect Peter Keijsers, Tilburg"
-  description="KA.architecten is het bureau van Peter Keijsers in Tilburg. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant."
+  description="KA.architecten is gevestigd in Tilburg. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant."
   ogImage="https://www.ka-architecten.nl/images/architect.png"
 >
   <script type="application/ld+json" slot="head">{JSON.stringify({
@@ -28,8 +29,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div>
         <h1 style="max-width: 18ch;">Architectuur als ambacht.</h1>
         <p class="lead" style="margin-top: 32px;">
-          KA.architecten is het bureau van <strong>Peter Keijsers</strong> in Tilburg. Woningen, verbouwingen en utiliteitsgebouwen voor opdrachtgevers in Brabant en daarbuiten, sober, persoonlijk en met respect voor de plek.
+          Wij zijn gevestigd in Tilburg en werken voor opdrachtgevers in Brabant en daarbuiten. Woningen, verbouwingen en utiliteitsgebouwen — sober, persoonlijk en met respect voor de plek.
         </p>
+        <p class="body-text" style="margin-top: 24px; font-size: 16px;">
+          KA staat voor ziel — architectuur met lading en betekenis.
+        </p>
+        <p style="margin-top: 32px; font-family: var(--font-display); font-size: 18px; color: var(--ink);">Peter Keijsers</p>
       </div>
     </div>
   </section>
@@ -61,12 +66,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Peter Keijsers studeerde architectuur aan de HTS Bouwkunde en de Academie voor Bouwkunst. Na jarenlange werkervaring in de Brabantse architectuurpraktijk richtte hij KA.architecten op als zelfstandig bureau in Tilburg.
           </p>
           <p>
-            Met ruim 30 jaar ervaring in het vak, van particuliere villa's en woningbouw tot kantoor- en bedrijfsgebouwen, brengt hij een brede kennis mee naar elk project. Architectuur is voor Peter een ambacht: een precieze omgang met materiaal, maatvoering en context.
+            Met ruim 30 jaar ervaring in het vak, van particuliere villa's en woningbouw tot kantoor- en bedrijfsgebouwen, brengt hij een brede kennis mee naar elk project. Architectuur is een ambacht: een precieze omgang met materiaal, maatvoering en context.
           </p>
         </div>
         <div style="aspect-ratio: 4/5; background: var(--bg-soft); overflow: hidden;">
           <img
-            src="/images/architect.png"
+            src={pub('/images/architect.png')}
             alt="Architect Peter Keijsers — KA.architecten Tilburg"
             style="width:100%; height:100%; object-fit: cover; object-position: center;"
           />
@@ -80,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div><p class="eyebrow">Werkgebied</p></div>
       <div class="body-text" style="font-size: 16px;">
         <p>
-          Werkzaam vanuit Tilburg in heel Noord-Brabant, met regelmatige opdrachten in onder andere Eindhoven, Helmond, Den Bosch, Breda, Goirle, Oirschot, Udenhout en Haaren. Voor goede opdrachten ook buiten de provincie, zoals het betonnen woonhuis in Zeist.
+          Wij werken vanuit Tilburg in heel Noord-Brabant, met regelmatige opdrachten in onder andere Eindhoven, Helmond, Den Bosch, Breda, Goirle, Oirschot, Udenhout en Haaren. Voor goede opdrachten ook buiten de provincie, zoals het betonnen woonhuis in Zeist.
         </p>
         <p style="margin-top: 32px;">
           <a class="link-arrow" href="/contact">Plan een vrijblijvend gesprek →</a>

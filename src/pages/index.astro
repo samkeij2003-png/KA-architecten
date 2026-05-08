@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { projects } from '../data/projects';
+import { pub } from '../utils/asset';
 
 const featured = projects.find(p => p.slug === 'betonnen-woonhuis-zeist')!;
 const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0, 6);
@@ -8,10 +9,10 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
 
 <BaseLayout
   title="KA.architecten — Architect Peter Keijsers · Tilburg & Noord-Brabant"
-  description="KA.architecten is het bureau van architect Peter Keijsers. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Tilburg en Noord-Brabant."
+  description="KA.architecten is gevestigd in Tilburg en werkzaam in heel Brabant. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw."
   bodyClass="home"
 >
-  <link rel="preload" slot="head" as="image" href="/images/zeist-2.jpg" />
+  <link rel="preload" slot="head" as="image" href={pub('/images/zeist-2.jpg')} />
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
@@ -34,14 +35,13 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-image">
-      <img src="/images/zeist-2.jpg" alt="Betonnen woonhuis in Zeist — KA.architecten" fetchpriority="high" />
+      <img src={pub('/images/zeist-2.jpg')} alt="Betonnen woonhuis in Zeist — KA.architecten" fetchpriority="high" />
     </div>
     <div class="hero-veil"></div>
     <div class="hero-content">
-      <p class="eyebrow">Architectuur als ambacht · Tilburg</p>
+      <p class="eyebrow" style="font-size: 12px; letter-spacing: 0.16em;">Architectuur als ambacht · Tilburg</p>
       <h1 id="hero-title">
-        <span class="amark">KA</span>.architecten<br />
-        woningen die blijven, in Brabant en daarbuiten.
+        <span class="amark">KA</span>.architecten
       </h1>
       <div class="hero-meta">
         <span>Ruim 30 jaar ervaring</span>
@@ -60,10 +60,10 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
       </div>
       <div>
         <p class="lead">
-          KA.architecten is het bureau van architect <strong>Peter Keijsers</strong>, gevestigd in Tilburg en werkzaam in heel Noord-Brabant. Peter heeft ruim 30 jaar ervaring in architectuur en ontwerpt woningen, verbouwingen en utiliteitsgebouwen, sober van opzet en met aandacht voor materiaal en context.
+          Wij zijn gevestigd in Tilburg en werkzaam in heel Brabant. Met ruim 30 jaar ervaring ontwerpen wij woningen, verbouwingen en utiliteitsgebouwen, sober van opzet en met aandacht voor materiaal en context.
         </p>
         <p class="body-text" style="margin-top: 28px;">
-          Architectuur als ambacht: eerlijke materialen, zorgvuldige details, ruimtes die mooier worden met de tijd. Elk project begint met de plek en de bewoner. Daaruit volgt het ontwerp, niet andersom.
+          Architectuur als ambacht: het scheppen van ruimte met eerlijke materialen en zorgvuldige details. Ruimtes die mooier worden met de tijd.
         </p>
         <p style="margin-top: 28px;"><a class="link-arrow" href="/bureau">Lees meer over het bureau →</a></p>
       </div>
@@ -74,7 +74,7 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
   <section class="featured hairline" style="padding-top: 0;">
     <a href={`/projecten/${featured.slug}`} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
       <div class="featured-media">
-        <img src="/images/zeist-trap.jpg" alt="Centrale betonnen trap — Betonnen woonhuis Zeist" loading="lazy" />
+        <img src={pub('/images/zeist-trap.jpg')} alt="Centrale betonnen trap — Betonnen woonhuis Zeist" loading="lazy" />
       </div>
       <div class="container">
         <div class="featured-meta">
@@ -102,7 +102,7 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
         {grid.map(p => (
           <a class="project-card" href={`/projecten/${p.slug}`} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
-              <img src={p.cover} alt={`${p.title}, ${p.location}`} loading="lazy" />
+              <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
               <div class="project-overlay">
                 <span class="name">{p.title}</span>
                 <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>
@@ -132,8 +132,8 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
           <p>Ieder ontwerp begint met een grondige analyse van de locatie en de wensen van de bewoner. Het ontwerp volgt de plek, niet andersom.</p>
         </div>
         <div class="usp">
-          <h4>Materiaal als taal</h4>
-          <p>Eerlijk hout, baksteen, beton en glas. Materialen die mooier worden met de jaren en passen bij het ambacht.</p>
+          <h4>Eerlijk materiaal:</h4>
+          <p>Hout · baksteen · beton · glas. Materialen die mooier worden met de jaren en passen bij het ambacht.</p>
         </div>
       </div>
     </div>

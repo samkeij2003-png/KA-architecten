@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { projects } from '../../data/projects';
+import { pub } from '../../utils/asset';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -12,7 +13,7 @@ const idx = projects.findIndex(p => p.slug === project.slug);
 const prev = idx > 0 ? projects[idx - 1] : null;
 const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 
-const imagesJson = JSON.stringify(project.images);
+const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
 ---
 
 <BaseLayout
@@ -56,7 +57,7 @@ const imagesJson = JSON.stringify(project.images);
     <section style="padding: 0 0 32px;">
       <div class="container">
         <div class="detail-hero">
-          <img src={project.cover} alt={`${project.title}, ${project.location}`} />
+          <img src={pub(project.cover)} alt={`${project.title}, ${project.location}`} />
         </div>
       </div>
     </section>
@@ -93,7 +94,7 @@ const imagesJson = JSON.stringify(project.images);
               const cls = i === 0 ? 'g-wide' : 'g-half';
               return (
                 <figure class={cls}>
-                  <img src={src} alt={`${project.title} (${i + 1}/${project.images.length})`} loading="lazy" />
+                  <img src={pub(src)} alt={`${project.title} (${i + 1}/${project.images.length})`} loading="lazy" />
                 </figure>
               );
             })}

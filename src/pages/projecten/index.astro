@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { projects } from '../../data/projects';
+import { pub } from '../../utils/asset';
 ---
 
 <BaseLayout
@@ -11,9 +12,9 @@ import { projects } from '../../data/projects';
   <section class="section" style="padding-bottom: 32px;">
     <div class="container">
       <p class="eyebrow">Projecten</p>
-      <h1 style="margin-top: 12px; max-width: 22ch;">Werk uit Tilburg, Brabant en daarbuiten.</h1>
+      <h1 style="margin-top: 12px; max-width: 22ch;">Werken in Tilburg, Brabant en daarbuiten.</h1>
       <p class="lead" style="margin-top: 28px;">
-        Een selectie van projecten waarbij Peter Keijsers als architect betrokken was: woningen, verbouwingen, utiliteitsbouw en woningbouw. Het portfolio omvat werk uit zijn volledige loopbaan, waarvan een deel ontworpen is bij eerdere bureaus.
+        Een selectie van projecten waarbij wij als architect betrokken waren: woningen, verbouwingen, utiliteitsbouw en woningbouw. Het portfolio omvat werk uit onze volledige loopbaan, waarvan een deel ontworpen is bij eerdere bureaus.
       </p>
     </div>
   </section>
@@ -28,7 +29,7 @@ import { projects } from '../../data/projects';
           <button class="filter-btn" data-filter="woningbouw">Woningbouw</button>
         </div>
         <div class="toolbar-filters">
-          <button class="filter-btn active" id="toggle-loose" data-grid-mode>Ruim</button>
+          <button class="filter-btn active" id="toggle-loose" data-grid-mode>Groot</button>
           <button class="filter-btn" id="toggle-dense" data-grid-mode>Compact</button>
         </div>
       </div>
@@ -36,7 +37,7 @@ import { projects } from '../../data/projects';
         {projects.map(p => (
           <a class="project-card" href={`/projecten/${p.slug}`} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
-              <img src={p.cover} alt={`${p.title}, ${p.location}`} loading="lazy" />
+              <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
               <div class="project-overlay">
                 <span class="name">{p.title}</span>
                 <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>

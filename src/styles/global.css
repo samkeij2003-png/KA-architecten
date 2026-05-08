@@ -213,8 +213,8 @@ p  { margin: 0 0 1em; }
 
 .project-card { display: block; cursor: pointer; }
 .project-media { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--bg-soft); }
-.project-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
-.project-card:hover .project-media img { transform: scale(1.03); }
+.project-media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform .8s ease; }
+.project-card:hover .project-media img { transform: scale(1.08); }
 .project-overlay {
   position: absolute; inset: 0; padding: 24px;
   display: flex; flex-direction: column; justify-content: flex-end;
@@ -235,7 +235,7 @@ p  { margin: 0 0 1em; }
 
 /* ── Project detail ───────────────────── */
 .detail-hero { aspect-ratio: 16/9; background: var(--bg-soft); overflow: hidden; }
-.detail-hero img { width: 100%; height: 100%; object-fit: cover; }
+.detail-hero img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); }
 
 .detail-grid {
   display: grid;
@@ -289,7 +289,7 @@ p  { margin: 0 0 1em; }
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr 1fr;
   gap: 32px;
   max-width: var(--max);
   margin: 0 auto;
@@ -342,26 +342,26 @@ p  { margin: 0 0 1em; }
 #lightbox {
   display: none;
   position: fixed; inset: 0; z-index: 200;
-  background: #000;
+  background: var(--bg);
   align-items: center; justify-content: center;
 }
 #lightbox.open { display: flex; }
 #lightbox img { max-width: 96vw; max-height: 92vh; object-fit: contain; }
 #lightbox .lb-arrow {
   position: fixed; top: 50%; transform: translateY(-50%);
-  background: none; border: 0; color: #fff; font-size: 28px;
-  padding: 16px 24px; opacity: 0.5; cursor: pointer; transition: opacity .2s;
+  background: none; border: 0; color: var(--ink); font-size: 28px;
+  padding: 16px 24px; opacity: 0.4; cursor: pointer; transition: opacity .2s;
 }
 #lightbox .lb-arrow:hover { opacity: 1; }
 #lightbox .lb-prev { left: 8px; } #lightbox .lb-next { right: 8px; }
 #lightbox .lb-close {
-  position: fixed; top: 22px; right: 28px; color: #fff;
+  position: fixed; top: 22px; right: 28px; color: var(--ink);
   font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
   opacity: 0.7; cursor: pointer;
 }
 #lightbox .lb-cap {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-  color: #aaa; font-size: 12px; letter-spacing: 0.1em; white-space: nowrap;
+  color: var(--stone); font-size: 12px; letter-spacing: 0.1em; white-space: nowrap;
 }
 
 /* ── Diensten cards ───────────────────── */
