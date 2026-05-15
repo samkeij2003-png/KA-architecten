@@ -6,32 +6,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Contact — KA.architecten · Tilburg"
   description="Neem contact op met KA.architecten. Architect Peter Keijsers, Ankeveenstraat 44, Tilburg."
 >
-  <section class="section">
+  <section class="section" style="padding-top: clamp(32px, 4vw, 56px); padding-bottom: clamp(40px, 6vw, 80px);">
     <div class="container">
       <p class="eyebrow">Contact</p>
-      <h1 style="margin-top: 12px; max-width: 22ch;">Neem contact op.</h1>
-    </div>
-  </section>
+      <h1 style="margin-top: 8px; margin-bottom: clamp(32px, 4vw, 56px);">Neem contact op.</h1>
 
-  <section class="section" style="padding-top: 0;">
-    <div class="container split-2">
-      <div></div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 64px);">
-        <div>
+      <div class="contact-grid">
+        <!-- Linker kolom: gegevens -->
+        <div class="contact-info">
           <p class="eyebrow" style="margin-bottom: 8px;">Adres</p>
-          <p style="font-size: 17px; line-height: 1.7;">
+          <p style="font-size: 16px; line-height: 1.8; color: var(--ink-soft);">
             KA.architecten<br />
             Ankeveenstraat 44<br />
             5036 CB Tilburg
           </p>
+
           <p class="eyebrow" style="margin: 28px 0 8px;">Telefoon</p>
-          <p><a href="tel:+31621231821" style="font-size: 17px;">06 21 23 18 21</a></p>
+          <p><a href="tel:+31621231821" style="font-size: 16px; color: var(--ink-soft);">06 21 23 18 21</a></p>
+
           <p class="eyebrow" style="margin: 28px 0 8px;">E-mail</p>
-          <p><a href="mailto:p.keijsers@ka-architecten.nl" style="font-size: 17px;">p.keijsers@ka-architecten.nl</a></p>
+          <p><a href="mailto:p.keijsers@ka-architecten.nl" style="font-size: 16px; color: var(--ink-soft);">p.keijsers@ka-architecten.nl</a></p>
         </div>
-        <div>
+
+        <!-- Rechter kolom: formulier -->
+        <div class="contact-form-wrap">
           <form id="contact-form" novalidate>
-            <p class="eyebrow" style="margin-bottom: 24px;">Stuur een bericht</p>
             <div class="form-row">
               <label for="naam">Naam</label>
               <input id="naam" name="naam" type="text" required placeholder="Uw naam" />
@@ -51,7 +50,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="form-row">
               <label for="bericht">Bericht</label>
-              <textarea id="bericht" name="bericht" rows="5" required placeholder="Vertel kort over uw plek en wensen"></textarea>
+              <textarea id="bericht" name="bericht" rows="4" required placeholder="Vertel kort over uw plek en wensen"></textarea>
             </div>
             <button type="submit" class="btn">Verzenden</button>
           </form>
@@ -63,3 +62,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .contact-form-wrap {
+    border: 1px solid var(--hairline);
+    padding: clamp(24px, 3vw, 40px);
+    background: var(--bg);
+  }
+
+  @media (max-width: 720px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
