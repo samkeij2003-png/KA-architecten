@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { pub } from '../utils/asset';
 
 interface Props {
   title: string;
@@ -43,7 +44,7 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
     <meta property="og:site_name" content="KA.architecten" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={pub('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#f5f3ef" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -57,6 +58,6 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
     <slot />
     <Footer />
 
-    <script src="/js/site.js" is:inline></script>
+    <script src={pub('/js/site.js')} is:inline></script>
   </body>
 </html>
