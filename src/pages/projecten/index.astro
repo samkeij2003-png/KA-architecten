@@ -9,30 +9,21 @@ import { pub } from '../../utils/asset';
   description="Een selectie van projecten van Peter Keijsers — woningen, verbouwingen, utiliteitsbouw en woningbouw in Tilburg, Brabant en daarbuiten."
   ogImage="https://www.ka-architecten.nl/images/zeist-2.jpg"
 >
-  <section class="section" style="padding-bottom: 32px;">
+  <section class="section" style="padding-top: clamp(24px, 3vw, 40px); padding-bottom: 20px;">
     <div class="container">
       <p class="eyebrow">Projecten</p>
-      <h1 style="margin-top: 12px; max-width: 22ch;">Werken in Tilburg, Brabant en daarbuiten.</h1>
-      <p class="lead" style="margin-top: 28px;">
-        Een selectie van projecten waarbij wij als architect betrokken waren: woningen, verbouwingen, utiliteitsbouw en woningbouw. Het portfolio omvat werk uit onze volledige loopbaan, waarvan een deel ontworpen is bij eerdere bureaus.
-      </p>
+      <h1 style="margin-top: 8px; max-width: 22ch;">Architectprojecten in Tilburg, Brabant en daarbuiten.</h1>
     </div>
   </section>
 
   <section class="section" style="padding-top: 24px;">
-    <div class="container">
-      <div class="projects-toolbar">
-        <div class="toolbar-filters" role="tablist" aria-label="Filteren op type">
-          <button class="filter-btn active" data-filter="alle">Alle</button>
-          <button class="filter-btn" data-filter="particuliere">Woningen</button>
-          <button class="filter-btn" data-filter="utiliteitsbouw">Utiliteitsbouw</button>
-          <button class="filter-btn" data-filter="woningbouw">Woningbouw</button>
-        </div>
-        <div class="toolbar-filters">
-          <button class="filter-btn active" id="toggle-loose" data-grid-mode>Groot</button>
-          <button class="filter-btn" id="toggle-dense" data-grid-mode>Compact</button>
-        </div>
-      </div>
+    <div class="container projects-layout">
+      <aside class="projects-sidebar" role="tablist" aria-label="Filteren op type">
+        <button class="filter-btn active" data-filter="alle">Alle</button>
+        <button class="filter-btn" data-filter="particuliere">Woningen</button>
+        <button class="filter-btn" data-filter="utiliteitsbouw">Utiliteitsbouw</button>
+        <button class="filter-btn" data-filter="woningbouw">Woningbouw</button>
+      </aside>
       <div id="projects-grid" class="projects-grid">
         {projects.map(p => (
           <a class="project-card" href={pub(`/projecten/${p.slug}`)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`}>
@@ -56,7 +47,6 @@ import { pub } from '../../utils/asset';
   <script>
     const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const cards = document.querySelectorAll<HTMLElement>('.project-card[data-type]');
-    const grid = document.getElementById('projects-grid');
 
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -68,19 +58,6 @@ import { pub } from '../../utils/asset';
           card.style.display = (filter === 'alle' || type.includes(filter)) ? '' : 'none';
         });
       });
-    });
-
-    const denseBtn = document.getElementById('toggle-dense');
-    const looseBtn = document.getElementById('toggle-loose');
-    denseBtn?.addEventListener('click', () => {
-      grid?.classList.add('dense');
-      document.querySelectorAll('[data-grid-mode]').forEach(b => b.classList.remove('active'));
-      denseBtn.classList.add('active');
-    });
-    looseBtn?.addEventListener('click', () => {
-      grid?.classList.remove('dense');
-      document.querySelectorAll('[data-grid-mode]').forEach(b => b.classList.remove('active'));
-      looseBtn.classList.add('active');
     });
   </script>
 </BaseLayout>
