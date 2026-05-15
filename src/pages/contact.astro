@@ -6,14 +6,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Contact — KA.architecten · Tilburg"
   description="Neem contact op met KA.architecten. Architect Peter Keijsers, Ankeveenstraat 44, Tilburg."
 >
-  <section class="section" style="padding-top: clamp(32px, 4vw, 56px); padding-bottom: clamp(40px, 6vw, 80px);">
+  <section class="section" style="padding-top: clamp(28px, 3vw, 44px); padding-bottom: clamp(40px, 6vw, 80px);">
     <div class="container">
-      <p class="eyebrow">Contact</p>
-      <h1 style="margin-top: 8px; margin-bottom: clamp(32px, 4vw, 56px);">Neem contact op.</h1>
-
       <div class="contact-grid">
-        <!-- Linker kolom: gegevens -->
+        <!-- Linker kolom: titel + gegevens -->
         <div class="contact-info">
+          <p class="eyebrow">Contact</p>
+          <h1 style="margin-top: 8px; margin-bottom: 32px;">Neem contact op.</h1>
+
           <p class="eyebrow" style="margin-bottom: 8px;">Adres</p>
           <p style="font-size: 16px; line-height: 1.8; color: var(--ink-soft);">
             KA.architecten<br />
@@ -61,6 +61,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
   </section>
+
 </BaseLayout>
 
 <style>

@@ -25,8 +25,8 @@ import { pub } from '../../utils/asset';
         <button class="filter-btn" data-filter="woningbouw">Woningbouw</button>
       </aside>
       <div id="projects-grid" class="projects-grid">
-        {projects.map(p => (
-          <a class="project-card" href={pub(`/projecten/${p.slug}`)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`}>
+        {projects.map((p, i) => (
+          <a class="project-card" href={pub(`/projecten/${p.slug}`)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`} style={`--i: ${i};`}>
             <div class="project-media">
               <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
               <div class="project-overlay">
@@ -48,15 +48,42 @@ import { pub } from '../../utils/asset';
     const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const cards = document.querySelectorAll<HTMLElement>('.project-card[data-type]');
 
+    function applyFilter(filter: string) {
+      // Fade all visible cards out first
+      cards.forEach(c => {
+        if (c.style.display !== 'none') {
+          c.style.transition = 'opacity .15s, transform .15s';
+          c.style.opacity = '0';
+          c.style.transform = 'translateY(6px)';
+        }
+      });
+      setTimeout(() => {
+        let vi = 0;
+        cards.forEach(card => {
+          const type = card.getAttribute('data-type') ?? '';
+          const show = filter === 'alle' || type.includes(filter);
+          card.style.transition = '';
+          card.style.opacity = '';
+          card.style.transform = '';
+          if (show) {
+            card.style.display = '';
+            card.style.setProperty('--i', String(vi++));
+            // Re-trigger stagger animation
+            card.style.animation = 'none';
+            card.offsetHeight; // reflow
+            card.style.animation = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }, 170);
+    }
+
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.getAttribute('data-filter') ?? 'alle';
-        cards.forEach(card => {
-          const type = card.getAttribute('data-type') ?? '';
-          card.style.display = (filter === 'alle' || type.includes(filter)) ? '' : 'none';
-        });
+        applyFilter(btn.getAttribute('data-filter') ?? 'alle');
       });
     });
   </script>

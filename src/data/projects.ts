@@ -9,9 +9,9 @@ export interface Project {
   cover: string;
   images: string[];
   architect: string;
-  aannemer: string;
-  fotograaf: string;
-  constructeur: string;
+  aannemer: string | null;
+  fotograaf: string | null;
+  constructeur: string | null;
   intro: string;
   body: string[];
 }
@@ -30,7 +30,7 @@ export const projects: Project[] = [
     architect: 'Peter Keijsers',
     aannemer: 'Van Zantvoort',
     fotograaf: 'Edwin van Zantvoort',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Een vrijstaande woning aan de rand van Tilburg, ingepast tussen lanen en open velden. Heldere volumes, lange zichtlijnen naar het landschap, en eerlijke materialen die mooier worden met de jaren.',
     body: [
       'De opgave vroeg om een ruime gezinswoning die rust uitstraalt en zich voegt naar de Brabantse omgeving. Door het hoofdvolume terug te leggen en een lager bijgebouw als tegenwicht te plaatsen, ontstaat een binnenhof: beschut, zonnig en privé.',
@@ -49,8 +49,8 @@ export const projects: Project[] = [
     images: ['/images/goirle-1.jpg'],
     architect: 'Peter Keijsers',
     aannemer: 'Bouwbedrijf André Doevendans',
-    fotograaf: '—',
-    constructeur: '—',
+    fotograaf: null,
+    constructeur: null,
     intro: 'Een ingetogen gezinswoning in het buitengebied van Goirle, met een knipoog naar de traditionele Brabantse langgevelboerderij, maar in een eigentijdse, sobere taal.',
     body: [
       'Het ontwerp zet sterk in op de oriëntatie van de woning ten opzichte van de zon en het achterliggende landschap. Een doorlopende kap bindt hoofd- en bijgebouw aan elkaar; gevels zijn rustig gehouden zodat het dak het gesprek voert.',
@@ -68,9 +68,9 @@ export const projects: Project[] = [
     cover: '/images/waterrijk-cover.jpg',
     images: ['/images/waterrijk-1.jpg', '/images/waterrijk-cover.jpg', '/images/waterrijk-2.jpg', '/images/waterrijk-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
+    aannemer: null,
     fotograaf: 'Luuk Kramer',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Vrijstaande woning in de wijk Waterrijk in Eindhoven. Een compact, helder volume met een grote, beschutte buitenruimte aan het water.',
     body: [
       'De plot was smal en grenst aan een waterpartij. De woning is bewust enkelvoudig gehouden: één duidelijk volume met een sterke daksilhouet, dat zich in volle breedte opent richting het water.',
@@ -88,9 +88,9 @@ export const projects: Project[] = [
     cover: '/images/igm-cover.jpg',
     images: ['/images/igm-cover.jpg', '/images/igm-1.jpg', '/images/igm-2.jpg', '/images/igm-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
+    aannemer: null,
     fotograaf: 'Luuk Kramer',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Hoofdkantoor met aangrenzende opslag voor IGM. Een functioneel programma dat door zorgvuldige compositie en materiaalkeuze tóch een gezicht krijgt.',
     body: [
       'Het kantoorgedeelte koppelt zich helder aan het opslagvolume; door een verspringing in het dak en een diepe entreegevel ontstaat hiërarchie zonder te schreeuwen.',
@@ -108,9 +108,9 @@ export const projects: Project[] = [
     cover: '/images/zeist-2.jpg',
     images: ['/images/zeist-2.jpg', '/images/zeist-trap.jpg', '/images/zeist-3.jpg', '/images/zeist-1.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
+    aannemer: null,
     fotograaf: 'Michel Kievits',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Een vrijstaande woning waarin in-situ gestort beton de hoofdrol speelt. Sculpturale ruimtes, rauw beton en genereus uitzicht over de heide.',
     body: [
       'Beton, hout en glas vormen het materiële fundament. Een centrale, beeldbepalende trap snijdt door de plattegrond en verbindt de verdiepingen tot één doorlopende ruimte.',
@@ -128,9 +128,9 @@ export const projects: Project[] = [
     cover: '/images/wijdeven-cover.jpg',
     images: ['/images/wijdeven-cover.jpg', '/images/wijdeven-1.jpg', '/images/wijdeven-2.jpg', '/images/wijdeven-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
+    aannemer: null,
     fotograaf: 'Kim Zwarts',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Productie- en kantoorgebouw voor Wijdeven, een Brabantse fabrikant van transformatoren. Een industrieel programma met de allure van een gebouwd visitekaartje.',
     body: [
       'Een breed gemetseld portaal definieert de voorgevel. Een teruggelegen entree met een diepe nis nodigt de bezoeker uit.',
@@ -148,9 +148,9 @@ export const projects: Project[] = [
     cover: '/images/suytkade-cover.jpg',
     images: ['/images/suytkade-cover.jpg', '/images/suytkade-1.jpg', '/images/suytkade-2.jpg', '/images/suytkade-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
+    aannemer: null,
     fotograaf: 'Stan de Bie',
-    constructeur: '—',
+    constructeur: null,
     intro: 'Een blok eengezinswoningen langs het kanaal in Helmond, in de wijk Suytkade. Stedelijk wonen met een dorpse korrel.',
     body: [
       'De gevel is opgebouwd uit vier herkenbare types die telkens net iets verschillen zodat het ensemble leest als straat in plaats van rij.',
@@ -168,9 +168,9 @@ export const projects: Project[] = [
     cover: '/images/udenhout-1.jpg',
     images: ['/images/udenhout-1.jpg', '/images/udenhout-2.jpg'],
     architect: 'Peter Keijsers',
-    aannemer: '—',
-    fotograaf: '—',
-    constructeur: '—',
+    aannemer: null,
+    fotograaf: null,
+    constructeur: null,
     intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere geglazuurde baksteen.',
     body: [
       'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, sterke openingen op gekozen plekken.',
@@ -188,9 +188,9 @@ export const projects: Project[] = [
     cover: '/images/haaren-1.jpg',
     images: ['/images/haaren-1.jpg'],
     architect: 'Peter Keijsers',
-    aannemer: '—',
-    fotograaf: '—',
-    constructeur: '—',
+    aannemer: null,
+    fotograaf: null,
+    constructeur: null,
     intro: 'Een gezinswoning in het buitengebied van Haaren. Stevig in zijn landschap, terughoudend in zijn vormgeving.',
     body: [
       'Door het hoofdvolume net iets te draaien ten opzichte van het kavel ontstaat een natuurlijke voor- en achterzijde, en blijft de bestaande boombeplanting maximaal behouden.',
@@ -208,9 +208,9 @@ export const projects: Project[] = [
     cover: '/images/zwolle-cover.jpg',
     images: ['/images/zwolle-cover.jpg', '/images/zwolle-1.jpg', '/images/zwolle-2.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
-    aannemer: '—',
-    fotograaf: '—',
-    constructeur: '—',
+    aannemer: null,
+    fotograaf: null,
+    constructeur: null,
     intro: 'Een woningbouwproject in de historische binnenstad van Zwolle, langs de Thorbeckegracht. Meerdere woningtypologieën gegroepeerd rond een besloten binnenhof en met gevels aan het water.',
     body: [
       'Hof de Volharding vormt het hart van het project: een halfopen binnenhof omgeven door rijwoningen met puntgevels in handgevormde grijze baksteen. De verwijzing naar het historische pakhuiskarakter van de Zwolse binnenstad is bewust.',

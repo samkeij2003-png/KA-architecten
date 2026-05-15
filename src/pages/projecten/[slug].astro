@@ -47,7 +47,7 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
     <section class="project-hero">
       <img src={pub(project.cover)} alt={`${project.title}, ${project.location}`} fetchpriority="high" />
       <div class="project-hero-veil"></div>
-      <a href={pub('/projecten')} class="project-back">← Projecten</a>
+      <a href={pub('/projecten')} class="project-back"><span class="arrow">←</span>Projecten</a>
       <div class="project-hero-content">
         <p class="eyebrow" style="color: rgba(246,245,241,0.65);">{project.location}</p>
         <h1 style="color: #F6F5F1; margin-top: 10px; max-width: 22ch;">{project.title}</h1>
