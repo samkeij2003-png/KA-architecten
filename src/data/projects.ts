@@ -18,26 +18,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: 'woonhuis-udenhout',
-    title: 'Woonhuis Udenhout',
-    location: 'Udenhout',
-    province: 'Noord-Brabant',
-    year: '2025',
-    type: 'Particuliere woning',
-    status: 'Opgeleverd',
-    cover: '/images/udenhout-1.jpg',
-    images: ['/images/udenhout-1.jpg', '/images/udenhout-2.jpg'],
-    architect: 'Peter Keijsers',
-    aannemer: '—',
-    fotograaf: '—',
-    constructeur: '—',
-    intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere geglazuurde baksteen.',
-    body: [
-      'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, sterke openingen op gekozen plekken.',
-      'Donkere baksteen, grote glaspartijen en een helder dakschildprofiel geven de woning een rustige, zelfverzekerde uitstraling aan de rand van het dorp.',
-    ],
-  },
-  {
     slug: 'woonhuis-nieuwe-warande-tilburg',
     title: 'Woonhuis Nieuwe Warande',
     location: 'Tilburg',
@@ -175,6 +155,26 @@ export const projects: Project[] = [
     body: [
       'De gevel is opgebouwd uit vier herkenbare types die telkens net iets verschillen zodat het ensemble leest als straat in plaats van rij.',
       'Aan het kanaal ontstaat een rustig, doorlopend silhouet; aan de straatkant wisselen voortuinen en entrees elkaar af. De materialen zijn gekozen op duurzame veroudering.',
+    ],
+  },
+  {
+    slug: 'woonhuis-udenhout',
+    title: 'Woonhuis Udenhout',
+    location: 'Udenhout',
+    province: 'Noord-Brabant',
+    year: '2025',
+    type: 'Particuliere woning',
+    status: 'Opgeleverd',
+    cover: '/images/udenhout-1.jpg',
+    images: ['/images/udenhout-1.jpg', '/images/udenhout-2.jpg'],
+    architect: 'Peter Keijsers',
+    aannemer: '—',
+    fotograaf: '—',
+    constructeur: '—',
+    intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere geglazuurde baksteen.',
+    body: [
+      'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, sterke openingen op gekozen plekken.',
+      'Donkere baksteen, grote glaspartijen en een helder dakschildprofiel geven de woning een rustige, zelfverzekerde uitstraling aan de rand van het dorp.',
     ],
   },
   {
