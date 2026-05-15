@@ -43,48 +43,51 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
   })}</script>
 
   <article>
-    <section class="section" style="padding-bottom: 32px;">
-      <div class="container">
-        <p class="eyebrow">
-          <a href={pub('/projecten')} style="color:inherit; border-bottom: 1px solid var(--hairline);">Projecten</a>
+    <!-- HERO: coverfoto full-bleed met titel overlay -->
+    <section class="project-hero">
+      <img src={pub(project.cover)} alt={`${project.title}, ${project.location}`} fetchpriority="high" />
+      <div class="project-hero-veil"></div>
+      <div class="project-hero-content">
+        <p class="eyebrow" style="color: rgba(246,245,241,0.65);">
+          <a href={pub('/projecten')} style="color:inherit;">Projecten</a>
           &nbsp;·&nbsp;{project.location}
         </p>
-        <h1 style="margin-top: 12px; max-width: 24ch;">{project.title}</h1>
-        <p class="lead" style="margin-top: 28px;">{project.intro}</p>
+        <h1 style="color: #F6F5F1; margin-top: 10px; max-width: 22ch;">{project.title}</h1>
       </div>
     </section>
 
-    <section style="padding: 0 0 32px;">
+    <!-- INTRO + BODY + FACTS -->
+    <section class="section" style="padding-top: 48px; padding-bottom: 40px;">
       <div class="container">
-        <div class="detail-hero">
-          <img src={pub(project.cover)} alt={`${project.title}, ${project.location}`} />
+        <p class="lead" style="margin-bottom: clamp(32px, 4vw, 56px); max-width: 60ch;">{project.intro}</p>
+        <div class="detail-grid">
+          <div class="body-text" style="font-size: 17px;">
+            {project.body.map(p => <p>{p}</p>)}
+          </div>
+          <div class="facts">
+            <dl>
+              <dt>Locatie</dt><dd>{project.location}, {project.province}</dd>
+              <dt>Type</dt><dd>{project.type}</dd>
+              <dt>Status</dt><dd>{project.status} · {project.year}</dd>
+              <dt>Architect</dt><dd>{project.architect}</dd>
+              {project.aannemer && <><dt>Aannemer</dt><dd>{project.aannemer}</dd></>}
+              {project.constructeur && <><dt>Constructeur</dt><dd>{project.constructeur}</dd></>}
+              {project.fotograaf && <><dt>Fotografie</dt><dd>{project.fotograaf}</dd></>}
+            </dl>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 32px;">
-      <div class="container detail-grid">
-        <div class="body-text" style="font-size: 17px;">
-          {project.body.map(p => <p>{p}</p>)}
-        </div>
-        <div class="facts">
-          <dl>
-            <dt>Locatie</dt><dd>{project.location}, {project.province}</dd>
-            <dt>Type</dt><dd>{project.type}</dd>
-            <dt>Status</dt><dd>{project.status} · {project.year}</dd>
-            <dt>Architect</dt><dd>{project.architect}</dd>
-            <dt>Aannemer</dt><dd>{project.aannemer}</dd>
-            <dt>Constructeur</dt><dd>{project.constructeur}</dd>
-            <dt>Fotografie</dt><dd>{project.fotograaf}</dd>
-          </dl>
-        </div>
-      </div>
-    </section>
-
+    <!-- GALERIJ -->
     {project.images.length > 1 && (
-      <section class="section hairline">
+      <section class="section hairline" style="padding-top: 40px;">
         <div class="container">
-          <p class="eyebrow mb-md">Beelden</p>
+          <p class="eyebrow mb-md">
+            Beelden
+            <span style="color: var(--hairline); margin: 0 8px;">·</span>
+            <span style="font-size: 10px; letter-spacing: 0.12em; color: var(--stone);">klik om te vergroten</span>
+          </p>
           <div
             class="gallery"
             data-lightbox-group={imagesJson}
@@ -104,6 +107,7 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
     )}
   </article>
 
+  <!-- PAGER -->
   <section class="section hairline">
     <div class="container">
       <div class="pager">
@@ -120,7 +124,7 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
           </a>
         ) : <div />}
       </div>
-      <p style="margin-top: 48px;">
+      <p style="margin-top: 40px;">
         <a class="link-arrow" href={pub('/contact')}>Plan een vrijblijvend gesprek →</a>
       </p>
     </div>

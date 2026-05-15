@@ -242,8 +242,10 @@ p  { margin: 0 0 1em; }
 .project-meta .loc  { color: var(--stone); font-size: 13px; }
 
 /* ── Project detail ───────────────────── */
-.detail-hero { aspect-ratio: 16/9; background: var(--bg-soft); overflow: hidden; }
-.detail-hero img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); }
+.project-hero { position: relative; height: clamp(520px, 75vh, 860px); background: var(--ink); overflow: hidden; }
+.project-hero > img { width: 100%; height: 100%; object-fit: cover; opacity: 0.88; display: block; }
+.project-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(31,30,27,0.05) 40%, rgba(31,30,27,0.65) 100%); }
+.project-hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: clamp(24px, 4vw, 48px) var(--gutter); max-width: var(--max); margin: 0 auto; }
 
 .detail-grid {
   display: grid;
@@ -280,12 +282,16 @@ p  { margin: 0 0 1em; }
 }
 .gallery > * { background: var(--bg-soft); overflow: hidden; }
 .gallery img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+.gallery figure { position: relative; }
+.gallery figure::after { content: '⊕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; background: rgba(31,30,27,0.28); opacity: 0; transition: opacity .2s; pointer-events: none; }
+.gallery figure:hover::after { opacity: 1; }
 
 /* ── Pager ────────────────────────────── */
-.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.pager a { display: block; padding: 24px 0; }
-.pager .label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); margin-bottom: 8px; }
-.pager .title { font-family: var(--font-display); font-size: 16px; }
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pager a { display: flex; flex-direction: column; gap: 10px; padding: 24px 28px; border: 1px solid var(--hairline); transition: border-color .2s; }
+.pager a:hover { border-color: var(--ink); color: var(--ink); }
+.pager .label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); }
+.pager .title { font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.15rem); color: var(--ink); }
 .pager .next { text-align: right; }
 
 /* ── Footer ───────────────────────────── */
