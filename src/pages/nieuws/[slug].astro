@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { nieuws } from '../../data/nieuws';
+import { pub } from '../../utils/asset';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return nieuws.map(item => ({ params: { slug: item.slug }, props: { item } }));
+};
+
+const { item } = Astro.props;
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout
+  title={`${item.title} — KA.architecten`}
+  description={item.intro}
+  canonical={`https://www.ka-architecten.nl/nieuws/${item.slug}`}
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": item.title,
+    "description": item.intro,
+    "datePublished": item.date,
+    "author": {
+      "@type": "Person",
+      "name": "Peter Keijsers"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "KA.architecten",
+      "url": "https://www.ka-architecten.nl"
+    },
+    "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${item.slug}`
+  })}</script>
+
+  <article>
+    <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
+      <div class="container split-2">
+        <div>
+          <a href={pub('/nieuws')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
+            ← Nieuws
+          </a>
+          <p class="eyebrow" style="margin-top: 16px;">{formatDate(item.date)}</p>
+        </div>
+        <div>
+          <h1 style="max-width: 24ch;">{item.title}</h1>
+          <p class="lead" style="margin-top: 24px;">{item.intro}</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: clamp(16px, 2vw, 32px) 0 clamp(40px, 6vw, 80px); border-top: 1px solid var(--hairline);">
+      <div class="container split-2">
+        <div></div>
+        <div class="body-text" style="font-size: 17px;">
+          {item.body.map(p => <p>{p}</p>)}
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
+    <div class="container">
+      <p>
+        <a class="link-arrow" href={pub('/nieuws')}>← Terug naar nieuws</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

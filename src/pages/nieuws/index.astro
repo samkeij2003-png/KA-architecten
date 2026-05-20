@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { nieuws } from '../../data/nieuws';
+import { pub } from '../../utils/asset';
+
+const sorted = [...nieuws].sort((a, b) => b.date.localeCompare(a.date));
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout
+  title="Nieuws — KA.architecten · Architect Peter Keijsers, Tilburg"
+  description="Nieuws, achtergronden en updates van KA.architecten. Architectuurbureau voor woningontwerp, verbouwing en utiliteitsbouw in Tilburg en Noord-Brabant."
+  canonical="https://www.ka-architecten.nl/nieuws"
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Nieuws — KA.architecten",
+    "url": "https://www.ka-architecten.nl/nieuws",
+    "publisher": {
+      "@type": "Organization",
+      "name": "KA.architecten",
+      "url": "https://www.ka-architecten.nl"
+    }
+  })}</script>
+
+  <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
+    <div class="container split-2">
+      <div><p class="eyebrow">Nieuws</p></div>
+      <div>
+        <h1 style="max-width: 22ch;">Nieuws &amp; achtergronden.</h1>
+        <p class="lead" style="margin-top: 24px;">
+          Updates, projectnieuws en achtergronden vanuit KA.architecten.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
+    <div class="container">
+      {sorted.length === 0 ? (
+        <p class="body-text" style="color: var(--stone); font-size: 15px;">Er zijn nog geen artikelen gepubliceerd.</p>
+      ) : (
+        <ul class="news-list">
+          {sorted.map(item => (
+            <li class="news-item">
+              <a href={pub(`/nieuws/${item.slug}`)}>
+                <span class="news-date eyebrow">{formatDate(item.date)}</span>
+                <h2 class="news-title">{item.title}</h2>
+                <p class="news-intro">{item.intro}</p>
+                <span class="link-arrow" style="margin-top: 12px;">Lees verder →</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .news-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .news-item {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .news-item a {
+    display: block;
+    padding: clamp(24px, 3vw, 40px) 0;
+    transition: color .2s;
+  }
+  .news-item a:hover .news-title { color: var(--stone); }
+  .news-date {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .news-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    color: var(--ink);
+    max-width: 52ch;
+    margin: 0 0 12px;
+  }
+  .news-intro {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 60ch;
+    margin: 0;
+    line-height: 1.65;
+  }
+</style>
