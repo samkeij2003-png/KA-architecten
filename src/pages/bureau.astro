@@ -1,6 +1,10 @@
-﻿---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { pub } from '../utils/asset';
+import warande1Img from '../assets/images/warande-1.jpg';
+import zwolleCoverImg from '../assets/images/zwolle-cover.jpg';
+import architectImg from '../assets/images/architect.png';
 ---
 
 <BaseLayout
@@ -47,11 +51,14 @@ import { pub } from '../utils/asset';
 
   <div class="container">
     <a href={pub('/projecten/woonhuis-nieuwe-warande-tilburg')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woonhuis Nieuwe Warande, Tilburg">
-      <img
-        src={pub('/images/warande-1.jpg')}
+      <Image
+        src={warande1Img}
         alt="Woonhuis Nieuwe Warande, Tilburg, KA.architecten"
-        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+        width={1600}
+        format="webp"
+        quality={85}
         loading="lazy"
+        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
       />
     </a>
   </div>
@@ -87,11 +94,14 @@ import { pub } from '../utils/asset';
 
   <div class="container">
     <a href={pub('/projecten/woningbouwplan-kraanbolwerk-zwolle')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woningbouwplan Kraanbolwerk, Zwolle">
-      <img
-        src={pub('/images/zwolle-cover.jpg')}
+      <Image
+        src={zwolleCoverImg}
         alt="Woningbouwplan Kraanbolwerk, Zwolle, KA.architecten"
-        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+        width={1600}
+        format="webp"
+        quality={85}
         loading="lazy"
+        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
       />
     </a>
   </div>
@@ -110,9 +120,11 @@ import { pub } from '../utils/asset';
           </p>
         </div>
         <div class="architect-photo" style="aspect-ratio: 4/5; background: var(--bg-soft); overflow: hidden;">
-          <img
-            src={pub('/images/architect.png')}
+          <Image
+            src={architectImg}
             alt="Architect Peter Keijsers, KA.architecten Tilburg"
+            format="webp"
+            quality={85}
             style="width:100%; height:100%; object-fit: cover; object-position: center;"
           />
         </div>

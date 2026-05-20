@@ -1,7 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { projects } from '../../data/projects';
 import { pub } from '../../utils/asset';
+import { getImg } from '../../utils/images';
+
+const coverImages = await Promise.all(projects.map(p => getImg(p.cover)));
 ---
 
 <BaseLayout
@@ -28,7 +32,14 @@ import { pub } from '../../utils/asset';
         {projects.map((p, i) => (
           <a class="project-card" href={pub(`/projecten/${p.slug}`)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`} style={`--i: ${i};`}>
             <div class="project-media">
-              <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
+              <Image
+                src={coverImages[i]}
+                alt={`${p.title}, ${p.location}`}
+                loading="lazy"
+                width={800}
+                format="webp"
+                quality={85}
+              />
               <div class="project-overlay">
                 <span class="name">{p.title}</span>
                 <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>

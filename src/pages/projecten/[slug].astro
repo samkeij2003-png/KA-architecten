@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
 import { projects } from '../../data/projects';
 import { pub } from '../../utils/asset';
+import { getImg } from '../../utils/images';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -13,7 +15,16 @@ const idx = projects.findIndex(p => p.slug === project.slug);
 const prev = idx > 0 ? projects[idx - 1] : null;
 const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 
-const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
+const coverImg = await getImg(project.cover);
+
+const galleryData = await Promise.all(
+  project.images.map(async (path) => {
+    const img = await getImg(path);
+    const full = await getImage({ src: img, format: 'webp', quality: 85, width: 1600 });
+    return { meta: img, url: full.src };
+  })
+);
+const imagesJson = JSON.stringify(galleryData.map(d => d.url));
 ---
 
 <BaseLayout
@@ -54,7 +65,14 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
   <article>
     <!-- HERO: coverfoto full-bleed met titel overlay -->
     <section class="project-hero">
-      <img src={pub(project.cover)} alt={`${project.title}, ${project.location}`} fetchpriority="high" />
+      <Image
+        src={coverImg}
+        alt={`${project.title}, ${project.location}`}
+        fetchpriority="high"
+        width={1920}
+        format="webp"
+        quality={85}
+      />
       <div class="project-hero-veil"></div>
       <a href={pub('/projecten')} class="project-back"><span class="arrow">←</span>Projecten</a>
       <div class="project-hero-content">
@@ -102,11 +120,18 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
             data-lightbox-group={imagesJson}
             data-lightbox-caption={project.title}
           >
-            {project.images.map((src, i) => {
+            {galleryData.map((d, i) => {
               const cls = i === 0 ? 'g-wide' : 'g-half';
               return (
                 <figure class={cls}>
-                  <img src={pub(src)} alt={`${project.title} (${i + 1}/${project.images.length})`} loading="lazy" />
+                  <Image
+                    src={d.meta}
+                    alt={`${project.title} (${i + 1}/${project.images.length})`}
+                    loading="lazy"
+                    width={i === 0 ? 1400 : 900}
+                    format="webp"
+                    quality={85}
+                  />
                 </figure>
               );
             })}

@@ -1,10 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { projects } from '../data/projects';
 import { pub } from '../utils/asset';
+import { getImg } from '../utils/images';
+
+import zeist2Img from '../assets/images/zeist-2.jpg';
+import zeistTrapImg from '../assets/images/zeist-trap.jpg';
 
 const featured = projects.find(p => p.slug === 'betonnen-woonhuis-zeist')!;
 const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0, 6);
+const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
 ---
 
 <BaseLayout
@@ -12,7 +18,6 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
   description="KA.architecten is gevestigd in Tilburg en werkzaam in heel Brabant. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw."
   bodyClass="home"
 >
-  <link rel="preload" slot="head" as="image" href={pub('/images/zeist-2.jpg')} />
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
@@ -35,7 +40,14 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-image">
-      <img src={pub('/images/zeist-2.jpg')} alt="Betonnen woonhuis in Zeist — KA.architecten" fetchpriority="high" />
+      <Image
+        src={zeist2Img}
+        alt="Betonnen woonhuis in Zeist — KA.architecten"
+        fetchpriority="high"
+        width={1920}
+        format="webp"
+        quality={85}
+      />
     </div>
     <div class="hero-veil"></div>
     <div class="hero-content">
@@ -74,7 +86,14 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
   <section class="featured hairline" style="padding-top: 0;">
     <a href={pub(`/projecten/${featured.slug}`)} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
       <div class="featured-media">
-        <img src={pub('/images/zeist-trap.jpg')} alt="Centrale betonnen trap — Betonnen woonhuis Zeist" loading="lazy" />
+        <Image
+          src={zeistTrapImg}
+          alt="Centrale betonnen trap — Betonnen woonhuis Zeist"
+          loading="lazy"
+          width={1400}
+          format="webp"
+          quality={85}
+        />
       </div>
       <div class="container">
         <div class="featured-meta">
@@ -99,10 +118,17 @@ const grid = projects.filter(p => p.slug !== 'betonnen-woonhuis-zeist').slice(0,
         <a class="link-arrow" href={pub('/projecten')}>Alle projecten →</a>
       </div>
       <div class="projects-grid">
-        {grid.map(p => (
+        {grid.map((p, i) => (
           <a class="project-card" href={pub(`/projecten/${p.slug}`)} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
-              <img src={pub(p.cover)} alt={`${p.title}, ${p.location}`} loading="lazy" />
+              <Image
+                src={gridCovers[i]}
+                alt={`${p.title}, ${p.location}`}
+                loading="lazy"
+                width={800}
+                format="webp"
+                quality={85}
+              />
               <div class="project-overlay">
                 <span class="name">{p.title}</span>
                 <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>
