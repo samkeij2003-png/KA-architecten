@@ -52,14 +52,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <label for="bericht">Bericht</label>
               <textarea id="bericht" name="bericht" rows="4" required placeholder="Vertel kort over uw plek en wensen"></textarea>
             </div>
-            <button type="submit" class="btn" id="contact-submit">Verzenden</button>
+            <button type="submit" class="btn">Verzenden</button>
           </form>
-          <p id="contact-thanks" style="display:none; padding-top: 20px;">
-            Bedankt voor uw bericht. Peter neemt zo spoedig mogelijk contact met u op.
-          </p>
-          <p id="contact-error" style="display:none; padding-top: 20px; color: var(--stone);">
-            Er ging iets mis. Probeer het opnieuw of stuur een e-mail naar <a href="mailto:p.keijsers@ka-architecten.nl">p.keijsers@ka-architecten.nl</a>.
-          </p>
         </div>
       </div>
     </div>
@@ -85,37 +79,3 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .contact-grid { grid-template-columns: 1fr; }
   }
 </style>
-
-<script>
-  const FORMSPREE_ID = 'JOUW_FORM_ID'; // ← vervang dit met jouw Formspree form-ID
-
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const submit = document.getElementById('contact-submit') as HTMLButtonElement;
-  const thanks = document.getElementById('contact-thanks') as HTMLElement;
-  const error = document.getElementById('contact-error') as HTMLElement;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    submit.disabled = true;
-    submit.textContent = 'Verzenden…';
-
-    try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form),
-      });
-
-      if (res.ok) {
-        form.style.display = 'none';
-        thanks.style.display = 'block';
-      } else {
-        throw new Error('Formspree error');
-      }
-    } catch {
-      error.style.display = 'block';
-      submit.disabled = false;
-      submit.textContent = 'Verzenden';
-    }
-  });
-</script>
