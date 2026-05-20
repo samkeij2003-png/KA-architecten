@@ -68,9 +68,11 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
               <dt>Type</dt><dd>{project.type}</dd>
               <dt>Status</dt><dd>{project.status} · {project.year}</dd>
               <dt>Architect</dt><dd>{project.architect}</dd>
+              {project.interieurarchitect && <><dt>Interieur</dt><dd>{project.interieurarchitect}</dd></>}
               {project.aannemer && <><dt>Aannemer</dt><dd>{project.aannemer}</dd></>}
               {project.constructeur && <><dt>Constructeur</dt><dd>{project.constructeur}</dd></>}
               {project.fotograaf && <><dt>Fotografie</dt><dd>{project.fotograaf}</dd></>}
+              {project.erkenning && <><dt>Erkenning</dt><dd>{project.erkenning}</dd></>}
             </dl>
           </div>
         </div>

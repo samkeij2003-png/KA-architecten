@@ -9,9 +9,11 @@ export interface Project {
   cover: string;
   images: string[];
   architect: string;
+  interieurarchitect: string | null;
   aannemer: string | null;
   fotograaf: string | null;
   constructeur: string | null;
+  erkenning: string | null;
   intro: string;
   body: string[];
 }
@@ -28,13 +30,15 @@ export const projects: Project[] = [
     cover: '/images/warande-1.jpg',
     images: ['/images/warande-1.jpg', '/images/warande-2.jpg', '/images/warande-3.jpg'],
     architect: 'Peter Keijsers',
+    interieurarchitect: 'Francien Broos',
     aannemer: 'Van Zantvoort',
     fotograaf: 'Edwin van Zantvoort',
     constructeur: null,
-    intro: 'Een vrijstaande woning aan de rand van Tilburg, ingepast tussen lanen en open velden. Heldere volumes, lange zichtlijnen naar het landschap, en eerlijke materialen die mooier worden met de jaren.',
+    erkenning: null,
+    intro: 'Een vrijstaande woning aan de rand van Tilburg, ingepast tussen de straat en het open veld. Heldere volumes, lange zichtlijnen naar het landschap, en eerlijke materialen die mooier worden met de jaren.',
     body: [
-      'De opgave vroeg om een ruime gezinswoning die rust uitstraalt en zich voegt naar de Brabantse omgeving. Door het hoofdvolume terug te leggen en een lager bijgebouw als tegenwicht te plaatsen, ontstaat een binnenhof: beschut, zonnig en privé.',
-      'De keuze voor genuanceerd metselwerk, zink en eikenhouten kozijnen verankert het huis aan de plek. Binnen lopen de materialen door: een doorgaande betonvloer, gestucte wanden, eiken inbouwmeubels. Geen overtollige gebaren, alles dient het wonen.',
+      'De opgave vroeg om een ruime gezinswoning die rust uitstraalt en zich voegt naar de Brabantse omgeving. Door het hoofdvolume in de diepte van het kavel te plaatsen ontstaat er een route naar het uitzicht op het landschap en de genereuze tuin met zwembad en poolhouse. De lage bijgebouwen verbreden de plattegrond en zorgen voor beschutting en privacy.',
+      'De keuze voor witte gevels, rieten dak en minimalistische aluminium kozijnen geven het huis een moderne maar ook vertrouwde uitstraling. Binnen lopen de materialen door: een doorgaande betonvloer, gestucte wanden. Een eikenhouten trap verbindt het wonen met de slaapkamers onder het rieten dak.',
     ],
   },
   {
@@ -48,13 +52,15 @@ export const projects: Project[] = [
     cover: '/images/goirle-1.jpg',
     images: ['/images/goirle-1.jpg'],
     architect: 'Peter Keijsers',
+    interieurarchitect: 'Studio NVA',
     aannemer: 'Bouwbedrijf André Doevendans',
     fotograaf: null,
     constructeur: null,
-    intro: 'Een ingetogen gezinswoning in het buitengebied van Goirle, met een knipoog naar de traditionele Brabantse langgevelboerderij, maar in een eigentijdse, sobere taal.',
+    erkenning: null,
+    intro: 'Verbouwing van een bestaande woning in Goirle. Door het openbreken van wanden en het herorganiseren van het wonen langs een brede panoramapui ontstond een genereuze moderne woning met volledige oriëntatie op de tuin.',
     body: [
-      'Het ontwerp zet sterk in op de oriëntatie van de woning ten opzichte van de zon en het achterliggende landschap. Een doorlopende kap bindt hoofd- en bijgebouw aan elkaar; gevels zijn rustig gehouden zodat het dak het gesprek voert.',
-      'Materialisering is robuust: handgevormde baksteen, verticale houten delen, antraciet detaillering. Het resultaat is een woning die ontspannen op zijn plek staat.',
+      'De houten gevels, strakke aluminium schuifdeuren en kozijnen geven het huis een moderne, genereuze uitstraling. Materialen lopen door van binnen naar buiten in een brede luifel: een doorgaande betonvloer en het gestucte plafond.',
+      'Het ontwerp kenmerkt zich door in elkaar overlopende ruimten en de brede oriëntatie op de tuin. Een doorlopende luifel versterkt de verbinding tussen binnen en buiten, tussen het wonen en de tuin.',
     ],
   },
   {
@@ -68,13 +74,16 @@ export const projects: Project[] = [
     cover: '/images/waterrijk-cover.jpg',
     images: ['/images/waterrijk-1.jpg', '/images/waterrijk-cover.jpg', '/images/waterrijk-2.jpg', '/images/waterrijk-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: 'Luuk Kramer',
     constructeur: null,
-    intro: 'Vrijstaande woning in de wijk Waterrijk in Eindhoven. Een compact, helder volume met een grote, beschutte buitenruimte aan het water.',
+    erkenning: 'Nominatie Dirk Roosenburg Prijs',
+    intro: 'Vrijstaande woning in de wijk Waterrijk in Eindhoven. Een compact, helder volume in de donkere strakke baksteen en grote aluminium puien.',
     body: [
-      'De plot was smal en grenst aan een waterpartij. De woning is bewust enkelvoudig gehouden: één duidelijk volume met een sterke daksilhouet, dat zich in volle breedte opent richting het water.',
-      'Door de woonruimte op de eerste verdieping te plaatsen ontstaat het gevoel van wonen tússen de boomtoppen, met spectaculaire zichten en optimale privacy.',
+      'De plot was smal, door de woning ook bewust smal te houden en in de diepte te plaatsen ontstond er een logisch en heldere plattegrond die middels brede puien en een grote, half inpandige buitenruimte volledig is verbonden met de brede tuin.',
+      'De ruimten op de verdieping zijn georiënteerd op een patio of kennen diep terugliggende ramen, dit zorgt voor een optimale privacy.',
+      'Het contrast tussen de gesloten gevel van de verdieping en een open gevel van de begane grond geven de woning een uitgesproken silhouet en een uitgesproken volume.',
     ],
   },
   {
@@ -88,13 +97,15 @@ export const projects: Project[] = [
     cover: '/images/igm-cover.jpg',
     images: ['/images/igm-cover.jpg', '/images/igm-1.jpg', '/images/igm-2.jpg', '/images/igm-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: 'Luuk Kramer',
     constructeur: null,
-    intro: 'Hoofdkantoor met aangrenzende opslag voor IGM. Een functioneel programma dat door zorgvuldige compositie en materiaalkeuze tóch een gezicht krijgt.',
+    erkenning: null,
+    intro: 'Hoofdkantoor met aangrenzende opslag voor IGM. Donker staal en grote glasvlakken in een zorgvuldige compositie geven het bedrijfsgebouw een herkenbaar karakter.',
     body: [
-      'Het kantoorgedeelte koppelt zich helder aan het opslagvolume; door een verspringing in het dak en een diepe entreegevel ontstaat hiërarchie zonder te schreeuwen.',
-      'Een rustige strokengevel, donker staal en grote glasvlakken geven het bedrijfsgebouw een herkenbaar karakter. De interne logistiek is leidend, maar nooit ten koste van de werkomgeving.',
+      'Kantoor en magazijn zijn uitgevoerd in dezelfde stalen gevelelementen. Grote openingen en raampartijen duiden het kantoor en zorgen voor een ingetogen en sterk volume.',
+      'De interne logistiek is leidend, maar nooit ten koste van de werkomgeving. In het kantoorgedeelte wordt de entree aan de voorzijde, middels gangen en kantoorruimten, verbonden met de kantine en grote vergaderruimte met fraai uitzicht op het achterliggende landschap.',
     ],
   },
   {
@@ -102,19 +113,23 @@ export const projects: Project[] = [
     title: 'Betonnen woonhuis',
     location: 'Zeist',
     province: 'Utrecht',
-    year: '2017',
+    year: '2016',
     type: 'Particuliere woning',
     status: 'Opgeleverd',
     cover: '/images/zeist-2.jpg',
     images: ['/images/zeist-2.jpg', '/images/zeist-trap.jpg', '/images/zeist-3.jpg', '/images/zeist-1.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: 'Michel Kievits',
     constructeur: null,
-    intro: 'Een vrijstaande woning waarin in-situ gestort beton de hoofdrol speelt. Sculpturale ruimtes, rauw beton en genereus uitzicht over de heide.',
+    erkenning: 'Reynaers Architectuurprijs',
+    intro: 'Een vrijstaande woning waarin in-situ gestort beton de hoofdrol speelt. Sculpturale, in elkaar overlopende ruimtes, rauw beton en genereus uitzicht over de heide. Een betonnen loper en trap begeleiden de route naar de voordeur onder een stalen luifel.',
     body: [
-      'Beton, hout en glas vormen het materiële fundament. Een centrale, beeldbepalende trap snijdt door de plattegrond en verbindt de verdiepingen tot één doorlopende ruimte.',
-      'Het woongedeelte bevindt zich 1,5m boven de grond. Brede panoramramen geven uitzicht over het naastgelegen natuurgebied.',
+      'Een centrale, beeldbepalende trap snijdt door de plattegrond en verbindt de verdiepingen tot één doorlopende ruimte.',
+      'De slaapkamers en werkruimte zijn half verdiept in de grond; op ooghoogte heb je direct contact met de natuur. Een brede tribunetrap verbindt de werkruimte met het maaiveld.',
+      'Het woongedeelte bevindt zich als een uitkijkpost op 1,5m boven de grond. Brede panoramaramen met grote schuifpuien naar het terras geven een groots uitzicht over het naastgelegen natuurgebied.',
+      'Beton, aluminium en glas vormen het materiële fundament.',
     ],
   },
   {
@@ -128,13 +143,15 @@ export const projects: Project[] = [
     cover: '/images/wijdeven-cover.jpg',
     images: ['/images/wijdeven-cover.jpg', '/images/wijdeven-1.jpg', '/images/wijdeven-2.jpg', '/images/wijdeven-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: 'Kim Zwarts',
     constructeur: null,
-    intro: 'Productie- en kantoorgebouw voor Wijdeven, een Brabantse fabrikant van transformatoren. Een industrieel programma met de allure van een gebouwd visitekaartje.',
+    erkenning: null,
+    intro: 'Productie- en kantoorgebouw voor Wijdeven, een Brabantse fabrikant van transformatoren. Een industrieel programma, productieruimten over twee bouwlagen gecombineerd met kantoorruimten over drie bouwlagen.',
     body: [
-      'Een breed gemetseld portaal definieert de voorgevel. Een teruggelegen entree met een diepe nis nodigt de bezoeker uit.',
-      'Een routing door het gebouw verbindt middels doorzichten en vitrines de kantoren met de productiehallen.',
+      'Een breed gemetseld portaal definieert de voorgevel; de teruggelegen entree met een diepe nis nodigt de bezoeker uit.',
+      'Een route door het gebouw verbindt middels doorzichten en vitrines de kantoren met de productiehallen.',
     ],
   },
   {
@@ -148,13 +165,15 @@ export const projects: Project[] = [
     cover: '/images/suytkade-cover.jpg',
     images: ['/images/suytkade-cover.jpg', '/images/suytkade-1.jpg', '/images/suytkade-2.jpg', '/images/suytkade-3.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: 'Stan de Bie',
     constructeur: null,
-    intro: 'Een blok eengezinswoningen langs het kanaal in Helmond, in de wijk Suytkade. Stedelijk wonen met een dorpse korrel.',
+    erkenning: 'Nominatie BNA Gebouw van het Jaar',
+    intro: 'Een drietal bouwblokken met eengezinswoningen langs het kanaal in Helmond, in de wijk Suytkade. Ontworpen met aandacht voor samenhang en verschil.',
     body: [
-      'De gevel is opgebouwd uit vier herkenbare types die telkens net iets verschillen zodat het ensemble leest als straat in plaats van rij.',
-      'Aan het kanaal ontstaat een rustig, doorlopend silhouet; aan de straatkant wisselen voortuinen en entrees elkaar af. De materialen zijn gekozen op duurzame veroudering.',
+      'Het plan is opgebouwd uit verschillende typen woningen. Patiowoningen in een kwadrant die telkens net iets verschillen, zodat het leest als een zorgvuldig samengesteld ensemble. Aan de straatkant wisselen patiotuinen met entrees en woningen elkaar af. Gemetselde pergolabalken verbinden de woningen en zorgen voor samenhang van het bouwblok.',
+      'De brede en ondiepe rijwoning op de koppen van het bouwblok vormen een hogere gevel langs de ontsluitingsweg. Door diepe inkepingen in de gevel zijn afzonderlijke woningen herkenbaar.',
     ],
   },
   {
@@ -168,13 +187,15 @@ export const projects: Project[] = [
     cover: '/images/udenhout-1.jpg',
     images: ['/images/udenhout-1.jpg', '/images/udenhout-2.jpg'],
     architect: 'Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: null,
     constructeur: null,
-    intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere geglazuurde baksteen.',
+    erkenning: null,
+    intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere gesmoorde baksteen.',
     body: [
-      'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, sterke openingen op gekozen plekken.',
-      'Donkere baksteen, grote glaspartijen en een helder dakschildprofiel geven de woning een rustige, zelfverzekerde uitstraling aan de rand van het dorp.',
+      'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, uitgesproken openingen op de juiste plekken.',
+      'Deze ingetogen vormgeving geeft de woning een rustige, zelfverzekerde uitstraling met een mooi uitzicht over het aanliggende landschap.',
     ],
   },
   {
@@ -188,13 +209,15 @@ export const projects: Project[] = [
     cover: '/images/haaren-1.jpg',
     images: ['/images/haaren-1.jpg'],
     architect: 'Peter Keijsers',
-    aannemer: null,
+    interieurarchitect: 'Francien Broos',
+    aannemer: 'Van Laarhoven',
     fotograaf: null,
     constructeur: null,
-    intro: 'Een gezinswoning in het buitengebied van Haaren. Stevig in zijn landschap, terughoudend in zijn vormgeving.',
+    erkenning: null,
+    intro: 'Transformatie van een vrijstaande woning uit de jaren 60 naar een karaktervolle moderne woning. Door het samenvoegen van ruimten op de begane grond en het toevoegen van een paviljoenachtige aanbouw ontstaat een genereuze woning, met modern comfort en geborgenheid.',
     body: [
-      'Door het hoofdvolume net iets te draaien ten opzichte van het kavel ontstaat een natuurlijke voor- en achterzijde, en blijft de bestaande boombeplanting maximaal behouden.',
-      'Een lange luifel verbindt entree, terras en garage tot één gebaar.',
+      'De aanbouw bestaat uit een zwevende vloer en dak met luifel met daartussen een glaslint met schuifpuien. De tuinkamer is verbonden met een overdekte buitenruimte met open haard en prominente schoorsteen. Door het glaslint is er een groots uitzicht op de naastgelegen tuin en het park.',
+      'Uitgesproken rode bakstenen met teruggelegen voegen geven de woning een bijzonder maar ook ambachtelijk karakter, waarmee zij aansluit bij de traditioneel gemetselde woningen uit het dorp.',
     ],
   },
   {
@@ -208,13 +231,15 @@ export const projects: Project[] = [
     cover: '/images/zwolle-cover.jpg',
     images: ['/images/zwolle-cover.jpg', '/images/zwolle-1.jpg', '/images/zwolle-2.jpg'],
     architect: 'Bedaux de Brouwer — Peter Keijsers',
+    interieurarchitect: null,
     aannemer: null,
     fotograaf: null,
     constructeur: null,
-    intro: 'Een woningbouwproject in de historische binnenstad van Zwolle, langs de Thorbeckegracht. Meerdere woningtypologieën gegroepeerd rond een besloten binnenhof en met gevels aan het water.',
+    erkenning: null,
+    intro: 'Een woningbouwproject omgeven door grachten in de historische binnenstad van Zwolle. Meerdere woningtypologieën gegroepeerd rond een besloten binnenhof en deels met gevels aan het water.',
     body: [
-      'Hof de Volharding vormt het hart van het project: een halfopen binnenhof omgeven door rijwoningen met puntgevels in handgevormde grijze baksteen. De verwijzing naar het historische pakhuiskarakter van de Zwolse binnenstad is bewust.',
-      'Aan de waterkant presenteert het complex zich als een rustiger, horizontaal gevelfront. Grote kozijnen, zorgvuldige detaillering en een tijdloze materiaalkeuze geven het project een duurzaam karakter.',
+      'Hof de Volharding vormt het hart van het project: een halfopen binnenhof omgeven door pakhuis-achtige rijwoningen met puntgevels in handgevormde grijze baksteen en woningen ingepast in de voormalige structuur van de fabriek De Volharding.',
+      'Aan de waterkant presenteert het complex zich als een reeks industriële panden, met prominent in het midden de reconstructie van de gevel van De Volharding. Grote kozijnen, industriële referenties, zorgvuldige detaillering en een zorgvuldige baksteenkeuze geven het project een bij de plek passend karakter.',
     ],
   },
 ];

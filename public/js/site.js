@@ -5,12 +5,46 @@
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
     const links  = document.querySelector('.nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        links.classList.toggle('open');
-        toggle.setAttribute('aria-expanded', links.classList.contains('open'));
-      });
+    if (!toggle || !links) return;
+
+    // Sync header height so the overlay starts exactly below the header
+    function syncHeaderHeight() {
+      const header = document.querySelector('.site-header');
+      if (header) {
+        document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      }
     }
+    syncHeaderHeight();
+    window.addEventListener('resize', syncHeaderHeight, { passive: true });
+
+    toggle.addEventListener('click', () => {
+      const isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.classList.toggle('is-open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close when a nav link is tapped
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && links.classList.contains('open')) {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.remove('is-open');
+        document.body.style.overflow = '';
+        toggle.focus();
+      }
+    });
+
     const header = document.querySelector('.site-header');
     if (header) {
       const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
@@ -38,6 +72,17 @@
     lb.querySelector('.lb-close').addEventListener('click', closeLb);
     lb.querySelector('.lb-prev').addEventListener('click', () => navLb(-1));
     lb.querySelector('.lb-next').addEventListener('click', () => navLb(1));
+
+    // Swipe support for touch devices
+    let touchStartX = 0;
+    lb.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) navLb(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
     document.addEventListener('keydown', e => {
       if (!document.getElementById('lightbox')?.classList.contains('open')) return;
       if (e.key === 'Escape') closeLb();
@@ -112,7 +157,6 @@
     }, { threshold: 0.06, rootMargin: '0px 0px -48px 0px' });
 
     targets.forEach(el => {
-      // Skip elements already in viewport to avoid flash of invisible content
       const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) return;
       el.classList.add('fade-in');
@@ -176,14 +220,9 @@
     initParallax();
   }
 
-  // astro:page-load fires on every navigation (including first load)
+  // astro:page-load fires on every navigation, including the first page load.
+  // With <ViewTransitions /> enabled this is the only initialisation needed.
   document.addEventListener('astro:page-load', boot);
-  // Fallback for browsers/builds without View Transitions
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
 
   window.KA = { openLb };
 })();

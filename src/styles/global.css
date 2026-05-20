@@ -38,6 +38,7 @@
   --measure-wide:   72ch;
   --gutter: clamp(20px, 4vw, 56px);
   --max:    1440px;
+  --header-h: 72px;
 }
 
 * { box-sizing: border-box; }
@@ -139,13 +140,49 @@ p  { margin: 0 0 1em; }
 }
 .nav-links a:hover, .nav-links a.is-active { border-bottom-color: var(--ink); color: var(--ink); }
 
-.nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
-.nav-toggle span { display: block; width: 22px; height: 1px; background: var(--ink); margin: 5px 0; transition: transform .25s; }
+.nav-toggle {
+  display: none;
+  background: none; border: 0; cursor: pointer; line-height: 0;
+  padding: 10px 8px;
+  min-width: 44px; min-height: 44px;
+  align-items: center; justify-content: center;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--ink); margin: 4px 0;
+  transition: transform .25s ease, opacity .2s ease;
+}
+
+/* Hamburger → X when open */
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { transform: scaleX(0); opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
 
 @media (max-width: 720px) {
-  .nav-links { display: none; position: fixed; inset: 60px 0 0 0; flex-direction: column; background: var(--bg); padding: 32px var(--gutter); gap: 18px; align-items: flex-start; border-top: 1px solid var(--hairline); }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: var(--header-h);
+    left: 0; right: 0; bottom: 0;
+    flex-direction: column;
+    background: var(--bg);
+    padding: 28px var(--gutter) 40px;
+    gap: 0;
+    align-items: flex-start;
+    border-top: 1px solid var(--hairline);
+    overflow-y: auto;
+  }
   .nav-links.open { display: flex; }
-  .nav-toggle { display: block; }
+  .nav-links a {
+    padding: 16px 0;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    width: 100%;
+    border-bottom: 1px solid var(--hairline);
+    border-left: none;
+  }
+  .nav-links a:last-child { border-bottom: none; }
 }
 
 /* ── Hero (home) ──────────────────────── */
@@ -309,16 +346,35 @@ p  { margin: 0 0 1em; }
 
 /* ── Pager ────────────────────────────── */
 .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.pager a { display: flex; flex-direction: column; gap: 10px; padding: 24px 28px; border: 1px solid var(--hairline); transition: border-color .2s; }
-.pager a:hover { border-color: var(--ink); color: var(--ink); }
+.pager a { display: flex; flex-direction: column; gap: 10px; padding: 24px 0; transition: color .2s; }
+.pager a:hover { color: var(--ink); }
 .pager .label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); }
 .pager .title { font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.15rem); color: var(--ink); }
 .pager .next { text-align: right; }
+@media (max-width: 480px) { .pager { grid-template-columns: 1fr; } .pager .next { text-align: left; } }
+
+/* ── Architect grid (bureau) ──────────── */
+.architect-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .architect-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .architect-grid .architect-photo {
+    max-width: 260px;
+  }
+}
 
 /* ── Footer ───────────────────────────── */
 .site-footer {
   border-top: 1px solid var(--hairline);
-  padding: 48px var(--gutter) 32px;
+  padding-top: 48px;
+  padding-bottom: 32px;
   font-size: 13px;
   color: var(--stone);
 }
@@ -328,6 +384,8 @@ p  { margin: 0 0 1em; }
   gap: 32px;
   max-width: var(--max);
   margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
@@ -340,6 +398,8 @@ p  { margin: 0 0 1em; }
 .footer-grid a:hover { color: var(--ink); }
 .footer-base {
   max-width: var(--max); margin: 36px auto 0;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
   display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   border-top: 1px solid var(--hairline); padding-top: 18px;
   font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone);
