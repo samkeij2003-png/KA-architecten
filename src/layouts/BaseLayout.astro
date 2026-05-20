@@ -24,6 +24,7 @@ const {
 } = Astro.props;
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
 ---
 
 <!doctype html>
@@ -42,8 +43,16 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="KA.architecten" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="author" content="Peter Keijsers" />
+    <meta name="geo.region" content="NL-NB" />
+    <meta name="geo.placename" content="Tilburg, Noord-Brabant" />
+    <meta name="geo.position" content="51.5556;5.0913" />
+    <meta name="ICBM" content="51.5556, 5.0913" />
 
     <link rel="icon" href={pub('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#f5f3ef" />
@@ -54,6 +63,9 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
 
     <ViewTransitions />
     <slot name="head" />
+
+    {gaId && <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline></script>}
+    {gaId && <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`}></script>}
   </head>
   <body class={bodyClass}>
     <Header />

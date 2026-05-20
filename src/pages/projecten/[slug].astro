@@ -24,6 +24,15 @@ const imagesJson = JSON.stringify(project.images.map(p => pub(p)));
 >
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ka-architecten.nl/" },
+      { "@type": "ListItem", "position": 2, "name": "Projecten", "item": "https://www.ka-architecten.nl/projecten" },
+      { "@type": "ListItem", "position": 3, "name": project.title, "item": `https://www.ka-architecten.nl/projecten/${project.slug}` }
+    ]
+  })}</script>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.intro,
