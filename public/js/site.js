@@ -6,6 +6,8 @@
     const toggle = document.querySelector('.nav-toggle');
     const links  = document.querySelector('.nav-links');
     if (!toggle || !links) return;
+    if (toggle.dataset.navInit) return;
+    toggle.dataset.navInit = '1';
 
     // Sync header height so the overlay starts exactly below the header
     function syncHeaderHeight() {
@@ -138,6 +140,13 @@
       group.querySelectorAll('img').forEach((img, i) => {
         img.addEventListener('click', () => openLb(imgs, i, cap));
         img.style.cursor = 'zoom-in';
+        const figure = img.closest('figure');
+        if (figure) {
+          img.addEventListener('touchstart', () => {
+            figure.classList.add('touch-active');
+            setTimeout(() => figure.classList.remove('touch-active'), 1000);
+          }, { passive: true });
+        }
       });
     });
   }
@@ -220,9 +229,20 @@
     initParallax();
   }
 
+  function resetNav() {
+    const toggle = document.querySelector('.nav-toggle');
+    const links  = document.querySelector('.nav-links');
+    if (!toggle || !links) return;
+    links.classList.remove('open');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
   // astro:page-load fires on every navigation, including the first page load.
   // With <ViewTransitions /> enabled this is the only initialisation needed.
   document.addEventListener('astro:page-load', boot);
+  document.addEventListener('astro:before-swap', resetNav);
 
   window.KA = { openLb };
 })();
