@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { meestGezocht } from '../../data/meest-gezocht';
+import { pub } from '../../utils/asset';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return meestGezocht.map(item => ({ params: { slug: item.slug }, props: { item } }));
+};
+
+const { item } = Astro.props;
+
+function render(text: string): string {
+  return text
+    .replaceAll('{plaats}', item.location)
+    .replaceAll('{regio}', item.region);
+}
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'KA.architecten',
+  description: render(item.intro),
+  url: `https://www.ka-architecten.nl/meest-gezocht/${item.slug}`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Ankeveenstraat 44',
+    postalCode: '5036 CB',
+    addressLocality: 'Tilburg',
+    addressRegion: 'Noord-Brabant',
+    addressCountry: 'NL',
+  },
+  telephone: '+31621231821',
+  areaServed: [item.location, item.region],
+  knowsAbout: item.themeLabel,
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.ka-architecten.nl' },
+      { '@type': 'ListItem', position: 2, name: 'Meest gezocht', item: 'https://www.ka-architecten.nl/meest-gezocht' },
+      { '@type': 'ListItem', position: 3, name: render(item.title), item: `https://www.ka-architecten.nl/meest-gezocht/${item.slug}` },
+    ],
+  },
+};
+
+const faqSchema = item.faq && item.faq.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: item.faq.map(f => ({
+    '@type': 'Question',
+    name: render(f.question),
+    acceptedAnswer: { '@type': 'Answer', text: render(f.answer) },
+  })),
+} : null;
+---
+
+<BaseLayout
+  title={render(item.metaTitle)}
+  description={render(item.metaDescription)}
+  canonical={`https://www.ka-architecten.nl/meest-gezocht/${item.slug}`}
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify(localBusinessSchema)}</script>
+  {faqSchema && <script type="application/ld+json" slot="head">{JSON.stringify(faqSchema)}</script>}
+
+  <article>
+    <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
+      <div class="container split-2">
+        <div>
+          <a href={pub('/meest-gezocht')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
+            ← Meest gezocht
+          </a>
+          <p class="eyebrow" style="margin-top: 16px;">{item.themeLabel}</p>
+        </div>
+        <div>
+          <h1 style="max-width: 24ch;">{render(item.title)}</h1>
+          <p class="lead" style="margin-top: 24px;">{render(item.intro)}</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: clamp(16px, 2vw, 32px) 0 clamp(40px, 6vw, 80px); border-top: 1px solid var(--hairline);">
+      <div class="container split-2">
+        <div></div>
+        <div class="body-text page-body" style="font-size: 17px;">
+          {item.body.map(p =>
+            p.startsWith('## ')
+              ? <h2 class="body-heading">{render(p.slice(3))}</h2>
+              : <p>{render(p)}</p>
+          )}
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
+    <div class="container">
+      <p>
+        <a class="link-arrow" href={pub('/meest-gezocht')}>← Terug naar meest gezocht</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .body-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    color: var(--ink);
+    margin: clamp(28px, 3vw, 44px) 0 10px;
+  }
+  .page-body p { margin-bottom: 18px; }
+</style>

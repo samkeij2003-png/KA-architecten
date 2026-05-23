@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { meestGezocht } from '../../data/meest-gezocht';
+import { pub } from '../../utils/asset';
+
+const themeLabels: Record<string, string> = {
+  algemeen: 'Architect',
+  verbouwing: 'Verbouwing',
+  villa: 'Villa\'s & woningen',
+  woningbouw: 'Woningbouw',
+  kantoor: 'Kantoor & bedrijf',
+  ambacht: 'Architectuur als ambacht',
+};
+
+const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'ambacht'] as const;
+---
+
+<BaseLayout
+  title="Meest gezocht — KA.architecten · Architect Tilburg Noord-Brabant Limburg"
+  description="Overzicht van veelgezochte onderwerpen: architect in Tilburg, Eindhoven, Den Bosch en de rest van Noord-Brabant en Limburg. Villa's, woningbouw en kantoorgebouwen."
+  canonical="https://www.ka-architecten.nl/meest-gezocht"
+>
+  <script type="application/ld+json" slot="head">{JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Meest gezocht — KA.architecten",
+    "url": "https://www.ka-architecten.nl/meest-gezocht",
+    "itemListElement": meestGezocht.map((item, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `https://www.ka-architecten.nl/meest-gezocht/${item.slug}`,
+      "name": item.title
+    }))
+  })}</script>
+
+  <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
+    <div class="container split-2">
+      <div><p class="eyebrow">Meest gezocht</p></div>
+      <div>
+        <h1 style="max-width: 22ch;">Architect in Noord-Brabant &amp; Limburg.</h1>
+        <p class="lead" style="margin-top: 24px;">
+          Vanuit Tilburg werkt KA.architecten aan villa's, woningbouw en kantoorgebouwen door heel Noord-Brabant en Limburg.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
+    <div class="container">
+      {meestGezocht.length === 0 ? (
+        <p class="body-text" style="color: var(--stone); font-size: 15px;">Inhoud wordt binnenkort toegevoegd.</p>
+      ) : (
+        themes.map(theme => {
+          const items = meestGezocht.filter(i => i.theme === theme);
+          if (items.length === 0) return null;
+          return (
+            <div class="theme-group">
+              <h2 class="theme-heading">{themeLabels[theme]}</h2>
+              <ul class="topic-list">
+                {items.map(item => (
+                  <li>
+                    <a href={pub(`/meest-gezocht/${item.slug}`)} class="topic-link">
+                      <span>{item.title}</span>
+                      <span class="arrow">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .theme-group {
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+  .theme-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    color: var(--stone);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 16px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 10px;
+  }
+  .topic-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px;
+  }
+  .topic-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--hairline);
+    transition: color .2s;
+  }
+  .topic-link:hover { color: var(--stone); }
+  .arrow {
+    color: var(--stone);
+    font-size: 13px;
+    margin-left: 8px;
+  }
+</style>

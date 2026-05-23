@@ -423,6 +423,8 @@ p  { margin: 0 0 1em; }
 .btn.ghost:hover { background: var(--ink); color: var(--bg); }
 .link-arrow { display: inline-flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--ink); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
 .link-arrow:hover { color: var(--ink); }
+.text-link { border-bottom: 1px solid currentColor; }
+.text-link:hover { color: var(--ink); opacity: 0.7; }
 
 /* ── Forms ────────────────────────────── */
 .form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
