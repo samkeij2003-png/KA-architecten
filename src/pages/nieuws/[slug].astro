@@ -1,14 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { nieuws } from '../../data/nieuws';
+import { getAllPostSlugs, getPostBySlug, lexicalToHtml } from '../../lib/cms';
 import { pub } from '../../utils/asset';
 import type { GetStaticPaths } from 'astro';
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return nieuws.map(item => ({ params: { slug: item.slug }, props: { item } }));
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = await getAllPostSlugs();
+  return slugs.map(slug => ({ params: { slug } }));
 };
 
-const { item } = Astro.props;
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+
+// Fallback: als post niet bestaat (bijv. na verwijdering) redirect naar overzicht
+if (!post) {
+  return Astro.redirect(pub('/nieuws'), 302);
+}
+
+const bodyHtml = lexicalToHtml(post.body);
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -16,26 +25,26 @@ function formatDate(iso: string) {
 ---
 
 <BaseLayout
-  title={`${item.title} — KA.architecten`}
-  description={item.intro}
-  canonical={`https://www.ka-architecten.nl/nieuws/${item.slug}`}
+  title={`${post.title} — KA.architecten`}
+  description={post.excerpt}
+  canonical={`https://www.ka-architecten.nl/nieuws/${post.slug}`}
 >
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": item.title,
-    "description": item.intro,
-    "datePublished": item.date,
+    "headline": post.title,
+    "description": post.excerpt,
+    "datePublished": post.publishDate,
     "author": {
       "@type": "Person",
-      "name": "Peter Keijsers"
+      "name": post.author?.fullName ?? "KA.architecten"
     },
     "publisher": {
       "@type": "Organization",
       "name": "KA.architecten",
       "url": "https://www.ka-architecten.nl"
     },
-    "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${item.slug}`
+    "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${post.slug}`
   })}</script>
 
   <article>
@@ -45,21 +54,35 @@ function formatDate(iso: string) {
           <a href={pub('/nieuws')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
             ← Nieuws
           </a>
-          <p class="eyebrow" style="margin-top: 16px;">{formatDate(item.date)}</p>
+          <p class="eyebrow" style="margin-top: 16px;">{formatDate(post.publishDate)}</p>
+          {post.readTime && (
+            <p class="eyebrow" style="margin-top: 4px; opacity: .6;">{post.readTime} min lezen</p>
+          )}
         </div>
         <div>
-          <h1 style="max-width: 24ch;">{item.title}</h1>
-          <p class="lead" style="margin-top: 24px;">{item.intro}</p>
+          <h1 style="max-width: 24ch;">{post.title}</h1>
+          <p class="lead" style="margin-top: 24px;">{post.excerpt}</p>
         </div>
       </div>
     </section>
 
+    {post.heroImage && (
+      <section style="padding: 0 0 clamp(24px, 3vw, 40px);">
+        <div class="container">
+          <img
+            src={post.heroImage.url}
+            alt={post.heroImage.alt}
+            style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 4px;"
+            loading="lazy"
+          />
+        </div>
+      </section>
+    )}
+
     <section style="padding: clamp(16px, 2vw, 32px) 0 clamp(40px, 6vw, 80px); border-top: 1px solid var(--hairline);">
       <div class="container split-2">
         <div></div>
-        <div class="body-text" style="font-size: 17px;">
-          {item.body.map(p => <p>{p}</p>)}
-        </div>
+        <div class="body-text article-body" style="font-size: 17px;" set:html={bodyHtml} />
       </div>
     </section>
   </article>
@@ -72,3 +95,30 @@ function formatDate(iso: string) {
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Basis typografie voor CMS-gegenereerde HTML */
+  .article-body :global(p) { margin: 0 0 1.25em; }
+  .article-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    margin: 2em 0 .75em;
+  }
+  .article-body :global(h3) {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    margin: 1.5em 0 .5em;
+  }
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    padding-left: 1.5em;
+    margin: 0 0 1.25em;
+  }
+  .article-body :global(li) { margin-bottom: .4em; }
+  .article-body :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-body :global(a:hover) { color: var(--stone); }
+</style>

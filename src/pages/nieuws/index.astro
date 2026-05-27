@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { nieuws } from '../../data/nieuws';
+import { getPosts } from '../../lib/cms';
 import { pub } from '../../utils/asset';
 
-const sorted = [...nieuws].sort((a, b) => b.date.localeCompare(a.date));
+const posts = await getPosts();
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -41,16 +41,16 @@ function formatDate(iso: string) {
 
   <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
     <div class="container">
-      {sorted.length === 0 ? (
+      {posts.length === 0 ? (
         <p class="body-text" style="color: var(--stone); font-size: 15px;">Er zijn nog geen artikelen gepubliceerd.</p>
       ) : (
         <ul class="news-list">
-          {sorted.map(item => (
+          {posts.map(post => (
             <li class="news-item">
-              <a href={pub(`/nieuws/${item.slug}`)}>
-                <span class="news-date eyebrow">{formatDate(item.date)}</span>
-                <h2 class="news-title">{item.title}</h2>
-                <p class="news-intro">{item.intro}</p>
+              <a href={pub(`/nieuws/${post.slug}`)}>
+                <span class="news-date eyebrow">{formatDate(post.publishDate)}</span>
+                <h2 class="news-title">{post.title}</h2>
+                <p class="news-intro">{post.excerpt}</p>
                 <span class="link-arrow" style="margin-top: 12px;">Lees verder →</span>
               </a>
             </li>
