@@ -79,8 +79,12 @@ export async function getPosts(): Promise<CmsPost[]> {
     depth: '2',
     limit: '100',
   });
-  const data = await fetchCms<{ docs: CmsPost[] }>(`/api/posts?${params}`);
-  return data.docs;
+  try {
+    const data = await fetchCms<{ docs: CmsPost[] }>(`/api/posts?${params}`);
+    return data.docs;
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -94,8 +98,12 @@ export async function getPostBySlug(slug: string): Promise<CmsPost | null> {
     depth: '2',
     limit: '1',
   });
-  const data = await fetchCms<{ docs: CmsPost[] }>(`/api/posts?${params}`);
-  return data.docs[0] ?? null;
+  try {
+    const data = await fetchCms<{ docs: CmsPost[] }>(`/api/posts?${params}`);
+    return data.docs[0] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -109,8 +117,12 @@ export async function getAllPostSlugs(): Promise<string[]> {
     limit: '100',
     'select[slug]': 'true',
   });
-  const data = await fetchCms<{ docs: { slug: string }[] }>(`/api/posts?${params}`);
-  return data.docs.map((d) => d.slug);
+  try {
+    const data = await fetchCms<{ docs: { slug: string }[] }>(`/api/posts?${params}`);
+    return data.docs.map((d) => d.slug);
+  } catch {
+    return [];
+  }
 }
 
 // ---------------------------------------------------------------------------
