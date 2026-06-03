@@ -67,6 +67,7 @@
         <img alt="" />
         <button class="lb-arrow lb-next" aria-label="Volgende">›</button>
         <p class="lb-cap"></p>
+        <span class="lb-credit"></span>
       </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
     const lb = document.getElementById('lightbox');
@@ -118,10 +119,15 @@
   function renderLb() {
     const lb = document.getElementById('lightbox');
     if (!lb) return;
+    const entry = lbImages[lbIndex];
+    const url = typeof entry === 'string' ? entry : entry.url;
+    const credit = typeof entry === 'string' ? null : (entry.credit || null);
     const img = lb.querySelector('img');
-    img.src = lbImages[lbIndex];
+    img.src = url;
     lb.querySelector('.lb-cap').textContent =
       lbCaption + (lbImages.length > 1 ? '  ' + (lbIndex + 1) + ' / ' + lbImages.length : '');
+    const creditEl = lb.querySelector('.lb-credit');
+    if (creditEl) creditEl.textContent = credit || '';
     lb.querySelector('.lb-prev').style.visibility = lbIndex === 0 ? 'hidden' : '';
     lb.querySelector('.lb-next').style.visibility = lbIndex === lbImages.length - 1 ? 'hidden' : '';
   }

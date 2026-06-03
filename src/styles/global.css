@@ -142,21 +142,23 @@ p  { margin: 0 0 1em; }
 
 .nav-toggle {
   display: none;
-  background: none; border: 0; cursor: pointer; line-height: 0;
+  flex-direction: column;
+  gap: 5px;
+  background: none; border: 0; cursor: pointer;
   padding: 10px 8px;
   min-width: 44px; min-height: 44px;
   align-items: center; justify-content: center;
 }
 .nav-toggle span {
-  display: block; width: 22px; height: 1.5px;
-  background: var(--ink); margin: 4px 0;
+  display: block; width: 24px; height: 2px;
+  background: var(--ink);
   transition: transform .25s ease, opacity .2s ease;
 }
 
 /* Hamburger → X when open */
-.nav-toggle.is-open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.is-open span:nth-child(2) { transform: scaleX(0); opacity: 0; }
-.nav-toggle.is-open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 720px) {
   .nav-toggle { display: flex; }
@@ -346,6 +348,7 @@ p  { margin: 0 0 1em; }
   .gallery figure:hover::after { opacity: 1; }
 }
 .gallery figure.touch-active::after { opacity: 1; }
+.img-credit { position: absolute; bottom: 0; right: 0; z-index: 2; padding: 4px 8px; font-size: 11px; color: rgba(246,245,241,0.75); background: rgba(31,30,27,0.45); pointer-events: none; }
 
 /* ── Pager ────────────────────────────── */
 .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -494,6 +497,11 @@ p  { margin: 0 0 1em; }
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
   color: var(--stone); font-size: 12px; letter-spacing: 0.1em; white-space: nowrap;
 }
+#lightbox .lb-credit {
+  position: fixed; bottom: 28px; right: 28px;
+  color: var(--stone); font-size: 11px; letter-spacing: 0.08em; opacity: 0.65;
+}
+#lightbox .lb-credit:empty { display: none; }
 
 /* ── Diensten cards ───────────────────── */
 .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }

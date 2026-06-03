@@ -16,14 +16,14 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
 ---
 
 <BaseLayout
-  title="Meest gezocht — KA.architecten · Architect Tilburg Noord-Brabant Limburg"
+  title="Populair — KA.architecten · Architect Tilburg Noord-Brabant Limburg"
   description="Overzicht van veelgezochte onderwerpen: architect in Tilburg, Eindhoven, Den Bosch en de rest van Noord-Brabant en Limburg. Villa's, woningbouw en kantoorgebouwen."
   canonical="https://www.ka-architecten.nl/meest-gezocht"
 >
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Meest gezocht — KA.architecten",
+    "name": "Populair — KA.architecten",
     "url": "https://www.ka-architecten.nl/meest-gezocht",
     "itemListElement": meestGezocht.map((item, i) => ({
       "@type": "ListItem",
@@ -35,7 +35,7 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
 
   <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
     <div class="container split-2">
-      <div><p class="eyebrow">Meest gezocht</p></div>
+      <div><p class="eyebrow">Populair</p></div>
       <div>
         <h1 style="max-width: 22ch;">Architect in Noord-Brabant &amp; Limburg.</h1>
         <p class="lead" style="margin-top: 24px;">

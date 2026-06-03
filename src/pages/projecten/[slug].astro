@@ -24,7 +24,10 @@ const galleryData = await Promise.all(
     return { meta: img, url: full.src };
   })
 );
-const imagesJson = JSON.stringify(galleryData.map(d => d.url));
+const imagesJson = JSON.stringify(galleryData.map((d, i) => ({
+  url: d.url,
+  credit: project.imageCredits?.[i] ?? null,
+})));
 ---
 
 <BaseLayout
@@ -95,6 +98,7 @@ const imagesJson = JSON.stringify(galleryData.map(d => d.url));
               <dt>Type</dt><dd>{project.type}</dd>
               <dt>Status</dt><dd>{project.status} · {project.year}</dd>
               <dt>Architect</dt><dd>{project.architect}</dd>
+              {project.opdrachtgever && <><dt>Opdrachtgever</dt><dd>{project.opdrachtgever}</dd></>}
               {project.interieurarchitect && <><dt>Interieur</dt><dd>{project.interieurarchitect}</dd></>}
               {project.aannemer && <><dt>Aannemer</dt><dd>{project.aannemer}</dd></>}
               {project.constructeur && <><dt>Constructeur</dt><dd>{project.constructeur}</dd></>}
@@ -120,6 +124,7 @@ const imagesJson = JSON.stringify(galleryData.map(d => d.url));
           >
             {galleryData.map((d, i) => {
               const cls = i === 0 ? 'g-wide' : 'g-half';
+              const credit = project.imageCredits?.[i] ?? null;
               return (
                 <figure class={cls}>
                   <Image
@@ -130,6 +135,7 @@ const imagesJson = JSON.stringify(galleryData.map(d => d.url));
                     format="webp"
                     quality={85}
                   />
+                  {credit && <figcaption class="img-credit">© {credit}</figcaption>}
                 </figure>
               );
             })}

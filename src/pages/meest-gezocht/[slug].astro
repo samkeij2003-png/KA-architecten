@@ -37,7 +37,7 @@ const localBusinessSchema = {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.ka-architecten.nl' },
-      { '@type': 'ListItem', position: 2, name: 'Meest gezocht', item: 'https://www.ka-architecten.nl/meest-gezocht' },
+      { '@type': 'ListItem', position: 2, name: 'Populair', item: 'https://www.ka-architecten.nl/meest-gezocht' },
       { '@type': 'ListItem', position: 3, name: render(item.title), item: `https://www.ka-architecten.nl/meest-gezocht/${item.slug}` },
     ],
   },
@@ -67,7 +67,7 @@ const faqSchema = item.faq && item.faq.length > 0 ? {
       <div class="container split-2">
         <div>
           <a href={pub('/meest-gezocht')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
-            ← Meest gezocht
+            ← Populair
           </a>
           <p class="eyebrow" style="margin-top: 16px;">{item.themeLabel}</p>
         </div>
@@ -95,7 +95,7 @@ const faqSchema = item.faq && item.faq.length > 0 ? {
   <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
     <div class="container">
       <p>
-        <a class="link-arrow" href={pub('/meest-gezocht')}>← Terug naar meest gezocht</a>
+        <a class="link-arrow" href={pub('/meest-gezocht')}>← Terug naar populair</a>
       </p>
     </div>
   </section>
