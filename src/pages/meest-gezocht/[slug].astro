@@ -58,6 +58,7 @@ const faqSchema = item.faq && item.faq.length > 0 ? {
   title={render(item.metaTitle)}
   description={render(item.metaDescription)}
   canonical={`https://www.ka-architecten.nl/meest-gezocht/${item.slug}`}
+  noIndex={true}
 >
   <script type="application/ld+json" slot="head">{JSON.stringify(localBusinessSchema)}</script>
   {faqSchema && <script type="application/ld+json" slot="head">{JSON.stringify(faqSchema)}</script>}

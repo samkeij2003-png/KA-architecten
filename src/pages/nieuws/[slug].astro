@@ -28,6 +28,7 @@ function formatDate(iso: string) {
   title={`${post.title} — KA.architecten`}
   description={post.excerpt}
   canonical={`https://www.ka-architecten.nl/nieuws/${post.slug}`}
+  noIndex={true}
 >
   <script type="application/ld+json" slot="head">{JSON.stringify({
     "@context": "https://schema.org",
