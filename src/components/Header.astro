@@ -30,25 +30,3 @@ const currentPath = Astro.url.pathname;
     </div>
   </nav>
 </header>
-
-<script>
-  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-  const links = document.querySelector<HTMLElement>('.nav-links');
-
-  toggle?.addEventListener('click', () => {
-    const open = links?.classList.toggle('open');
-    toggle.classList.toggle('is-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
-  });
-
-  // sluit menu bij navigatie naar een link
-  links?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('open');
-      toggle?.classList.remove('is-open');
-      toggle?.setAttribute('aria-expanded', 'false');
-      toggle?.setAttribute('aria-label', 'Menu openen');
-    });
-  });
-</script>
