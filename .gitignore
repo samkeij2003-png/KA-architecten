@@ -26,3 +26,4 @@ Thumbs.db
 
 # Astro
 .astro/
+*-dev.log
