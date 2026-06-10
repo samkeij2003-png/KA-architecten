@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # Door het CMS getriggerd bij publiceren (Payload revalidate-hook -> GitHub API)
+  repository_dispatch:
+    types: [cms-publish]
 
 permissions:
   contents: read
