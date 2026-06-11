@@ -23,6 +23,7 @@ Thumbs.db
 # editor
 .vscode/
 .idea/
+*.code-workspace
 
 # Astro
 .astro/
