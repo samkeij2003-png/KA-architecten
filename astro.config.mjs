@@ -6,7 +6,9 @@ export default defineConfig({
   site: 'https://www.ka-architecten.nl',
   integrations: [
     tailwind({ applyBaseStyles: false }),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('/nieuws') && !page.includes('/meest-gezocht'),
+    }),
   ],
   output: 'static',
 });
