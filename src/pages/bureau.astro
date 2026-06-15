@@ -12,7 +12,7 @@ import architectImg from '../assets/images/architect.webp';
   description="KA.architecten is gevestigd in Tilburg. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant."
   ogImage="https://www.ka-architecten.nl/images/architect.webp"
 >
-  <script type="application/ld+json" slot="head">{JSON.stringify({
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Peter Keijsers",
@@ -25,7 +25,7 @@ import architectImg from '../assets/images/architect.webp';
       "addressLocality": "Tilburg",
       "addressCountry": "NL"
     }
-  })}</script>
+  })} />
 
   <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
     <div class="container split-2">

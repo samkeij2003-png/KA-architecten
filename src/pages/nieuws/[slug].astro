@@ -30,7 +30,7 @@ function formatDate(iso: string) {
   canonical={`https://www.ka-architecten.nl/nieuws/${post.slug}`}
   noIndex={true}
 >
-  <script type="application/ld+json" slot="head">{JSON.stringify({
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": post.title,
@@ -46,7 +46,7 @@ function formatDate(iso: string) {
       "url": "https://www.ka-architecten.nl"
     },
     "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${post.slug}`
-  })}</script>
+  })} />
 
   <article>
     <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">

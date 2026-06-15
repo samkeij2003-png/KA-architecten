@@ -18,7 +18,7 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
   description="KA.architecten is het architectenbureau van Peter Keijsers in Tilburg, werkzaam in heel Noord-Brabant. Ruim 30 jaar ervaring in woningontwerp, verbouwing en utiliteitsbouw."
   bodyClass="home"
 >
-  <script type="application/ld+json" slot="head">{JSON.stringify({
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
     "name": "KA.architecten",
@@ -35,7 +35,7 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
       "addressRegion": "Noord-Brabant",
       "addressCountry": "NL"
     }
-  })}</script>
+  })} />
 
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">

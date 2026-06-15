@@ -21,7 +21,7 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
   canonical="https://www.ka-architecten.nl/meest-gezocht"
   noIndex={true}
 >
-  <script type="application/ld+json" slot="head">{JSON.stringify({
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Populair — KA.architecten",
@@ -32,7 +32,7 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
       "url": `https://www.ka-architecten.nl/meest-gezocht/${item.slug}`,
       "name": item.title
     }))
-  })}</script>
+  })} />
 
   <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
     <div class="container split-2">
