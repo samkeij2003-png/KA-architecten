@@ -56,7 +56,13 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <meta name="geo.position" content="51.5556;5.0913" />
     <meta name="ICBM" content="51.5556, 5.0913" />
 
+    <!-- Google toont in zoekresultaten een favicon van minimaal 48x48 (veelvoud van 48) -->
+    <link rel="icon" href={pub('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={pub('/favicon-48x48.png')} type="image/png" sizes="48x48" />
+    <link rel="icon" href={pub('/favicon-96x96.png')} type="image/png" sizes="96x96" />
+    <link rel="icon" href={pub('/favicon-192x192.png')} type="image/png" sizes="192x192" />
     <link rel="icon" href={pub('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={pub('/apple-touch-icon.png')} sizes="180x180" />
     <meta name="theme-color" content="#f5f3ef" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
