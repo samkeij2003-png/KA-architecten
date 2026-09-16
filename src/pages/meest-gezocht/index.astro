@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { meestGezocht } from '../../data/meest-gezocht';
-import { pub } from '../../utils/asset';
+import { route } from '../../utils/asset';
 
 const themeLabels: Record<string, string> = {
   algemeen: 'Architect',
@@ -18,18 +18,18 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
 <BaseLayout
   title="Populair — KA.architecten · Architect Tilburg Noord-Brabant Limburg"
   description="Overzicht van veelgezochte onderwerpen: architect in Tilburg, Eindhoven, Den Bosch en de rest van Noord-Brabant en Limburg. Villa's, woningbouw en kantoorgebouwen."
-  canonical="https://www.ka-architecten.nl/meest-gezocht"
+  canonical="https://www.ka-architecten.nl/meest-gezocht/"
   noIndex={true}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Populair — KA.architecten",
-    "url": "https://www.ka-architecten.nl/meest-gezocht",
+    "url": "https://www.ka-architecten.nl/meest-gezocht/",
     "itemListElement": meestGezocht.map((item, i) => ({
       "@type": "ListItem",
       "position": i + 1,
-      "url": `https://www.ka-architecten.nl/meest-gezocht/${item.slug}`,
+      "url": `https://www.ka-architecten.nl/meest-gezocht/${item.slug}/`,
       "name": item.title
     }))
   })} />
@@ -60,7 +60,7 @@ const themes = ['algemeen', 'verbouwing', 'villa', 'woningbouw', 'kantoor', 'amb
               <ul class="topic-list">
                 {items.map(item => (
                   <li>
-                    <a href={pub(`/meest-gezocht/${item.slug}`)} class="topic-link">
+                    <a href={route(`/meest-gezocht/${item.slug}/`)} class="topic-link">
                       <span>{item.title}</span>
                       <span class="arrow">→</span>
                     </a>

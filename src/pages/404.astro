@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { route } from '../utils/asset';
 ---
 
 <BaseLayout
@@ -14,8 +15,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Misschien is hij verplaatst, of klopte de link niet helemaal. Probeer het overzicht hieronder.
       </p>
       <div style="margin-top: 36px; display:flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a class="btn" href="/">Naar home</a>
-        <a class="btn ghost" href="/projecten">Projecten</a>
+        <a class="btn" href={route("/")}>Naar home</a>
+        <a class="btn ghost" href={route("/projecten")}>Projecten</a>
       </div>
     </div>
   </section>

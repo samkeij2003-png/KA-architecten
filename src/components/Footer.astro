@@ -1,5 +1,5 @@
 ---
-import { pub } from '../utils/asset';
+import { route } from '../utils/asset';
 const year = new Date().getFullYear();
 ---
 
@@ -30,9 +30,9 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <h4>Bekijken</h4>
-      <a href={pub('/projecten')}>Projecten</a>
-      <a href={pub('/bureau')}>Bureau</a>
-      <a href={pub('/nieuws')}>Nieuws</a>
+      <a href={route('/projecten')}>Projecten</a>
+      <a href={route('/bureau')}>Bureau</a>
+      <a href={route('/nieuws')}>Nieuws</a>
     </div>
     <div>
       <h4>Contact</h4>
@@ -45,6 +45,6 @@ const year = new Date().getFullYear();
   </div>
   <div class="footer-base">
     <span>KA.architecten · Architect Peter Keijsers · Tilburg</span>
-    <span><a href="/algemene-voorwaarden" style="color: inherit; text-decoration: none; opacity: 0.7;">Privacyverklaring</a> · © {year}</span>
+    <span><a href={route("/algemene-voorwaarden")} style="color: inherit; text-decoration: none; opacity: 0.7;">Privacyverklaring</a> · © {year}</span>
   </div>
 </footer>

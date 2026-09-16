@@ -11,4 +11,7 @@ export default defineConfig({
     }),
   ],
   output: 'static',
+  // GitHub Pages serveert elke pagina op /pad/; zonder deze instelling
+  // levert elke interne link een 301-redirect op.
+  trailingSlash: 'always',
 });

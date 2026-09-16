@@ -1,5 +1,5 @@
 ---
-import { pub } from '../utils/asset';
+import { route } from '../utils/asset';
 
 const navLinks = [
   { href: '/projecten', label: 'Projecten' },
@@ -12,7 +12,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header">
   <nav class="nav" aria-label="Hoofdmenu">
-    <a class="logo" href={pub('/')} aria-label="KA.architecten — home">
+    <a class="logo" href={route('/')} aria-label="KA.architecten — home">
       <span class="amark">KA</span><span class="dot">.</span>architecten
     </a>
     <button class="nav-toggle" aria-label="Menu openen" aria-expanded="false">
@@ -21,8 +21,8 @@ const currentPath = Astro.url.pathname;
     <div class="nav-links" role="menu">
       {navLinks.map(({ href, label }) => (
         <a
-          href={pub(href)}
-          class:list={[{ 'is-active': currentPath.startsWith(pub(href)) }]}
+          href={route(href)}
+          class:list={[{ 'is-active': currentPath.startsWith(route(href)) }]}
         >
           {label}
         </a>

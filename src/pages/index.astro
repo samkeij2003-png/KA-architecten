@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { projects } from '../data/projects';
-import { pub } from '../utils/asset';
+import { route } from '../utils/asset';
 import { getImg } from '../utils/images';
 
 import zeist2Img from '../assets/images/zeist-2.webp';
@@ -77,14 +77,14 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
         <p class="body-text" style="margin-top: 28px;">
           Architectuur als ambacht: het scheppen van ruimte met eerlijke materialen en zorgvuldige details. Ruimten waarin je prettig woont.
         </p>
-        <p style="margin-top: 28px;"><a class="link-arrow" href={pub('/bureau')}>Lees meer over het bureau →</a></p>
+        <p style="margin-top: 28px;"><a class="link-arrow" href={route('/bureau')}>Lees meer over het bureau →</a></p>
       </div>
     </div>
   </section>
 
   <!-- UITGELICHT PROJECT -->
   <section class="featured hairline" style="padding-top: 0;">
-    <a href={pub(`/projecten/${featured.slug}`)} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
+    <a href={route(`/projecten/${featured.slug}`)} aria-label={`Uitgelicht: ${featured.title} ${featured.location}`}>
       <div class="featured-media">
         <Image
           src={zeistTrapImg}
@@ -115,11 +115,11 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
     <div class="container">
       <div class="projects-toolbar">
         <p class="eyebrow">Geselecteerde projecten</p>
-        <a class="link-arrow" href={pub('/projecten')}>Alle projecten →</a>
+        <a class="link-arrow" href={route('/projecten')}>Alle projecten →</a>
       </div>
       <div class="projects-grid">
         {grid.map((p, i) => (
-          <a class="project-card" href={pub(`/projecten/${p.slug}`)} aria-label={`Project: ${p.title}, ${p.location}`}>
+          <a class="project-card" href={route(`/projecten/${p.slug}`)} aria-label={`Project: ${p.title}, ${p.location}`}>
             <div class="project-media">
               <Image
                 src={gridCovers[i]}

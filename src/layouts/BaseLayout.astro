@@ -23,7 +23,9 @@ const {
   bodyClass = '',
 } = Astro.props;
 
-const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+// Altijd met trailing slash: dat is de URL die GitHub Pages zonder redirect serveert.
+const canonicalRaw = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const canonicalUrl = canonicalRaw.endsWith('/') ? canonicalRaw : `${canonicalRaw}/`;
 const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
 ---
 

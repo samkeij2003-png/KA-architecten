@@ -1,7 +1,7 @@
 ﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import { pub } from '../utils/asset';
+import { route } from '../utils/asset';
 import warande1Img from '../assets/images/warande-1.webp';
 import zwolleCoverImg from '../assets/images/zwolle-cover.webp';
 import architectImg from '../assets/images/architect.webp';
@@ -43,14 +43,14 @@ import architectImg from '../assets/images/architect.webp';
         </p>
         <p style="margin-top: 24px; font-family: var(--font-display); font-size: 18px; color: var(--ink);">Peter Keijsers</p>
         <p style="margin-top: 28px;">
-          <a href={pub('/contact')} class="btn-cta">Plan een vrijblijvend gesprek</a>
+          <a href={route('/contact')} class="btn-cta">Plan een vrijblijvend gesprek</a>
         </p>
       </div>
     </div>
   </section>
 
   <div class="container">
-    <a href={pub('/projecten/woonhuis-nieuwe-warande-tilburg')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woonhuis Nieuwe Warande, Tilburg">
+    <a href={route('/projecten/woonhuis-nieuwe-warande-tilburg')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woonhuis Nieuwe Warande, Tilburg">
       <Image
         src={warande1Img}
         alt="Woonhuis Nieuwe Warande, Tilburg, KA.architecten"
@@ -93,7 +93,7 @@ import architectImg from '../assets/images/architect.webp';
   </section>
 
   <div class="container">
-    <a href={pub('/projecten/woningbouwplan-kraanbolwerk-zwolle')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woningbouwplan Kraanbolwerk, Zwolle">
+    <a href={route('/projecten/woningbouwplan-kraanbolwerk-zwolle')} class="bureau-img-link" style="display: block; background: var(--bg-soft); overflow: hidden; aspect-ratio: 16/6; max-height: 480px;" aria-label="Bekijk project: Woningbouwplan Kraanbolwerk, Zwolle">
       <Image
         src={zwolleCoverImg}
         alt="Woningbouwplan Kraanbolwerk, Zwolle, KA.architecten"
@@ -137,10 +137,10 @@ import architectImg from '../assets/images/architect.webp';
       <div><p class="eyebrow">Werkgebied</p></div>
       <div class="body-text" style="font-size: 16px;">
         <p>
-          Wij werken vanuit Tilburg in heel Noord-Brabant en Limburg, met regelmatige opdrachten in onder andere Eindhoven, Helmond, Den Bosch, Breda, Goirle, Oirschot, Udenhout, Horst en Haaren. Voor goede opdrachten ook buiten de provincie, zoals het <a href={pub('/projecten/betonnen-woonhuis-zeist')} class="text-link">betonnen woonhuis in Zeist</a> en <a href={pub('/projecten/woningbouwplan-kraanbolwerk-zwolle')} class="text-link">woningbouwplan in Zwolle</a>.
+          Wij werken vanuit Tilburg in heel Noord-Brabant en Limburg, met regelmatige opdrachten in onder andere Eindhoven, Helmond, Den Bosch, Breda, Goirle, Oirschot, Udenhout, Horst en Haaren. Voor goede opdrachten ook buiten de provincie, zoals het <a href={route('/projecten/betonnen-woonhuis-zeist')} class="text-link">betonnen woonhuis in Zeist</a> en <a href={route('/projecten/woningbouwplan-kraanbolwerk-zwolle')} class="text-link">woningbouwplan in Zwolle</a>.
         </p>
         <p style="margin-top: 24px;">
-          <a class="link-arrow" href={pub('/contact')}>Plan een vrijblijvend gesprek →</a>
+          <a class="link-arrow" href={route('/contact')}>Plan een vrijblijvend gesprek →</a>
         </p>
       </div>
     </div>

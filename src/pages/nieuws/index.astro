@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPosts } from '../../lib/cms';
-import { pub } from '../../utils/asset';
+import { route } from '../../utils/asset';
 
 const posts = await getPosts();
 
@@ -13,18 +13,18 @@ function formatDate(iso: string) {
 <BaseLayout
   title="Nieuws — KA.architecten · Architect Peter Keijsers, Tilburg"
   description="Nieuws, achtergronden en updates van KA.architecten. Architectuurbureau voor woningontwerp, verbouwing en utiliteitsbouw in Tilburg en Noord-Brabant."
-  canonical="https://www.ka-architecten.nl/nieuws"
+  canonical="https://www.ka-architecten.nl/nieuws/"
   noIndex={true}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Blog",
     "name": "Nieuws — KA.architecten",
-    "url": "https://www.ka-architecten.nl/nieuws",
+    "url": "https://www.ka-architecten.nl/nieuws/",
     "publisher": {
       "@type": "Organization",
       "name": "KA.architecten",
-      "url": "https://www.ka-architecten.nl"
+      "url": "https://www.ka-architecten.nl/"
     }
   })} />
 
@@ -48,7 +48,7 @@ function formatDate(iso: string) {
         <ul class="news-list">
           {posts.map(post => (
             <li class="news-item">
-              <a href={pub(`/nieuws/${post.slug}`)}>
+              <a href={route(`/nieuws/${post.slug}/`)}>
                 <span class="news-date eyebrow">{formatDate(post.publishDate)}</span>
                 <h2 class="news-title">{post.title}</h2>
                 <p class="news-intro">{post.excerpt}</p>

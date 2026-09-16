@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPostSlugs, getPostBySlug, lexicalToHtml } from '../../lib/cms';
-import { pub } from '../../utils/asset';
+import { route } from '../../utils/asset';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -14,7 +14,7 @@ const post = await getPostBySlug(slug);
 
 // Fallback: als post niet bestaat (bijv. na verwijdering) redirect naar overzicht
 if (!post) {
-  return Astro.redirect(pub('/nieuws'), 302);
+  return Astro.redirect(route('/nieuws'), 302);
 }
 
 const bodyHtml = lexicalToHtml(post.body);
@@ -27,7 +27,7 @@ function formatDate(iso: string) {
 <BaseLayout
   title={`${post.title} — KA.architecten`}
   description={post.excerpt}
-  canonical={`https://www.ka-architecten.nl/nieuws/${post.slug}`}
+  canonical={`https://www.ka-architecten.nl/nieuws/${post.slug}/`}
   noIndex={true}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify({
@@ -43,16 +43,16 @@ function formatDate(iso: string) {
     "publisher": {
       "@type": "Organization",
       "name": "KA.architecten",
-      "url": "https://www.ka-architecten.nl"
+      "url": "https://www.ka-architecten.nl/"
     },
-    "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${post.slug}`
+    "mainEntityOfPage": `https://www.ka-architecten.nl/nieuws/${post.slug}/`
   })} />
 
   <article>
     <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
       <div class="container split-2">
         <div>
-          <a href={pub('/nieuws')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
+          <a href={route('/nieuws')} class="eyebrow" style="display: inline-flex; align-items: center; gap: 6px; color: var(--stone); transition: color .2s;">
             ← Nieuws
           </a>
           <p class="eyebrow" style="margin-top: 16px;">{formatDate(post.publishDate)}</p>
@@ -91,7 +91,7 @@ function formatDate(iso: string) {
   <section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);">
     <div class="container">
       <p>
-        <a class="link-arrow" href={pub('/nieuws')}>← Terug naar nieuws</a>
+        <a class="link-arrow" href={route('/nieuws')}>← Terug naar nieuws</a>
       </p>
     </div>
   </section>
