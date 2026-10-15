@@ -1,5 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const EMAIL = 'p.keijsers@ka-architecten.nl';
+// Berichten lopen via FormSubmit (geen account nodig). Het eerste bericht
+// stuurt een eenmalige activatiemail naar EMAIL; na die klik komt alles door.
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
 ---
 
 <BaseLayout
@@ -25,19 +30,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p><a href="tel:+31621231821" style="font-size: 16px; color: var(--ink-soft);">06 21 23 18 21</a></p>
 
           <p class="eyebrow" style="margin: 28px 0 8px;">E-mail</p>
-          <p><a href="mailto:p.keijsers@ka-architecten.nl" style="font-size: 16px; color: var(--ink-soft);">p.keijsers@ka-architecten.nl</a></p>
+          <p><a href={`mailto:${EMAIL}`} style="font-size: 16px; color: var(--ink-soft);">{EMAIL}</a></p>
         </div>
 
         <!-- Rechter kolom: formulier -->
         <div class="contact-form-wrap">
-          <form id="contact-form" novalidate>
-            <div class="form-row">
-              <label for="naam">Naam</label>
-              <input id="naam" name="naam" type="text" required placeholder="Uw naam" />
+          <form
+            id="contact-form"
+            action={FORM_ENDPOINT}
+            method="POST"
+            data-fallback-email={EMAIL}
+            novalidate
+          >
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <!-- Honeypot: onzichtbaar voor bezoekers, bots vullen het in -->
+            <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="naam">Naam *</label>
+                <input id="naam" name="naam" type="text" required autocomplete="name" placeholder="Uw naam" />
+                <p class="field-error">Vul uw naam in.</p>
+              </div>
+              <div class="form-row">
+                <label for="telefoon">Telefoon</label>
+                <input id="telefoon" name="telefoon" type="tel" autocomplete="tel" placeholder="Optioneel" />
+              </div>
             </div>
             <div class="form-row">
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" required placeholder="Uw e-mailadres" />
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="Uw e-mailadres" />
+              <p class="field-error">Vul een geldig e-mailadres in.</p>
             </div>
             <div class="form-row">
               <label for="onderwerp">Onderwerp</label>
@@ -49,10 +73,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </select>
             </div>
             <div class="form-row">
-              <label for="bericht">Bericht</label>
-              <textarea id="bericht" name="bericht" rows="4" required placeholder="Vertel kort over uw plek en wensen"></textarea>
+              <label for="bericht">Bericht *</label>
+              <textarea id="bericht" name="bericht" rows="5" required minlength="10" placeholder="Vertel kort over uw plek en wensen"></textarea>
+              <p class="field-error">Schrijf een kort bericht (minimaal 10 tekens).</p>
             </div>
-            <button type="submit" class="btn">Verzenden</button>
+
+            <div class="consent">
+              <input id="akkoord" name="akkoord" type="checkbox" required />
+              <label for="akkoord">
+                Ik ga akkoord met de verwerking van mijn gegevens volgens de
+                <a href="/algemene-voorwaarden/" class="text-link">privacyverklaring</a>.
+              </label>
+              <p class="field-error">Geef toestemming zodat we uw bericht kunnen verwerken.</p>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn" id="contact-submit">Verzenden</button>
+              <p class="form-note">We reageren doorgaans binnen twee werkdagen.</p>
+            </div>
+
+            <div class="form-status" role="status" aria-live="polite" hidden></div>
           </form>
         </div>
       </div>
@@ -75,7 +115,159 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: var(--bg);
   }
 
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+  /* Absoluut gepositioneerd in de marge onder het veld, zodat er geen
+     layout-verschuiving is (die zou een klik op Verzenden laten missen) */
+  .form-row, .consent { position: relative; }
+  .field-error {
+    display: none;
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #9B3B2E;
+  }
+  .consent .field-error { left: 28px; }
+  .is-invalid ~ .field-error { display: block; }
+  .form-row .is-invalid { border-bottom-color: #9B3B2E; }
+
+  .consent {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 6px 12px;
+    align-items: start;
+    margin: 8px 0 4px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .consent input {
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    accent-color: var(--ink);
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    align-items: center;
+    margin-top: 24px;
+  }
+  .form-note { font-size: 13px; color: var(--stone); }
+
+  .btn[disabled] { opacity: 0.6; cursor: progress; }
+
+  .form-status {
+    margin-top: 24px;
+    padding: 16px 20px;
+    border-left: 2px solid var(--ink);
+    background: var(--bg-soft);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .form-status.is-error { border-left-color: #9B3B2E; }
+
   @media (max-width: 720px) {
     .contact-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  type Field = HTMLInputElement | HTMLTextAreaElement;
+
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+
+  if (form) {
+    const submit = form.querySelector<HTMLButtonElement>('#contact-submit');
+    const status = form.querySelector<HTMLDivElement>('.form-status');
+    const fallbackEmail = form.dataset.fallbackEmail ?? '';
+    const fields = Array.from(form.querySelectorAll<Field>('input[required], textarea[required]'));
+
+    const value = (name: string): string =>
+      (form.elements.namedItem(name) as HTMLInputElement | null)?.value.trim() ?? '';
+
+    const markField = (field: Field): boolean => {
+      const blank = field.type !== 'checkbox' && field.value.trim() === '';
+      const ok = !blank && field.checkValidity();
+      field.classList.toggle('is-invalid', !ok);
+      field.setAttribute('aria-invalid', String(!ok));
+      return ok;
+    };
+
+    // Pas na de eerste blur valideren, daarna live bij elke wijziging
+    fields.forEach((field) => {
+      field.addEventListener('blur', () => markField(field));
+      ['input', 'change'].forEach((type) =>
+        field.addEventListener(type, () => {
+          if (field.classList.contains('is-invalid')) markField(field);
+        }),
+      );
+    });
+
+    const showStatus = (html: string, isError: boolean): void => {
+      if (!status) return;
+      status.innerHTML = html;
+      status.classList.toggle('is-error', isError);
+      status.hidden = false;
+    };
+
+    const setLoading = (loading: boolean): void => {
+      if (!submit) return;
+      submit.disabled = loading;
+      submit.textContent = loading ? 'Bezig met verzenden…' : 'Verzenden';
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (status) status.hidden = true;
+
+      const firstInvalid = fields.map((field) => (markField(field) ? null : field)).find(Boolean);
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      const data = new FormData(form);
+      data.set('_subject', `Website: ${value('onderwerp')} — ${value('naam')}`);
+      data.set('_replyto', value('email'));
+      data.delete('akkoord');
+
+      setLoading(true);
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        // FormSubmit geeft success als string terug ("true" / "false")
+        const result = (await response.json()) as { success?: string | boolean };
+        if (!response.ok || String(result.success) !== 'true') throw new Error('Verzenden mislukt');
+
+        form.reset();
+        showStatus(
+          '<strong>Bedankt voor uw bericht.</strong><br />We hebben het goed ontvangen en nemen zo snel mogelijk contact met u op.',
+          false,
+        );
+      } catch {
+        showStatus(
+          `Het verzenden is helaas niet gelukt. Probeer het later opnieuw, of mail direct naar <a class="text-link" href="mailto:${fallbackEmail}">${fallbackEmail}</a>.`,
+          true,
+        );
+      } finally {
+        setLoading(false);
+      }
+    });
+  }
+</script>
