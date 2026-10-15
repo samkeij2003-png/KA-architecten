@@ -202,35 +202,10 @@
     onScroll();
   }
 
-  // ── Contactformulier ─────────────────────────────────────
-  function initContactForm() {
-    const form = document.getElementById('contact-form');
-    if (!form) return;
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const naam = data.get('naam') || '';
-      const email = data.get('email') || '';
-      const onderwerp = data.get('onderwerp') || 'Bericht via website';
-      const bericht = data.get('bericht') || '';
-      window.location.href =
-        'mailto:p.keijsers@ka-architecten.nl' +
-        '?subject=' + encodeURIComponent(onderwerp + ' — ' + naam) +
-        '&body=' + encodeURIComponent(
-          'Naam: ' + naam + '\n' +
-          'E-mail: ' + email + '\n\n' +
-          bericht
-        );
-      const thanks = document.getElementById('contact-thanks');
-      if (thanks) { form.style.display = 'none'; thanks.style.display = 'block'; }
-    });
-  }
-
   // ── Boot ─────────────────────────────────────────────────
   function boot() {
     initNav();
     initLightbox();
-    initContactForm();
     initFadeIns();
     initParallax();
   }

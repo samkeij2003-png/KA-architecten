@@ -78,14 +78,10 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
               <p class="field-error">Schrijf een kort bericht (minimaal 10 tekens).</p>
             </div>
 
-            <div class="consent">
-              <input id="akkoord" name="akkoord" type="checkbox" required />
-              <label for="akkoord">
-                Ik ga akkoord met de verwerking van mijn gegevens volgens de
-                <a href="/algemene-voorwaarden/" class="text-link">privacyverklaring</a>.
-              </label>
-              <p class="field-error">Geef toestemming zodat we uw bericht kunnen verwerken.</p>
-            </div>
+            <p class="privacy-note">
+              Uw gegevens gebruiken we alleen om op uw bericht te reageren. Lees meer in onze
+              <a href="/algemene-voorwaarden/" class="text-link">privacyverklaring</a>.
+            </p>
 
             <div class="form-actions">
               <button type="submit" class="btn" id="contact-submit">Verzenden</button>
@@ -125,7 +121,7 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
 
   /* Absoluut gepositioneerd in de marge onder het veld, zodat er geen
      layout-verschuiving is (die zou een klik op Verzenden laten missen) */
-  .form-row, .consent { position: relative; }
+  .form-row { position: relative; }
   .field-error {
     display: none;
     position: absolute;
@@ -135,25 +131,14 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
     line-height: 1.4;
     color: #9B3B2E;
   }
-  .consent .field-error { left: 28px; }
   .is-invalid ~ .field-error { display: block; }
   .form-row .is-invalid { border-bottom-color: #9B3B2E; }
 
-  .consent {
-    display: grid;
-    grid-template-columns: 16px 1fr;
-    gap: 6px 12px;
-    align-items: start;
+  .privacy-note {
     margin: 8px 0 4px;
     font-size: 13px;
     line-height: 1.6;
-    color: var(--ink-soft);
-  }
-  .consent input {
-    width: 16px;
-    height: 16px;
-    margin-top: 3px;
-    accent-color: var(--ink);
+    color: var(--stone);
   }
 
   .form-actions {
@@ -242,7 +227,6 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
       const data = new FormData(form);
       data.set('_subject', `Website: ${value('onderwerp')} — ${value('naam')}`);
       data.set('_replyto', value('email'));
-      data.delete('akkoord');
 
       setLoading(true);
       try {
