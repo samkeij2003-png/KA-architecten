@@ -85,9 +85,12 @@ theme: {
 
 ## SEO
 
-- Globale `<head>` meta tags via `src/components/BaseHead.astro`
-- Open Graph en Twitter card meta tags per pagina via props
-- `robots.txt` en `sitemap.xml` via `@astrojs/sitemap` integratie
+- Meta tags, canonical, Open Graph en Twitter in `src/layouts/BaseLayout.astro` (props per pagina)
+- Structured data: `src/components/Schema.astro` (bureau, Peter, website, kruimelpad via `kruimels`-prop) met gegevens uit `src/data/seo.ts`; pagina's verwijzen met `@id` naar bureau en persoon in plaats van ze opnieuw te beschrijven
+- Deelbeelden: `ogImage` is een foto in `public/images/`; die moet in `deelbeelden` in `src/data/seo.ts` staan, dan maakt `src/pages/og/[naam].jpg.ts` er bij de build een jpg van 1200 x 630 van
+- Sitemap via `@astrojs/sitemap` met `lastmod` uit git (`src/laatst-gewijzigd.ts`); noindex-pagina's staan in `nietInSitemap` in `astro.config.mjs`
+- Hosting is GitHub Pages: `_redirects`/`_headers` werken niet, de 301 van `/pad` naar `/pad/` doet GitHub zelf
+- Eén H1 per pagina, geen sprongen in kopniveaus (footer gebruikt H2)
 
 ## Wat Claude moet doen bij een nieuw onderdeel
 

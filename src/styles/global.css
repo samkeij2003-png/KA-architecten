@@ -395,9 +395,9 @@ p  { margin: 0 0 1em; }
 }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-.footer-grid h4 {
+.footer-grid h2 {
   font-family: var(--font-display);
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-size: 11px; line-height: inherit; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--ink); font-weight: 500; margin-bottom: 14px;
 }
 .footer-grid a { color: var(--ink-soft); display: block; padding: 3px 0; }
@@ -522,7 +522,7 @@ p  { margin: 0 0 1em; }
   border-top: 1px solid var(--hairline); padding-top: 36px;
 }
 @media (max-width: 720px) { .usp-row { grid-template-columns: 1fr; gap: 24px; } }
-.usp h4 { font-family: var(--font-display); font-size: 18px; margin-bottom: 8px; }
+.usp h3 { font-family: var(--font-display); font-size: 18px; line-height: inherit; margin-bottom: 8px; }
 .usp p  { color: var(--stone); font-size: 14px; line-height: 1.6; }
 
 /* ── Split 2-koloms ───────────────────── */

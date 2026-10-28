@@ -11,7 +11,7 @@ const coverImages = await Promise.all(projects.map(p => getImg(p.cover)));
 <BaseLayout
   title="Projecten — KA.architecten · Architect Tilburg"
   description="Een selectie van projecten van Peter Keijsers — woningen, verbouwingen, utiliteitsbouw en woningbouw in Tilburg, Brabant en daarbuiten."
-  ogImage="https://www.ka-architecten.nl/images/zeist-2.webp"
+  kruimels={[{ naam: 'Projecten', pad: '/projecten/' }]}
 >
   <section class="section" style="padding-top: clamp(24px, 3vw, 40px); padding-bottom: 20px;">
     <div class="container">

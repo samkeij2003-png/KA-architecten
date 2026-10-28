@@ -1,27 +1,37 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Schema from '../components/Schema.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import { pub } from '../utils/asset';
+import { ogPad, standaardDeelbeeld, type Kruimel } from '../data/seo';
 
 interface Props {
   title: string;
   description?: string;
+  /** Foto in public/ voor het deelbeeld; moet in `deelbeelden` (src/data/seo.ts) staan. */
   ogImage?: string;
+  ogImageAlt?: string;
   canonical?: string;
   noIndex?: boolean;
   bodyClass?: string;
+  /** Kruimelpad na Home, voor de structured data. */
+  kruimels?: Kruimel[];
 }
 
 const {
   title,
   description = 'KA.architecten ontwerpt particuliere woningen, verbouwingen en utiliteitsbouw vanuit Tilburg, voor heel Noord-Brabant.',
-  ogImage = 'https://www.ka-architecten.nl/images/zeist-2.webp',
+  ogImage = standaardDeelbeeld,
+  ogImageAlt = 'Betonnen woonhuis in Zeist, ontworpen door KA.architecten',
   canonical,
   noIndex = false,
   bodyClass = '',
+  kruimels,
 } = Astro.props;
+
+const ogImageUrl = new URL(ogPad(ogImage), Astro.site).toString();
 
 // Altijd met trailing slash: dat is de URL die GitHub Pages zonder redirect serveert.
 const canonicalRaw = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
@@ -44,11 +54,19 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content="KA.architecten" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <Schema kruimels={kruimels} />
 
     <meta name="author" content="Peter Keijsers" />
     <meta name="geo.region" content="NL-NB" />

@@ -1,13 +1,18 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import { laatstGewijzigd } from './src/laatst-gewijzigd.ts';
+
+// Pagina's met noindex en de gegenereerde deelbeelden horen niet in de sitemap.
+const nietInSitemap = ['/nieuws', '/meest-gezocht', '/algemene-voorwaarden', '/404', '/og/'];
 
 export default defineConfig({
   site: 'https://www.ka-architecten.nl',
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap({
-      filter: (page) => !page.includes('/nieuws') && !page.includes('/meest-gezocht'),
+      filter: (page) => !nietInSitemap.some((pad) => page.includes(pad)),
+      serialize: (item) => ({ ...item, lastmod: laatstGewijzigd(item.url) }),
     }),
   ],
   output: 'static',

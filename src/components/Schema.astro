@@ -1,0 +1,79 @@
+---
+/**
+ * Structured data op elke pagina: het bureau, Peter Keijsers, de website en
+ * (behalve op home) het kruimelpad. Vaste @id's, zodat schema's op een pagina
+ * (zoals CreativeWork op projecten) ernaar verwijzen. Gegevens: src/data/seo.ts.
+ */
+import { bedrijf, ogPad, schemaId, standaardDeelbeeld, type Kruimel } from '../data/seo';
+
+interface Props {
+  kruimels?: Kruimel[];
+}
+
+const { kruimels = [] } = Astro.props;
+
+const url = (p: string) => new URL(p, Astro.site).toString();
+const { adres, persoon } = bedrijf;
+
+const grafiek = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': bedrijf.type,
+      '@id': url(schemaId.bedrijf),
+      name: bedrijf.naam,
+      description: bedrijf.beschrijving,
+      url: url('/'),
+      telephone: bedrijf.telefoon,
+      email: bedrijf.email,
+      logo: { '@type': 'ImageObject', url: url(bedrijf.logo.src), width: bedrijf.logo.breedte, height: bedrijf.logo.hoogte },
+      image: url(ogPad(standaardDeelbeeld)),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: adres.straat,
+        postalCode: adres.postcode,
+        addressLocality: adres.plaats,
+        addressRegion: adres.regio,
+        addressCountry: adres.land,
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: bedrijf.geo.lat, longitude: bedrijf.geo.lng },
+      areaServed: bedrijf.werkgebied,
+      founder: { '@id': url(schemaId.persoon) },
+      sameAs: bedrijf.profielen,
+    },
+    {
+      '@type': 'Person',
+      '@id': url(schemaId.persoon),
+      name: persoon.naam,
+      jobTitle: persoon.functie,
+      url: url(persoon.pagina),
+      image: url(persoon.foto),
+      worksFor: { '@id': url(schemaId.bedrijf) },
+      sameAs: persoon.profielen,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': url(schemaId.website),
+      name: bedrijf.naam,
+      url: url('/'),
+      inLanguage: 'nl-NL',
+      publisher: { '@id': url(schemaId.bedrijf) },
+    },
+    ...(kruimels.length
+      ? [
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [{ naam: 'Home', pad: '/' }, ...kruimels].map((k, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: k.naam,
+              item: url(k.pad),
+            })),
+          },
+        ]
+      : []),
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(grafiek)} />

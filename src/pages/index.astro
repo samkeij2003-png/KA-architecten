@@ -15,30 +15,9 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
 
 <BaseLayout
   title="KA.architecten | Architectenbureau Tilburg & Noord-Brabant"
-  description="KA.architecten is het architectenbureau van Peter Keijsers in Tilburg, werkzaam in heel Noord-Brabant. Ruim 30 jaar ervaring in woningontwerp, verbouwing en utiliteitsbouw."
+  description="Architectenbureau KA.architecten in Tilburg: ruim 30 jaar ervaring in woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant en Limburg."
   bodyClass="home"
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "ProfessionalService"],
-    "name": "KA.architecten",
-    "url": "https://www.ka-architecten.nl/",
-    "logo": "https://www.ka-architecten.nl/logo-512.png",
-    "image": "https://www.ka-architecten.nl/logo-512.png",
-    "telephone": "+31621231821",
-    "email": "p.keijsers@ka-architecten.nl",
-    "founder": "Peter Keijsers",
-    "description": "Architectuurbureau voor particuliere woningen, verbouwing en utiliteitsbouw, gevestigd in Tilburg.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Ankeveenstraat 44",
-      "postalCode": "5036 CB",
-      "addressLocality": "Tilburg",
-      "addressRegion": "Noord-Brabant",
-      "addressCountry": "NL"
-    }
-  })} />
-
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-image">
@@ -152,15 +131,15 @@ const gridCovers = await Promise.all(grid.map(p => getImg(p.cover)));
       <div><p class="eyebrow">Werkwijze</p></div>
       <div class="usp-row" style="border-top: 0; padding-top: 0;">
         <div class="usp">
-          <h4>Eén aanspreekpunt</h4>
+          <h3>Eén aanspreekpunt</h3>
           <p>Van schetsontwerp tot oplevering werkt u rechtstreeks met Peter Keijsers. Korte lijnen, persoonlijk, betrokken.</p>
         </div>
         <div class="usp">
-          <h4>Plek &amp; programma</h4>
+          <h3>Plek &amp; programma</h3>
           <p>Ieder ontwerp begint met een grondige analyse van de locatie en de wensen van de bewoner. Het ontwerp volgt de plek, niet andersom.</p>
         </div>
         <div class="usp">
-          <h4>Eerlijk materiaal</h4>
+          <h3>Eerlijk materiaal</h3>
           <p>Hout · baksteen · beton · glas. Materialen die mooier worden met de jaren en passen bij het ambacht.</p>
         </div>
       </div>

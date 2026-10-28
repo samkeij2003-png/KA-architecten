@@ -17,6 +17,8 @@ export interface Project {
   erkenning: string | null;
   imageCredits?: (string | null)[];
   intro: string;
+  /** Tekst onder de titel in Google (max. ~155 tekens); zonder dit veld wordt de intro gebruikt. */
+  metaDescription?: string;
   body: string[];
 }
 
@@ -38,6 +40,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Een vrijstaande woning aan de rand van Tilburg, ingepast tussen de straat en het open veld. Heldere volumes, lange zichtlijnen naar het landschap, en eerlijke materialen die mooier worden met de jaren.',
+    metaDescription: 'Vrijstaande woning met rieten dak aan de rand van Tilburg: heldere volumes, witte gevels en zicht op het landschap. Ontwerp: KA.architecten.',
     body: [
       'De opgave vroeg om een ruime gezinswoning die rust uitstraalt en zich voegt naar de Brabantse omgeving. Door het hoofdvolume in de diepte van het kavel te plaatsen ontstaat er een route naar het uitzicht op het landschap en de genereuze tuin met zwembad en poolhouse. De lage bijgebouwen verbreden de plattegrond en zorgen voor beschutting en privacy.',
       'De keuze voor witte gevels, rieten dak en minimalistische aluminium kozijnen geven het huis een moderne maar ook vertrouwde uitstraling. Binnen lopen de materialen door: een doorgaande betonvloer, gestucte wanden. Een eikenhouten trap verbindt het wonen met de slaapkamers onder het rieten dak.',
@@ -60,6 +63,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Verbouwing van een bestaande woning in Goirle. Door het openbreken van wanden en het herorganiseren van het wonen langs een brede panoramapui ontstond een genereuze moderne woning met volledige oriëntatie op de tuin.',
+    metaDescription: 'Verbouwing van een woning in Goirle: wanden opengebroken en het wonen georganiseerd langs een brede panoramapui naar de tuin. KA.architecten.',
     body: [
       'De houten gevels, strakke aluminium schuifdeuren en kozijnen geven het huis een moderne, genereuze uitstraling. Materialen lopen door van binnen naar buiten in een brede luifel: een doorgaande betonvloer en het gestucte plafond.',
       'Het ontwerp kenmerkt zich door in elkaar overlopende ruimten en de brede oriëntatie op de tuin. Een doorlopende luifel versterkt de verbinding tussen binnen en buiten, tussen het wonen en de tuin.',
@@ -82,6 +86,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: 'Nominatie Dirk Roosenburg Prijs',
     intro: 'Vrijstaande woning in de wijk Waterrijk in Eindhoven. Een compact, helder volume in de donkere strakke baksteen en grote aluminium puien.',
+    metaDescription: 'Vrijstaande nieuwbouwwoning in Waterrijk, Eindhoven: een compact, helder volume in donkere baksteen met grote aluminium puien. KA.architecten.',
     body: [
       'De plot was smal, door de woning ook bewust smal te houden en in de diepte te plaatsen ontstond er een logisch en heldere plattegrond die middels brede puien en een grote, half inpandige buitenruimte volledig is verbonden met de brede tuin.',
       'De ruimten op de verdieping zijn georiënteerd op een patio of kennen diep terugliggende ramen, dit zorgt voor een optimale privacy.',
@@ -105,6 +110,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Hoofdkantoor met aangrenzende opslag voor IGM. Donker staal en grote glasvlakken in een zorgvuldige compositie geven het bedrijfsgebouw een herkenbaar karakter.',
+    metaDescription: 'Hoofdkantoor met opslag voor IGM in Waalwijk: donker staal en grote glasvlakken geven het bedrijfsgebouw een herkenbaar karakter. KA.architecten.',
     body: [
       'Kantoor en magazijn zijn uitgevoerd in dezelfde stalen gevelelementen. Grote openingen en raampartijen duiden het kantoor en zorgen voor een ingetogen en sterk volume.',
       'De interne logistiek is leidend, maar nooit ten koste van de werkomgeving. In het kantoorgedeelte wordt de entree aan de voorzijde, middels gangen en kantoorruimten, verbonden met de kantine en grote vergaderruimte met fraai uitzicht op het achterliggende landschap.',
@@ -127,6 +133,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: 'Reynaers Architectuurprijs',
     intro: 'Een vrijstaande woning waarin in-situ gestort beton de hoofdrol speelt. Sculpturale, in elkaar overlopende ruimtes, rauw beton en genereus uitzicht over de heide. Een betonnen loper en trap begeleiden de route naar de voordeur onder een stalen luifel.',
+    metaDescription: 'Vrijstaande woning in Zeist van in het werk gestort zichtbeton, met sculpturale ruimtes en uitzicht over de heide. Ontwerp: KA.architecten.',
     body: [
       'Een centrale, beeldbepalende trap snijdt door de plattegrond en verbindt de verdiepingen tot één doorlopende ruimte.',
       'De slaapkamers en werkruimte zijn half verdiept in de grond; op ooghoogte heb je direct contact met de natuur. Een brede tribunetrap verbindt de werkruimte met het maaiveld.',
@@ -151,6 +158,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Productie- en kantoorgebouw voor Wijdeven, een Brabantse fabrikant van transformatoren. Een industrieel programma, productieruimten over twee bouwlagen gecombineerd met kantoorruimten over drie bouwlagen.',
+    metaDescription: 'Productie- en kantoorgebouw voor transformatorfabrikant Wijdeven in Oirschot. Utiliteitsbouw ontworpen door KA.architecten uit Tilburg.',
     body: [
       'Een breed gemetseld portaal definieert de voorgevel; de teruggelegen entree met een diepe nis nodigt de bezoeker uit.',
       'Een route door het gebouw verbindt middels doorzichten en vitrines de kantoren met de productiehallen.',
@@ -173,6 +181,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: 'Nominatie BNA Gebouw van het Jaar',
     intro: 'Een drietal bouwblokken met eengezinswoningen langs het kanaal in Helmond, in de wijk Suytkade. Ontworpen met aandacht voor samenhang en verschil.',
+    metaDescription: 'Drie bouwblokken met eengezinswoningen langs het kanaal in Suytkade, Helmond. Woningbouw met aandacht voor samenhang en verschil. KA.architecten.',
     body: [
       'Het plan is opgebouwd uit verschillende typen woningen. Patiowoningen in een kwadrant die telkens net iets verschillen, zodat het leest als een zorgvuldig samengesteld ensemble. Aan de straatkant wisselen patiotuinen met entrees en woningen elkaar af. Gemetselde pergolabalken verbinden de woningen en zorgen voor samenhang van het bouwblok.',
       'De brede en ondiepe rijwoning op de koppen van het bouwblok vormen een hogere gevel langs de ontsluitingsweg. Door diepe inkepingen in de gevel zijn afzonderlijke woningen herkenbaar.',
@@ -195,6 +204,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Een nieuwbouwwoning in Udenhout, opgeleverd in 2025. Compact en ingetogen, met een doorlopend zadeldak en donkere gesmoorde baksteen.',
+    metaDescription: 'Nieuwbouwwoning in Udenhout (2025): compact en ingetogen, met een doorlopend zadeldak en donkere gesmoorde baksteen. Ontwerp: KA.architecten.',
     body: [
       'De woning sluit aan op de Brabantse bouwtraditie maar interpreteert die in een hedendaagse, abstracte vorm: één kap, één doorgaande gevel, uitgesproken openingen op de juiste plekken.',
       'Deze ingetogen vormgeving geeft de woning een rustige, zelfverzekerde uitstraling met een mooi uitzicht over het aanliggende landschap.',
@@ -217,6 +227,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: null,
     intro: 'Transformatie van een vrijstaande woning uit de jaren 60 naar een karaktervolle moderne woning. Door het samenvoegen van ruimten op de begane grond en het toevoegen van een paviljoenachtige aanbouw ontstaat een genereuze woning, met modern comfort en geborgenheid.',
+    metaDescription: 'Verbouwing in Haaren: een jaren-60 woning getransformeerd tot karaktervolle moderne woning met paviljoenachtige aanbouw. Door KA.architecten.',
     body: [
       'De aanbouw bestaat uit een zwevende vloer en dak met luifel met daartussen een glaslint met schuifpuien. De tuinkamer is verbonden met een overdekte buitenruimte met open haard en prominente schoorsteen. Door het glaslint is er een groots uitzicht op de naastgelegen tuin en het park.',
       'Uitgesproken rode bakstenen met teruggelegen voegen geven de woning een bijzonder maar ook ambachtelijk karakter, waarmee zij aansluit bij de traditioneel gemetselde woningen uit het dorp.',
@@ -241,6 +252,7 @@ export const projects: Project[] = [
     erkenning: null,
     imageCredits: [null, null, 'Walter Frisart Fotowerk', null],
     intro: 'Een woningbouwproject omgeven door grachten in de historische binnenstad van Zwolle. Meerdere woningtypologieën gegroepeerd rond een besloten binnenhof en deels met gevels aan het water.',
+    metaDescription: 'Woningbouwplan Kraanbolwerk in de historische binnenstad van Zwolle: woningen rond een besloten binnenhof, deels aan de gracht. KA.architecten.',
     body: [
       'Hof de Volharding vormt het hart van het project: een halfopen binnenhof omgeven door pakhuis-achtige rijwoningen met puntgevels in handgevormde grijze baksteen en woningen ingepast in de voormalige structuur van de fabriek De Volharding.',
       'Aan de waterkant presenteert het complex zich als een reeks industriële panden, met prominent in het midden de reconstructie van de gevel van De Volharding. Grote kozijnen, industriële referenties, zorgvuldige detaillering en een zorgvuldige baksteenkeuze geven het project een bij de plek passend karakter.',
@@ -271,6 +283,7 @@ export const projects: Project[] = [
     constructeur: null,
     erkenning: 'Tweede prijs Archiprix 1997',
     intro: 'Afstudeerproject aan de Academie voor Bouwkunst in Tilburg in 1997. Bekroond met de tweede prijs bij de Archiprix, de prestigieuze prijs die jaarlijks de beste afstudeerprojecten van Nederlandse ontwerpopleidingen bekroont.',
+    metaDescription: 'Afstudeerontwerp voor een crematorium in Antwerpen door Peter Keijsers (Academie voor Bouwkunst Tilburg, 1997), bekroond met de tweede prijs Archiprix.',
     body: [
       'Het afstudeerproject omvatte een serene en ruimtelijke invulling van een uitvaartlocatie in Antwerpen. Het ontwerp omvat een afscheidslocatie met aula, mortuarium, crematorium, urnenwand, uitstrooivelden en begraafplaatsen aan de rand van de Schelde.',
       'De wand was een belangrijk thema in het ontwerponderzoek. De wand als grens tussen leven en dood. De wand verdubbelt en vormt zo ruimte voor het afscheid.',

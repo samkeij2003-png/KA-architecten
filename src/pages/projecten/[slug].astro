@@ -1,14 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Image, getImage } from 'astro:assets';
-import { projects } from '../../data/projects';
+import { projects, type Project } from '../../data/projects';
 import { route } from '../../utils/asset';
 import { getImg } from '../../utils/images';
+import { ogPad, schemaId } from '../../data/seo';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = () => {
   return projects.map(p => ({ params: { slug: p.slug }, props: { project: p } }));
 };
+
+interface Props {
+  project: Project;
+}
 
 const { project } = Astro.props;
 const idx = projects.findIndex(p => p.slug === project.slug);
@@ -32,27 +37,24 @@ const imagesJson = JSON.stringify(galleryData.map((d, i) => ({
 
 <BaseLayout
   title={`${project.title} · ${project.location} — KA.architecten`}
-  description={project.intro}
-  ogImage={`https://www.ka-architecten.nl${project.cover}`}
+  description={project.metaDescription ?? project.intro}
+  ogImage={project.cover}
+  ogImageAlt={`${project.title}, ${project.location}`}
   canonical={`https://www.ka-architecten.nl/projecten/${project.slug}/`}
+  kruimels={[
+    { naam: 'Projecten', pad: '/projecten/' },
+    { naam: project.title, pad: `/projecten/${project.slug}/` },
+  ]}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ka-architecten.nl/" },
-      { "@type": "ListItem", "position": 2, "name": "Projecten", "item": "https://www.ka-architecten.nl/projecten/" },
-      { "@type": "ListItem", "position": 3, "name": project.title, "item": `https://www.ka-architecten.nl/projecten/${project.slug}/` }
-    ]
-  })} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.intro,
-    "image": `https://www.ka-architecten.nl${project.cover}`,
-    "creator": { "@type": "Person", "name": "Peter Keijsers" },
-    "publisher": { "@type": "Organization", "name": "KA.architecten" },
+    "url": `https://www.ka-architecten.nl/projecten/${project.slug}/`,
+    "image": new URL(ogPad(project.cover), Astro.site).toString(),
+    "creator": { "@id": new URL(schemaId.persoon, Astro.site).toString() },
+    "publisher": { "@id": new URL(schemaId.bedrijf, Astro.site).toString() },
     "locationCreated": {
       "@type": "Place",
       "address": {

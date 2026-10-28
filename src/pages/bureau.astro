@@ -10,23 +10,10 @@ import architectImg from '../assets/images/architect.webp';
 <BaseLayout
   title="Bureau — KA.architecten · Architect Peter Keijsers, Tilburg"
   description="KA.architecten is gevestigd in Tilburg. Ruim 30 jaar ervaring met woningontwerp, verbouwing en utiliteitsbouw in Noord-Brabant."
-  ogImage="https://www.ka-architecten.nl/images/architect.webp"
+  ogImage="/images/warande-1.webp"
+  ogImageAlt="Woonhuis Nieuwe Warande, Tilburg, KA.architecten"
+  kruimels={[{ naam: 'Bureau', pad: '/bureau/' }]}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Peter Keijsers",
-    "jobTitle": "Architect",
-    "worksFor": { "@type": "Organization", "name": "KA.architecten" },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Ankeveenstraat 44",
-      "postalCode": "5036 CB",
-      "addressLocality": "Tilburg",
-      "addressCountry": "NL"
-    }
-  })} />
-
   <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);">
     <div class="container split-2">
       <div><p class="eyebrow">Bureau</p></div>
@@ -111,7 +98,7 @@ import architectImg from '../assets/images/architect.webp';
       <div><p class="eyebrow">Architect</p></div>
       <div class="architect-grid">
         <div class="body-text" style="font-size: 16px;">
-          <h3 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 12px;">Peter Keijsers</h3>
+          <h2 style="font-family: var(--font-display); font-size: 22px; line-height: 1.25; margin-bottom: 12px;">Peter Keijsers</h2>
           <p>
             Peter Keijsers studeerde architectuur aan de HTS Bouwkunde en de Academie voor Bouwkunst. Na jarenlange werkervaring bij Bedaux de Brouwer Architecten richtte hij KA.architecten op als zelfstandig bureau in Tilburg.
           </p>
