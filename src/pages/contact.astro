@@ -2,9 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const EMAIL = 'p.keijsers@ka-architecten.nl';
-// Berichten lopen via FormSubmit (geen account nodig). Het eerste bericht
-// stuurt een eenmalige activatiemail naar EMAIL; na die klik komt alles door.
-const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
+// Berichten lopen via Web3Forms; de ontvanger (EMAIL) staat ingesteld in het
+// Web3Forms-account. De access key is bedoeld om publiek in de pagina te staan.
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
 ---
 
 <BaseLayout
@@ -43,10 +44,10 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
             data-fallback-email={EMAIL}
             novalidate
           >
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <!-- Honeypot: onzichtbaar voor bezoekers, bots vullen het in -->
-            <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+            <input type="hidden" name="from_name" value="Website KA.architecten" />
+            <!-- Honeypot: onzichtbaar voor bezoekers, bots vinken het aan -->
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
             <div class="form-grid">
               <div class="form-row">
@@ -226,8 +227,8 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
       }
 
       const data = new FormData(form);
-      data.set('_subject', `Website: ${value('onderwerp')} — ${value('naam')}`);
-      data.set('_replyto', value('email'));
+      data.set('subject', `Website: ${value('onderwerp')} — ${value('naam')}`);
+      data.set('replyto', value('email'));
 
       setLoading(true);
       try {
@@ -236,9 +237,8 @@ const FORM_ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`;
           headers: { Accept: 'application/json' },
           body: data,
         });
-        // FormSubmit geeft success als string terug ("true" / "false")
-        const result = (await response.json()) as { success?: string | boolean };
-        if (!response.ok || String(result.success) !== 'true') throw new Error('Verzenden mislukt');
+        const result = (await response.json()) as { success?: boolean };
+        if (!response.ok || result.success !== true) throw new Error('Verzenden mislukt');
 
         form.reset();
         showStatus(
