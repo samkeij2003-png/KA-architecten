@@ -1,0 +1,50 @@
+---
+/**
+ * Tekst met links een label. Direct na de paginakop en zonder label loopt de
+ * tekst door in de kop (zoals op Bureau); direct na de openingsfoto krijgt hij
+ * wat meer ruimte (zoals op de homepage); anders een lijn erboven.
+ */
+import RichText from '../cms/RichText.astro';
+import { link, text } from '../../lib/mijn-sasa/client';
+import { route, sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, cms, prevType } = Astro.props;
+const d = section.data;
+const eyebrow = text(d.eyebrow);
+const lead = text(d.lead);
+const l = link(d.link);
+const href = cms.href(l);
+const finalHref = href ? (href.startsWith('/') ? route(href) : href) : null;
+const isButton = text(d.linkStyle) === 'button';
+
+const continuation = prevType === 'pageHeader' && !eyebrow;
+const afterHero = prevType === 'hero';
+const style = continuation
+  ? 'padding: 0 0 clamp(24px, 3vw, 40px); margin-top: calc(-1 * clamp(24px, 3vw, 40px));'
+  : afterHero
+    ? 'padding-top: clamp(32px, 4vw, 56px); padding-bottom: 48px;'
+    : 'padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);';
+---
+
+<section class={afterHero ? 'section' : undefined} style={style} {...sasaSection(section.id)}>
+  <div class="container split-2">
+    <div>{eyebrow && <p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{eyebrow}</p>}</div>
+    <div>
+      {lead && <p class="lead" {...sasaField(section.id, 'lead')}>{lead}</p>}
+      <div class="body-text" style={`${lead ? 'margin-top: 28px; ' : ''}font-size: 16px;`} {...sasaField(section.id, 'body', 'richtext')}>
+        <RichText value={d.body} />
+      </div>
+      {l && finalHref && (
+        <p style="margin-top: 28px;">
+          {isButton ? (
+            <a href={finalHref} class="btn-cta" {...sasaField(section.id, 'link')}>{l.label}</a>
+          ) : (
+            <a class="link-arrow" href={finalHref} {...sasaField(section.id, 'link')}>{l.label} →</a>
+          )}
+        </p>
+      )}
+    </div>
+  </div>
+</section>

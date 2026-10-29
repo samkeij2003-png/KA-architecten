@@ -1,0 +1,53 @@
+---
+/** Rendert de secties van een pagina in volgorde, met het component dat bij elke sectie hoort. */
+import type { Cms } from '../../lib/mijn-sasa/client';
+import type { BundlePage } from '../../lib/mijn-sasa/types';
+import ContactDetails from './ContactDetails.astro';
+import FeaturedProject from './FeaturedProject.astro';
+import Gallery from './Gallery.astro';
+import Hero from './Hero.astro';
+import LegalText from './LegalText.astro';
+import PageHeader from './PageHeader.astro';
+import Person from './Person.astro';
+import ProjectBody from './ProjectBody.astro';
+import ProjectGrid from './ProjectGrid.astro';
+import ProjectHeader from './ProjectHeader.astro';
+import Steps from './Steps.astro';
+import Text from './Text.astro';
+import ThreePoints from './ThreePoints.astro';
+import WideImage from './WideImage.astro';
+
+interface Props {
+  cms: Cms;
+  page: BundlePage;
+  /** Sectietypes die de pagina zelf al rendert (bijv. de kop op de contactpagina). */
+  skip?: string[];
+}
+
+const SECTION_COMPONENTS = {
+  hero: Hero,
+  pageHeader: PageHeader,
+  text: Text,
+  steps: Steps,
+  wideImage: WideImage,
+  featuredProject: FeaturedProject,
+  projectGrid: ProjectGrid,
+  threePoints: ThreePoints,
+  person: Person,
+  projectHeader: ProjectHeader,
+  projectBody: ProjectBody,
+  gallery: Gallery,
+  contactDetails: ContactDetails,
+  legalText: LegalText,
+} as const;
+
+const { cms, page, skip = [] } = Astro.props;
+const sections = page.sections.filter((s) => !skip.includes(s.type));
+---
+
+{sections.map((section, i) => {
+  const Component = SECTION_COMPONENTS[section.type as keyof typeof SECTION_COMPONENTS];
+  return Component ? (
+    <Component section={section} cms={cms} page={page} prevType={sections[i - 1]?.type} nextType={sections[i + 1]?.type} />
+  ) : null;
+})}

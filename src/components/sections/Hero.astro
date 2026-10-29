@@ -1,0 +1,26 @@
+---
+import CmsImage from '../cms/CmsImage.astro';
+import { items, text } from '../../lib/mijn-sasa/client';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, cms } = Astro.props;
+const d = section.data;
+---
+
+<section class="hero" aria-labelledby="hero-title" {...sasaSection(section.id)}>
+  <div class="hero-image">
+    <CmsImage media={cms.media(d.image)} width={1920} fetchpriority="high" field={sasaField(section.id, 'image', 'image')} />
+  </div>
+  <div class="hero-veil"></div>
+  <div class="hero-content">
+    {text(d.eyebrow) && <p class="eyebrow" style="font-size: 12px; letter-spacing: 0.16em;" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p>}
+    <h1 id="hero-title">
+      <span class="amark">KA</span>.architecten
+    </h1>
+    <div class="hero-meta">
+      {items(d.highlights).map((h) => <span {...sasaField(section.id, `highlights.${h.id}.text`)}>{text(h.text)}</span>)}
+    </div>
+  </div>
+</section>

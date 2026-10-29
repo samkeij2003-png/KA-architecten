@@ -1,0 +1,36 @@
+---
+import CmsImage from '../cms/CmsImage.astro';
+import { text } from '../../lib/mijn-sasa/client';
+import { projectInfo } from '../../lib/ka';
+import { route, sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, cms } = Astro.props;
+const d = section.data;
+const page = cms.pageById(typeof d.pageId === 'string' ? d.pageId : null);
+const project = page ? projectInfo(cms, page) : null;
+const media = cms.media(d.image) ?? project?.cover;
+---
+
+{project && (
+  <section class="featured hairline" style="padding-top: 0;" {...sasaSection(section.id)}>
+    <a href={route(project.page.path)} aria-label={`Uitgelicht: ${project.title} ${project.location}`}>
+      <div class="featured-media">
+        <CmsImage media={media} width={1400} loading="lazy" field={sasaField(section.id, 'image', 'image')} />
+      </div>
+      <div class="container">
+        <div class="featured-meta">
+          <div>
+            <p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p>
+            <h2 style="margin-top: 6px;">{project.title} · {project.location}</h2>
+          </div>
+          <p class="text-stone" style="font-size: 14px;">
+            <span {...sasaField(section.id, 'text')}>{text(d.text)}</span>
+            <span style="border-bottom: 1px solid var(--ink); color: var(--ink);">Bekijk project →</span>
+          </p>
+        </div>
+      </div>
+    </a>
+  </section>
+)}

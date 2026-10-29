@@ -1,11 +1,17 @@
 ---
-import { route } from '../utils/asset';
+/** Hoofdmenu uit Mijn SASA (Menu's → Hoofdmenu). Het logo ligt vast in het ontwerp. */
+import type { Cms } from '../lib/mijn-sasa/client';
+import { route } from '../lib/site-content';
 
-const navLinks = [
-  { href: '/projecten', label: 'Projecten' },
-  { href: '/bureau', label: 'Bureau' },
-  { href: '/contact', label: 'Contact' },
-];
+interface Props {
+  cms: Cms;
+}
+
+const { cms } = Astro.props;
+const navLinks = cms
+  .menu('main')
+  .items.map((item) => ({ href: cms.href(item), label: item.label }))
+  .filter((l): l is { href: string; label: string } => !!l.href && !!l.label);
 
 const currentPath = Astro.url.pathname;
 ---
@@ -22,7 +28,7 @@ const currentPath = Astro.url.pathname;
       {navLinks.map(({ href, label }) => (
         <a
           href={route(href)}
-          class:list={[{ 'is-active': currentPath.startsWith(route(href)) }]}
+          class:list={[{ 'is-active': href.startsWith('/') && href !== '/' && currentPath.startsWith(route(href)) }]}
         >
           {label}
         </a>

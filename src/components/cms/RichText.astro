@@ -1,0 +1,17 @@
+---
+/** Opgemaakte tekst uit Mijn SASA: alleen vet, schuin, link en lijst; alles veilig ge-escaped. */
+import { richTextToHtml } from '../../lib/mijn-sasa/richtext';
+import type { FieldValue } from '../../lib/mijn-sasa/types';
+import { richText } from '../../lib/mijn-sasa/client';
+import { route } from '../../lib/site-content';
+
+interface Props {
+  value: FieldValue | undefined;
+  linkClass?: string;
+}
+
+const { value, linkClass = 'text-link' } = Astro.props;
+const html = richTextToHtml(richText(value), { internalHref: route, linkClass });
+---
+
+<Fragment set:html={html} />

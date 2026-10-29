@@ -1,0 +1,42 @@
+---
+import RichText from '../cms/RichText.astro';
+import { text } from '../../lib/mijn-sasa/client';
+import { PROJECT_STATUS_LABELS, PROJECT_TYPE_LABELS } from '../../lib/ka';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section } = Astro.props;
+const d = section.data;
+const f = (key: string) => sasaField(section.id, key);
+
+const optional = [
+  ['client', 'Opdrachtgever'],
+  ['interior', 'Interieur'],
+  ['contractor', 'Aannemer'],
+  ['engineer', 'Constructeur'],
+  ['photographer', 'Fotografie'],
+  ['recognition', 'Erkenning'],
+] as const;
+const location = [text(d.location), text(d.province)].filter(Boolean).join(', ');
+---
+
+<section class="section" style="padding-top: 48px; padding-bottom: 40px;" {...sasaSection(section.id)}>
+  <div class="container">
+    <p class="lead" style="margin-bottom: clamp(32px, 4vw, 56px); max-width: 60ch;" {...f('intro')}>{text(d.intro)}</p>
+    <div class="detail-grid">
+      <div class="body-text" style="font-size: 17px;" {...sasaField(section.id, 'body', 'richtext')}>
+        <RichText value={d.body} />
+      </div>
+      <div class="facts">
+        <dl>
+          <dt>Locatie</dt><dd>{location}</dd>
+          <dt>Type</dt><dd>{PROJECT_TYPE_LABELS[text(d.projectType)]}</dd>
+          <dt>Status</dt><dd>{PROJECT_STATUS_LABELS[text(d.status)]} · <span {...f('year')}>{text(d.year)}</span></dd>
+          {text(d.architect) && <><dt>Architect</dt><dd {...f('architect')}>{text(d.architect)}</dd></>}
+          {optional.map(([key, label]) => text(d[key]) && <><dt>{label}</dt><dd {...f(key)}>{text(d[key])}</dd></>)}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
