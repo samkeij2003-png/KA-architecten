@@ -42,9 +42,9 @@ const style = continuation
       {l && finalHref && (
         <p style="margin-top: 28px;">
           {isButton ? (
-            <a href={finalHref} class="btn-cta" {...sasaField(section.id, 'link')}>{l.label}</a>
+            <a href={finalHref} class="btn-cta" {...sasaField(section.id, 'link', 'link')}>{l.label}</a>
           ) : (
-            <a class="link-arrow" href={finalHref} {...sasaField(section.id, 'link')}>{l.label} →</a>
+            <a class="link-arrow" href={finalHref} {...sasaField(section.id, 'link', 'link')}>{l.label} →</a>
           )}
         </p>
       )}

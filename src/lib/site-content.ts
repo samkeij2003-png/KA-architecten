@@ -66,7 +66,10 @@ export async function getCms(astro?: Pick<AstroGlobal, 'cookies' | 'locals'>): P
 export const route = (path: string) => (path === '/' || /\.[a-z0-9]+$/i.test(path) ? path : `${path.replace(/\/+$/, '')}/`);
 
 /** Alleen in het voorbeeld: attributen om op de pagina te kunnen klikken (fase 5). */
-export function sasaField(sectionId: string, field: string, kind: 'text' | 'image' | 'richtext' = 'text') {
+/**
+ * kind: text = direct typen in het voorbeeld; image = foto kiezen; richtext en link = het veld in de editor openen.
+ */
+export function sasaField(sectionId: string, field: string, kind: 'text' | 'image' | 'richtext' | 'link' = 'text') {
   return isPreview ? { 'data-sasa-field': `${sectionId}:${field}`, 'data-sasa-kind': kind } : {};
 }
 

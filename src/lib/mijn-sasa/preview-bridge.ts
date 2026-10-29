@@ -28,6 +28,11 @@ export function startPreviewBridge(allowedOrigins: string[]) {
   /** Laatste concept van deze pagina uit de editor (nog niet per se opgeslagen). */
   let pending: { pageId: string; draft: unknown } | null = null;
   async function refresh() {
+    // Niet verversen terwijl iemand in het voorbeeld typt: dan zou de cursor verdwijnen.
+    if (document.querySelector("[data-sasa-field][contenteditable]")) {
+      again = true;
+      return;
+    }
     if (refreshing) {
       again = true;
       return;
@@ -85,20 +90,63 @@ export function startPreviewBridge(allowedOrigins: string[]) {
     }
   });
 
-  // Klikken op een tekst of foto in het voorbeeld: het veld in Mijn SASA openen.
+  // Tekst direct typen in het voorbeeld (PLAN.md fase 5). Elke toets gaat naar de
+  // editor (sasa:edit); Enter of Escape rondt af (sasa:editEnd). Alleen platte tekst.
+  function startInlineEdit(el: HTMLElement, sectionId: string, field: string) {
+    if (el.isContentEditable) return;
+    el.setAttribute("contenteditable", "plaintext-only");
+    el.setAttribute("role", "textbox");
+    el.setAttribute("aria-label", "Tekst aanpassen");
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    const onInput = () => post({ type: "sasa:edit", sectionId, field, value: el.innerText });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || (e.key === "Enter" && !e.shiftKey)) {
+        e.preventDefault();
+        el.blur();
+      }
+    };
+    const onBlur = () => {
+      el.removeAttribute("contenteditable");
+      el.removeAttribute("role");
+      el.removeAttribute("aria-label");
+      el.removeEventListener("input", onInput);
+      el.removeEventListener("keydown", onKey);
+      post({ type: "sasa:editEnd", sectionId, field });
+      if (again && !refreshing) {
+        again = false;
+        void refresh();
+      }
+    };
+    el.addEventListener("input", onInput);
+    el.addEventListener("keydown", onKey);
+    el.addEventListener("blur", onBlur, { once: true });
+  }
+
+  // Klikken op een tekst of foto in het voorbeeld: het veld in Mijn SASA openen,
+  // en bij gewone tekst meteen kunnen typen.
   document.addEventListener(
     "click",
     (e) => {
-      const target = (e.target as Element).closest("[data-sasa-field]");
+      const target = (e.target as Element).closest<HTMLElement>("[data-sasa-field]");
       if (!target) return;
       e.preventDefault();
       e.stopPropagation();
-      const [sectionId, ...field] = (target.getAttribute("data-sasa-field") ?? "").split(":");
-      post({ type: "sasa:select", sectionId, field: field.join(":"), kind: target.getAttribute("data-sasa-kind") ?? "text" });
+      const [sectionId, ...rest] = (target.getAttribute("data-sasa-field") ?? "").split(":");
+      const field = rest.join(":");
+      const kind = target.getAttribute("data-sasa-kind") ?? "text";
+      post({ type: "sasa:select", sectionId, field, kind });
+      if (kind === "text") startInlineEdit(target, sectionId, field);
     },
     true,
   );
 
-  // Links binnen de site volgen, maar binnen het voorbeeld blijven.
+  // Een link in het voorbeeld (niet op een veld) gewoon volgen, binnen het voorbeeld.
   post({ type: "sasa:ready", path: location.pathname });
 }
