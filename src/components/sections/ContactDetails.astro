@@ -1,35 +1,47 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+/**
+ * Contactgegevens (uit Bedrijfsgegevens in Mijn SASA) met het contactformulier.
+ * Het formulier zelf ligt vast in de code (Web3Forms); alleen de onderwerpen
+ * komen uit Mijn SASA. De paginakop (label en titel) staat links in de kolom.
+ */
+import { items, text } from '../../lib/mijn-sasa/client';
+import { phoneE164 } from '../../lib/ka';
+import { route, sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
 
-const EMAIL = 'p.keijsers@ka-architecten.nl';
-// Berichten lopen via Web3Forms; de ontvanger (EMAIL) staat ingesteld in het
+type Props = SectionProps;
+const { section, cms, page } = Astro.props;
+const header = page.sections.find((s) => s.type === 'pageHeader');
+const address = cms.settings('address');
+const contact = cms.settings('contact');
+const company = cms.settings('company');
+const EMAIL = text(contact.email);
+const phone = text(contact.phone);
+const subjects = items(section.data.subjects).map((s) => text(s.label)).filter(Boolean);
+const privacy = cms.pagesByTemplate('legal')[0];
+// Berichten lopen via Web3Forms; de ontvanger staat ingesteld in het
 // Web3Forms-account. De access key is bedoeld om publiek in de pagina te staan.
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
 ---
 
-<BaseLayout
-  title="Contact — KA.architecten · Tilburg"
-  description="Neem contact op met KA.architecten. Architect Peter Keijsers, Ankeveenstraat 44, Tilburg."
-  kruimels={[{ naam: 'Contact', pad: '/contact/' }]}
->
-  <section class="section" style="padding-top: clamp(28px, 3vw, 44px); padding-bottom: clamp(40px, 6vw, 80px);">
+  <section class="section" style="padding-top: clamp(28px, 3vw, 44px); padding-bottom: clamp(40px, 6vw, 80px);" {...sasaSection(section.id)}>
     <div class="container">
       <div class="contact-grid">
         <!-- Linker kolom: titel + gegevens -->
         <div class="contact-info">
-          <p class="eyebrow">Contact</p>
-          <h1 style="margin-top: 8px; margin-bottom: 32px;">Neem contact op.</h1>
+          <p class="eyebrow" {...(header ? sasaField(header.id, 'eyebrow') : {})}>{text(header?.data.eyebrow)}</p>
+          <h1 style="margin-top: 8px; margin-bottom: 32px;" {...(header ? sasaField(header.id, 'title') : {})}>{text(header?.data.title)}</h1>
 
           <p class="eyebrow" style="margin-bottom: 8px;">Adres</p>
           <p style="font-size: 16px; line-height: 1.8; color: var(--ink-soft);">
-            KA.architecten<br />
-            Ankeveenstraat 44<br />
-            5036 CB Tilburg
+            {text(company.name)}<br />
+            {text(address.street)}<br />
+            {text(address.postcode)} {text(address.city)}
           </p>
 
           <p class="eyebrow" style="margin: 28px 0 8px;">Telefoon</p>
-          <p><a href="tel:+31621231821" style="font-size: 16px; color: var(--ink-soft);">06 21 23 18 21</a></p>
+          <p><a href={`tel:${phoneE164(phone)}`} style="font-size: 16px; color: var(--ink-soft);">{phone}</a></p>
 
           <p class="eyebrow" style="margin: 28px 0 8px;">E-mail</p>
           <p><a href={`mailto:${EMAIL}`} style="font-size: 16px; color: var(--ink-soft);">{EMAIL}</a></p>
@@ -68,10 +80,7 @@ const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
             <div class="form-row">
               <label for="onderwerp">Onderwerp</label>
               <select id="onderwerp" name="onderwerp">
-                <option>Nieuwbouwwoning</option>
-                <option>Verbouwing of uitbreiding</option>
-                <option>Utiliteitsbouw</option>
-                <option>Anders</option>
+                {subjects.map((label) => <option>{label}</option>)}
               </select>
             </div>
             <div class="form-row">
@@ -82,7 +91,7 @@ const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
 
             <p class="privacy-note">
               Uw gegevens gebruiken we alleen om op uw bericht te reageren. Lees meer in onze
-              <a href="/algemene-voorwaarden/" class="text-link">privacyverklaring</a>.
+              <a href={privacy ? route(privacy.path) : '/algemene-voorwaarden/'} class="text-link">privacyverklaring</a>.
             </p>
 
             <div class="form-actions">
@@ -97,7 +106,6 @@ const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
     </div>
   </section>
 
-</BaseLayout>
 
 <style>
   .contact-grid {

@@ -1,0 +1,18 @@
+---
+/**
+ * Alleen in het voorbeeld gerenderd (zie BaseLayout). Dan pas komt dit script
+ * in de HTML; op de echte site staat het er niet (geen effect op snelheid).
+ */
+interface Props {
+  /** Adressen van Mijn SASA die het voorbeeld mogen tonen. */
+  cmsOrigins: string[];
+}
+const { cmsOrigins } = Astro.props;
+---
+
+<div id="sasa-preview" data-cms-origins={cmsOrigins.join(' ')} hidden></div>
+<script>
+  import { startPreviewBridge } from '../../lib/mijn-sasa/preview-bridge';
+  const el = document.getElementById('sasa-preview');
+  if (el?.dataset.cmsOrigins) startPreviewBridge(el.dataset.cmsOrigins.split(' '));
+</script>

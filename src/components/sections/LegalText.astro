@@ -1,0 +1,22 @@
+---
+/** Rustige tekst met kopjes, bijv. de privacyverklaring. De paginatitel is de H1. */
+import RichText from '../cms/RichText.astro';
+import { items, text } from '../../lib/mijn-sasa/client';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, page } = Astro.props;
+const d = section.data;
+---
+
+<main style="max-width: 680px; margin: 0 auto; padding: 80px 24px 120px;" {...sasaSection(section.id)}>
+  <h1 style="font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 8px;">{page.title}</h1>
+  {text(d.updated) && <p style="color: var(--ink-soft); font-size: 13px; margin-bottom: 56px;">Laatste update: <span {...sasaField(section.id, 'updated')}>{text(d.updated)}</span></p>}
+  {items(d.blocks).map((block, i, all) => (
+    <section style={i < all.length - 1 ? 'margin-bottom: 40px;' : undefined}>
+      <h2 style="font-size: 1rem; font-weight: 500; margin-bottom: 12px;" {...sasaField(section.id, `blocks.${block.id}.heading`)}>{text(block.heading)}</h2>
+      <div {...sasaField(section.id, `blocks.${block.id}.body`, 'richtext')}><RichText value={block.body} linkClass="" /></div>
+    </section>
+  ))}
+</main>

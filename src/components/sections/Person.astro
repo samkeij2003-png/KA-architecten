@@ -1,0 +1,29 @@
+---
+import CmsImage from '../cms/CmsImage.astro';
+import RichText from '../cms/RichText.astro';
+import { text } from '../../lib/mijn-sasa/client';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, cms } = Astro.props;
+const d = section.data;
+const media = cms.media(d.image);
+---
+
+<section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);" {...sasaSection(section.id)}>
+  <div class="container split-2">
+    <div><p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p></div>
+    <div class="architect-grid">
+      <div class="body-text" style="font-size: 16px;">
+        <h2 style="font-family: var(--font-display); font-size: 22px; line-height: 1.25; margin-bottom: 12px;" {...sasaField(section.id, 'name')}>{text(d.name)}</h2>
+        <div {...sasaField(section.id, 'body', 'richtext')}><RichText value={d.body} /></div>
+      </div>
+      {media && (
+        <div class="architect-photo" style="aspect-ratio: 4/5; background: var(--bg-soft); overflow: hidden;">
+          <CmsImage media={media} width={800} style="width:100%; height:100%; object-fit: cover; object-position: center;" field={sasaField(section.id, 'image', 'image')} />
+        </div>
+      )}
+    </div>
+  </div>
+</section>

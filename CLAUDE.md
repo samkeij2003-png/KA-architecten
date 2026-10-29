@@ -98,3 +98,13 @@ theme: {
 2. Volg de bestaande Tailwind tokens uit `tailwind.config.ts`
 3. Schrijf geen inline styles — gebruik Tailwind utilities
 4. Test de build met `npm run build` na grotere wijzigingen
+
+## Inhoud uit Mijn SASA (vanaf branch `mijn-sasa`)
+
+Teksten, foto's, menu's en bedrijfsgegevens komen uit Mijn SASA (het CMS van SASA). Het ontwerp blijft hier in de code.
+
+- `src/pages/[...path].astro` rendert alle pagina's uit Mijn SASA; `src/components/sections/` heeft per sectie uit de site-kit een component met dezelfde naam (contract-test in mijn-sasa).
+- `src/lib/mijn-sasa/` is gekopieerd uit `mijn-sasa/packages/astro-client`: niet hier aanpassen.
+- Build (echte site): `MIJN_SASA_URL` en `MIJN_SASA_TOKEN` (GitHub-geheim) nodig; zonder stopt de build bewust.
+- Voorbeeld voor de editor: `SASA_PREVIEW=1 MIJN_SASA_URL=http://localhost:3000 npm run dev:voorbeeld` (op aanvraag gerenderd, concepten, noindex, alleen in een iframe van Mijn SASA). Extra vertrouwde adressen van Mijn SASA: `MIJN_SASA_FRAME_ORIGINS`.
+- Nieuws en "meest gezocht" staan nog in de code (`src/data`), net als het contactformulier (Web3Forms).

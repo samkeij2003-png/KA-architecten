@@ -1,0 +1,75 @@
+---
+/**
+ * Foto uit Mijn SASA. Bij de build haalt Astro hem op en maakt er een
+ * geoptimaliseerde webp van (zelfde als de foto's in src/assets: PageSpeed
+ * blijft gelijk). In het voorbeeld tonen we de foto direct, dat is sneller.
+ */
+import { Image } from 'astro:assets';
+import type { BundleMedia } from '../../lib/mijn-sasa/types';
+import { isPreview } from '../../lib/site-content';
+
+interface Props {
+  media: BundleMedia | undefined;
+  width: number;
+  alt?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+  style?: string;
+  quality?: number;
+  /** Attributen voor klikken op de pagina (fase 5). */
+  field?: Record<string, string>;
+}
+
+const { media, width, alt, loading, fetchpriority, class: className, style = '', quality = 85, field = {} } = Astro.props;
+
+const height = media?.width && media?.height ? Math.round((width * media.height) / media.width) : undefined;
+// Focuspunt alleen meegeven als het niet het midden is (dan blijft de HTML gelijk aan vroeger).
+const focus =
+  media && (media.focalX !== 0.5 || media.focalY !== 0.5)
+    ? `object-position: ${Math.round(media.focalX * 100)}% ${Math.round(media.focalY * 100)}%;`
+    : '';
+const altText = alt ?? media?.alt ?? '';
+---
+
+{media && (
+  isPreview ? (
+    <img
+      src={media.url}
+      alt={altText}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class={className}
+      style={`${style}${focus}`}
+      {...field}
+    />
+  ) : height ? (
+    <Image
+      src={media.url}
+      alt={altText}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class={className}
+      style={`${style}${focus}` || undefined}
+      format="webp"
+      quality={quality}
+    />
+  ) : (
+    <Image
+      src={media.url}
+      alt={altText}
+      width={width}
+      inferSize
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class={className}
+      style={`${style}${focus}` || undefined}
+      format="webp"
+      quality={quality}
+    />
+  )
+)}

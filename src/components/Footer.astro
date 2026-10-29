@@ -1,50 +1,92 @@
 ---
-import { route } from '../utils/asset';
+/**
+ * Footer: kolommen uit Mijn SASA (Menu's → Footer), adres en contact uit
+ * Bedrijfsgegevens. De opmaak en de iconen liggen vast in het ontwerp.
+ */
+import type { Cms } from '../lib/mijn-sasa/client';
+import { items, text } from '../lib/mijn-sasa/client';
+import { phoneE164 } from '../lib/ka';
+import { route } from '../lib/site-content';
+
+interface Props {
+  cms: Cms;
+}
+
+const { cms } = Astro.props;
 const year = new Date().getFullYear();
+const company = cms.settings('company');
+const address = cms.settings('address');
+const contact = cms.settings('contact');
+const person = cms.settings('person');
+
+const ICONS: Record<string, string> = {
+  instagram:
+    '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>',
+  linkedin:
+    '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+  facebook: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+  pinterest: '<circle cx="12" cy="12" r="10"/><path d="M9.5 21l2.5-10M10 13.5c.8 1 2 1.5 3.2 1.2 2.2-.6 3.3-3 2.7-5.3-.6-2.2-3-3.6-5.6-2.9-2.6.7-3.9 3.2-3.1 5.5"/>',
+};
+const LABELS: Record<string, string> = { instagram: 'Instagram', linkedin: 'LinkedIn', facebook: 'Facebook', pinterest: 'Pinterest' };
+// Socials met een icoon; het Google-profiel staat alleen in de gegevens voor Google.
+const socials = items(cms.settings('social').profiles)
+  .map((p) => ({ platform: text(p.platform), url: text(p.url) }))
+  .filter((p) => ICONS[p.platform] && p.url);
+// LinkedIn van de architect telt ook mee als hij niet bij de profielen staat.
+const personLinkedIn = text(person.profileUrl);
+if (personLinkedIn && !socials.some((s) => s.url === personLinkedIn)) socials.push({ platform: 'linkedin', url: personLinkedIn });
+
+const street = text(address.street);
+const postcode = text(address.postcode);
+const city = text(address.city);
+const phone = text(contact.phone);
+const email = text(contact.email);
+const privacy = cms.pagesByTemplate('legal')[0];
+const columns = cms.menu('footer').columns.map((col) => ({
+  title: col.title,
+  links: col.items.map((i) => ({ href: cms.href(i), label: i.label })).filter((l) => l.href && l.label) as { href: string; label: string }[],
+}));
 ---
 
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
-      <h2>KA.architecten</h2>
+      <h2>{text(company.name)}</h2>
       <p style="color: var(--ink-soft); font-size: 13px; line-height: 1.7; margin: 0 0 14px; max-width: 32ch;">
-        Architectuurbureau voor woningontwerp, verbouwing en utiliteitsbouw.
-        Werkzaam in Tilburg, heel Noord-Brabant en Limburg.
+        {text(company.description)}
       </p>
-      <div style="margin-top: 16px; display: flex; gap: 14px;">
-        <a href="https://www.instagram.com/peter_keijsers_kaa/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color: var(--stone); display: flex; align-items: center;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-          </svg>
-        </a>
-        <a href="https://www.linkedin.com/in/peter-keijsers-07016813" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color: var(--stone); display: flex; align-items: center;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect x="2" y="9" width="4" height="12"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-        </a>
+      {socials.length > 0 && (
+        <div style="margin-top: 16px; display: flex; gap: 14px;">
+          {socials.map((s) => (
+            <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={LABELS[s.platform]} style="color: var(--stone); display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={ICONS[s.platform]} />
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+    {columns.map((col) => (
+      <div>
+        <h2>{col.title}</h2>
+        {col.links.map((l) => <a href={l.href.startsWith('/') ? route(l.href) : l.href}>{l.label}</a>)}
       </div>
-    </div>
-    <div>
-      <h2>Bekijken</h2>
-      <a href={route('/projecten')}>Projecten</a>
-      <a href={route('/bureau')}>Bureau</a>
-      <a href={route('/nieuws')}>Nieuws</a>
-    </div>
+    ))}
     <div>
       <h2>Contact</h2>
-      <a href="https://maps.google.com/?q=Ankeveenstraat+44+Tilburg" target="_blank" rel="noopener">
-        Ankeveenstraat 44<br />5036 CB Tilburg
-      </a>
-      <a href="tel:+31621231821">06 21 23 18 21</a>
-      <a href="mailto:p.keijsers@ka-architecten.nl">p.keijsers@ka-architecten.nl</a>
+      {street && (
+        <a href={`https://maps.google.com/?q=${encodeURIComponent(`${street} ${city}`).replace(/%20/g, '+')}`} target="_blank" rel="noopener">
+          {street}<br />{postcode} {city}
+        </a>
+      )}
+      {phone && <a href={`tel:${phoneE164(phone)}`}>{phone}</a>}
+      {email && <a href={`mailto:${email}`}>{email}</a>}
     </div>
   </div>
   <div class="footer-base">
-    <span>KA.architecten · Architect Peter Keijsers · Tilburg</span>
-    <span><a href={route("/algemene-voorwaarden")} style="color: inherit; text-decoration: none; opacity: 0.7;">Privacyverklaring</a> · © {year}</span>
+    <span>{[text(company.name), [text(person.jobTitle), text(person.name)].filter(Boolean).join(' '), city].filter(Boolean).join(' · ')}</span>
+    <span>
+      {privacy && <a href={route(privacy.path)} style="color: inherit; text-decoration: none; opacity: 0.7;">{privacy.title}</a>}
+      {privacy && ' · '}© {year}
+    </span>
   </div>
 </footer>

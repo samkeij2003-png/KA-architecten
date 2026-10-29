@@ -1,0 +1,125 @@
+---
+/**
+ * Projectenraster. De projecten komen vanzelf uit de projectpagina's in
+ * Mijn SASA, in hun volgorde. Een project dat op dezelfde pagina al
+ * uitgelicht staat, komt er niet nog een keer in.
+ */
+import CmsImage from '../cms/CmsImage.astro';
+import { bool, text } from '../../lib/mijn-sasa/client';
+import { projects } from '../../lib/ka';
+import { route, sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section, cms, page } = Astro.props;
+const d = section.data;
+
+const featured = new Set(page.sections.filter((s) => s.type === 'featuredProject').map((s) => s.data.pageId));
+const all = projects(cms).filter((p) => !featured.has(p.page.id));
+const list = text(d.limit) === 'all' ? all : all.slice(0, 6);
+const showFilter = bool(d.showFilter);
+const overview = cms.pages.find((p) => p.id !== page.id && p.sections.some((s) => s.type === 'projectGrid' && s.data.limit === 'all'));
+
+const FILTERS = [
+  ['alle', 'Alle'],
+  ['particuliere', 'Woningen'],
+  ['utiliteitsbouw', 'Utiliteitsbouw'],
+  ['woningbouw', 'Woningbouw'],
+  ['afstudeerproject', 'Afstuderen'],
+] as const;
+---
+
+{showFilter ? (
+  <section class="section" style="padding-top: 24px;" {...sasaSection(section.id)}>
+    <div class="container projects-layout">
+      <aside class="projects-sidebar" role="tablist" aria-label="Filteren op type">
+        {FILTERS.map(([value, label], i) => <button class:list={['filter-btn', { active: i === 0 }]} data-filter={value}>{label}</button>)}
+      </aside>
+      <div id="projects-grid" class="projects-grid">
+        {list.map((p, i) => (
+          <a class="project-card" href={route(p.page.path)} data-type={p.type.toLowerCase()} aria-label={`Project: ${p.title}, ${p.location}`} style={`--i: ${i};`}>
+            <div class="project-media">
+              <CmsImage media={p.cover} alt={`${p.title}, ${p.location}`} width={800} loading="lazy" />
+              <div class="project-overlay">
+                <span class="name">{p.title}</span>
+                <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>
+              </div>
+            </div>
+            <div class="project-meta">
+              <span class="name">{p.title}</span>
+              <span class="loc">{p.location}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="section" {...sasaSection(section.id)}>
+    <div class="container">
+      <div class="projects-toolbar">
+        <p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p>
+        {bool(d.showAllLink) && overview && <a class="link-arrow" href={route(overview.path)}>Alle projecten →</a>}
+      </div>
+      <div class="projects-grid">
+        {list.map((p) => (
+          <a class="project-card" href={route(p.page.path)} aria-label={`Project: ${p.title}, ${p.location}`}>
+            <div class="project-media">
+              <CmsImage media={p.cover} alt={`${p.title}, ${p.location}`} width={800} loading="lazy" />
+              <div class="project-overlay">
+                <span class="name">{p.title}</span>
+                <span class="loc">{p.location}{p.status === 'In uitvoering' ? ' · in uitvoering' : ''}</span>
+              </div>
+            </div>
+            <div class="project-meta">
+              <span class="name">{p.title}</span>
+              <span class="loc">{p.location}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('.project-card[data-type]');
+
+  function applyFilter(filter: string) {
+    cards.forEach((c) => {
+      if (c.style.display !== 'none') {
+        c.style.transition = 'opacity .15s, transform .15s';
+        c.style.opacity = '0';
+        c.style.transform = 'translateY(6px)';
+      }
+    });
+    setTimeout(() => {
+      let vi = 0;
+      cards.forEach((card) => {
+        const type = card.getAttribute('data-type') ?? '';
+        const show = filter === 'alle' || type.includes(filter);
+        card.style.transition = '';
+        card.style.opacity = '';
+        card.style.transform = '';
+        if (show) {
+          card.style.display = '';
+          card.style.setProperty('--i', String(vi++));
+          card.style.animation = 'none';
+          void card.offsetHeight;
+          card.style.animation = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }, 170);
+  }
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.getAttribute('data-filter') ?? 'alle');
+    });
+  });
+</script>

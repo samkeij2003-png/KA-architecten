@@ -2,41 +2,59 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Schema from '../components/Schema.astro';
+import PreviewBridge from '../components/cms/PreviewBridge.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import { pub } from '../utils/asset';
-import { ogPad, standaardDeelbeeld, type Kruimel } from '../data/seo';
+import type { Cms } from '../lib/mijn-sasa/client';
+import { text } from '../lib/mijn-sasa/client';
+import type { BundleMedia } from '../lib/mijn-sasa/types';
+import { defaultShareImage, ogPath } from '../lib/ka';
+import type { Kruimel } from '../lib/schema';
+import { cmsOrigins, getCms, isPreview } from '../lib/site-content';
 
 interface Props {
   title: string;
   description?: string;
-  /** Foto in public/ voor het deelbeeld; moet in `deelbeelden` (src/data/seo.ts) staan. */
-  ogImage?: string;
+  /** Foto uit Mijn SASA voor het deelbeeld (wordt /og/<naam>.jpg). */
+  ogMedia?: BundleMedia;
   ogImageAlt?: string;
   canonical?: string;
   noIndex?: boolean;
   bodyClass?: string;
   /** Kruimelpad na Home, voor de structured data. */
   kruimels?: Kruimel[];
+  /** Inhoud uit Mijn SASA; zonder deze prop halen we hem zelf op. */
+  cms?: Cms;
 }
 
+const cms = Astro.props.cms ?? (await getCms(Astro));
+const defaultOg = defaultShareImage(cms);
 const {
   title,
-  description = 'KA.architecten ontwerpt particuliere woningen, verbouwingen en utiliteitsbouw vanuit Tilburg, voor heel Noord-Brabant.',
-  ogImage = standaardDeelbeeld,
-  ogImageAlt = 'Betonnen woonhuis in Zeist, ontworpen door KA.architecten',
+  description = text(cms.settings('company').description),
+  ogMedia = defaultOg,
+  ogImageAlt = ogMedia?.alt || defaultOg?.alt || '',
   canonical,
   noIndex = false,
   bodyClass = '',
   kruimels,
 } = Astro.props;
 
-const ogImageUrl = new URL(ogPad(ogImage), Astro.site).toString();
+const ogImageUrl = ogMedia ? new URL(ogPath(ogMedia), Astro.site).toString() : undefined;
 
 // Altijd met trailing slash: dat is de URL die GitHub Pages zonder redirect serveert.
 const canonicalRaw = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = canonicalRaw.endsWith('/') ? canonicalRaw : `${canonicalRaw}/`;
-const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
+const gaId = isPreview ? '' : (import.meta.env.PUBLIC_GA_ID ?? '');
+
+const address = cms.settings('address');
+const lat = text(address.lat);
+const lng = text(address.lng);
+const city = text(address.city);
+const region = text(address.region);
+const personName = text(cms.settings('person').name);
+
 ---
 
 <!doctype html>
@@ -46,7 +64,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noIndex && <meta name="robots" content="noindex" />}
+    {(noIndex || isPreview) && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalUrl} />
 
     <meta property="og:type" content="website" />
@@ -54,25 +72,25 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={ogImageAlt} />
-    <meta property="og:site_name" content="KA.architecten" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta property="og:image:type" content="image/jpeg" />}
+    {ogImageUrl && <meta property="og:image:width" content="1200" />}
+    {ogImageUrl && <meta property="og:image:height" content="630" />}
+    {ogImageUrl && <meta property="og:image:alt" content={ogImageAlt} />}
+    <meta property="og:site_name" content={text(cms.settings('company').name)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
-    <Schema kruimels={kruimels} />
+    <Schema cms={cms} kruimels={kruimels} />
 
-    <meta name="author" content="Peter Keijsers" />
+    {personName && <meta name="author" content={personName} />}
     <meta name="geo.region" content="NL-NB" />
-    <meta name="geo.placename" content="Tilburg, Noord-Brabant" />
-    <meta name="geo.position" content="51.5556;5.0913" />
-    <meta name="ICBM" content="51.5556, 5.0913" />
+    {city && <meta name="geo.placename" content={[city, region].filter(Boolean).join(', ')} />}
+    {lat && lng && <meta name="geo.position" content={`${lat};${lng}`} />}
+    {lat && lng && <meta name="ICBM" content={`${lat}, ${lng}`} />}
 
     <!-- Google toont in zoekresultaten een favicon van minimaal 48x48 (veelvoud van 48) -->
     <link rel="icon" href={pub('/favicon.ico')} sizes="48x48" />
@@ -87,17 +105,27 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
 
-    <ViewTransitions />
+    {!isPreview && <ViewTransitions />}
     <slot name="head" />
 
     {gaId && <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline></script>}
     {gaId && <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`}></script>}
+    {isPreview && (
+      <style is:inline>
+        [data-sasa-field] { cursor: text; }
+        [data-sasa-field][data-sasa-kind='image'] { cursor: pointer; }
+        [data-sasa-field]:hover, [data-sasa-active] { outline: 2px dashed #1a2e26; outline-offset: 4px; }
+        [data-sasa-field][contenteditable] { outline: 2px solid #1a2e26; outline-offset: 4px; background: rgba(159, 232, 112, 0.25); }
+      </style>
+    )}
   </head>
   <body class={bodyClass}>
-    <Header />
+    <Header cms={cms} />
     <slot />
-    <Footer />
+    <Footer cms={cms} />
 
     <script src={pub('/js/site.js')} is:inline></script>
+    {isPreview && <PreviewBridge cmsOrigins={cmsOrigins()} />}
   </body>
 </html>
+

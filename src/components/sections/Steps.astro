@@ -1,0 +1,32 @@
+---
+import RichText from '../cms/RichText.astro';
+import { items, text } from '../../lib/mijn-sasa/client';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section } = Astro.props;
+const d = section.data;
+---
+
+<section style="padding: clamp(24px, 3vw, 44px) 0; border-top: 1px solid var(--hairline);" {...sasaSection(section.id)}>
+  <div class="container split-2">
+    <div><p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p></div>
+    <div class="body-text" style="font-size: 16px;">
+      <div {...sasaField(section.id, 'body', 'richtext')}><RichText value={d.body} /></div>
+      <div class="facts" style="margin-top: 24px;">
+        <dl>
+          {items(d.items).map((step, i) => (
+            <>
+              <dt>{String(i + 1).padStart(2, '0')}</dt>
+              <dd>
+                <strong style="font-weight: 400;" {...sasaField(section.id, `items.${step.id}.title`)}>{text(step.title)}</strong>
+                {text(step.text) && <>: <span {...sasaField(section.id, `items.${step.id}.text`)}>{text(step.text)}</span></>}
+              </dd>
+            </>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

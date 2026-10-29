@@ -1,0 +1,34 @@
+---
+/**
+ * Paginakop met de enige H1. Met inleiding: label links, titel en inleiding
+ * rechts (zoals Bureau). Zonder inleiding: label en titel onder elkaar (zoals Projecten).
+ */
+import { text } from '../../lib/mijn-sasa/client';
+import { sasaField, sasaSection } from '../../lib/site-content';
+import type { SectionProps } from './types';
+
+type Props = SectionProps;
+const { section } = Astro.props;
+const d = section.data;
+const intro = text(d.intro);
+---
+
+{intro ? (
+  <section style="padding: clamp(28px, 4vw, 52px) 0 clamp(24px, 3vw, 40px);" {...sasaSection(section.id)}>
+    <div class="container split-2">
+      <div><p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p></div>
+      <div>
+        <h1 style="max-width: 18ch;" {...sasaField(section.id, 'title')}>{text(d.title)}</h1>
+        <p class="lead" style="margin-top: 24px;" {...sasaField(section.id, 'intro')}>{intro}</p>
+        <slot />
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="section" style="padding-top: clamp(24px, 3vw, 40px); padding-bottom: 20px;" {...sasaSection(section.id)}>
+    <div class="container">
+      {text(d.eyebrow) && <p class="eyebrow" {...sasaField(section.id, 'eyebrow')}>{text(d.eyebrow)}</p>}
+      <h1 style="margin-top: 8px; max-width: 22ch;" {...sasaField(section.id, 'title')}>{text(d.title)}</h1>
+    </div>
+  </section>
+)}

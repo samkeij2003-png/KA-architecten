@@ -1,0 +1,130 @@
+---
+/**
+ * Alle pagina's uit Mijn SASA (home, bureau, contact, projecten, …) en de
+ * doorverwijzingen van oude adressen. Statisch bij de build; in het voorbeeld
+ * (SASA_PREVIEW=1) per verzoek met de concepten.
+ */
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sections from '../components/sections/Sections.astro';
+import { text } from '../lib/mijn-sasa/client';
+import type { BundlePage } from '../lib/mijn-sasa/types';
+import { ogPath, projectInfo, projects, shareImage } from '../lib/ka';
+import { schemaId, type Kruimel } from '../lib/schema';
+import { getCms, route } from '../lib/site-content';
+
+export const getStaticPaths = (async () => {
+  const cms = await getCms();
+  const param = (path: string) => (path === '/' ? undefined : path.replace(/^\/+|\/+$/g, ''));
+  return [
+    ...cms.pages.map((page) => ({ params: { path: param(page.path) }, props: { pagePath: page.path } })),
+    ...cms.bundle.redirects
+      .filter((r) => !cms.page(r.from))
+      .map((r) => ({ params: { path: param(r.from) }, props: { redirectTo: r.to } })),
+  ];
+}) satisfies GetStaticPaths;
+
+const cms = await getCms(Astro);
+const requested = Astro.props.pagePath ?? `/${(Astro.params.path ?? '').replace(/\/+$/, '')}`.replace(/^\/$/, '/');
+const page: BundlePage | undefined = cms.page(requested === '' ? '/' : requested);
+const redirectTo =
+  Astro.props.redirectTo ?? (!page ? cms.bundle.redirects.find((r) => r.from === requested)?.to : undefined);
+
+// Oud adres: doorverwijzen (statisch: een HTML-doorverwijzing met canonical; voorbeeld: 301).
+if (redirectTo) return Astro.redirect(route(redirectTo), 301);
+// In het voorbeeld (op aanvraag): onbekend adres → de 404-pagina.
+if (!page) return Astro.rewrite('/404/');
+
+const company = text(cms.settings('company').name);
+const overview = cms.pages.find((p) => p.sections.some((s) => s.type === 'projectGrid' && s.data.limit === 'all'));
+
+let kruimels: Kruimel[] | undefined;
+let description = '';
+let projectSchema: Record<string, unknown> | null = null;
+let prev: BundlePage | undefined;
+let next: BundlePage | undefined;
+
+if (page) {
+  const self = { naam: page.title, pad: route(page.path) };
+  if (page.template === 'project') {
+    const info = projectInfo(cms, page);
+    const list = projects(cms);
+    const idx = list.findIndex((p) => p.page.id === page.id);
+    prev = list[idx - 1]?.page;
+    next = list[idx + 1]?.page;
+    kruimels = [...(overview ? [{ naam: overview.title, pad: route(overview.path) }] : []), self];
+    description = page.seo.description || info.intro;
+    const og = shareImage(cms, page);
+    projectSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: info.title,
+      description: info.intro,
+      url: new URL(route(page.path), Astro.site).toString(),
+      ...(og ? { image: new URL(ogPath(og), Astro.site).toString() } : {}),
+      creator: { '@id': new URL(schemaId.persoon, Astro.site).toString() },
+      publisher: { '@id': new URL(schemaId.bedrijf, Astro.site).toString() },
+      locationCreated: {
+        '@type': 'Place',
+        address: { '@type': 'PostalAddress', addressLocality: info.location, addressRegion: info.province, addressCountry: 'NL' },
+      },
+      dateCreated: info.year,
+    };
+  } else if (page.path !== '/') {
+    kruimels = [self];
+    description = page.seo.description;
+  } else {
+    description = page.seo.description;
+  }
+}
+
+const title = page ? page.seo.title || `${page.title} — ${company}` : '';
+const isProject = page?.template === 'project';
+---
+
+{page && (
+  <BaseLayout
+    cms={cms}
+    title={title}
+    description={description || undefined}
+    ogMedia={shareImage(cms, page)}
+    noIndex={page.seo.noindex}
+    bodyClass={page.template === 'home' ? 'home' : ''}
+    kruimels={kruimels}
+  >
+    {projectSchema && <script type="application/ld+json" slot="head" set:html={JSON.stringify(projectSchema)} />}
+
+    {isProject ? (
+      <>
+        <article>
+          <Sections cms={cms} page={page} />
+        </article>
+        <section class="section hairline">
+          <div class="container">
+            <div class="pager">
+              {prev ? (
+                <a href={route(prev.path)}>
+                  <span class="label">← Vorig project</span>
+                  <span class="title">{prev.title}</span>
+                </a>
+              ) : <div />}
+              {next ? (
+                <a class="next" href={route(next.path)}>
+                  <span class="label">Volgend project →</span>
+                  <span class="title">{next.title}</span>
+                </a>
+              ) : <div />}
+            </div>
+            {cms.pagesByTemplate('contact')[0] && (
+              <p style="margin-top: 40px;">
+                <a class="link-arrow" href={route(cms.pagesByTemplate('contact')[0].path)}>Plan een vrijblijvend gesprek →</a>
+              </p>
+            )}
+          </div>
+        </section>
+      </>
+    ) : (
+      <Sections cms={cms} page={page} skip={page.template === 'contact' ? ['pageHeader'] : []} />
+    )}
+  </BaseLayout>
+)}

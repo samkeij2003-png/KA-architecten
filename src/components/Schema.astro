@@ -1,60 +1,85 @@
 ---
 /**
- * Structured data op elke pagina: het bureau, Peter Keijsers, de website en
+ * Structured data op elke pagina: het bureau, de architect, de website en
  * (behalve op home) het kruimelpad. Vaste @id's, zodat schema's op een pagina
- * (zoals CreativeWork op projecten) ernaar verwijzen. Gegevens: src/data/seo.ts.
+ * (zoals CreativeWork op projecten) ernaar verwijzen. Gegevens: Mijn SASA →
+ * Bedrijfsgegevens. Alleen echte gegevens: wat leeg is blijft weg.
  */
-import { bedrijf, ogPad, schemaId, standaardDeelbeeld, type Kruimel } from '../data/seo';
+import type { Cms } from '../lib/mijn-sasa/client';
+import { items, text } from '../lib/mijn-sasa/client';
+import { defaultShareImage, ogPath, phoneE164 } from '../lib/ka';
+import { schemaId, type Kruimel } from '../lib/schema';
 
 interface Props {
+  cms: Cms;
   kruimels?: Kruimel[];
 }
 
-const { kruimels = [] } = Astro.props;
-
+const { cms, kruimels = [] } = Astro.props;
 const url = (p: string) => new URL(p, Astro.site).toString();
-const { adres, persoon } = bedrijf;
+
+const company = cms.settings('company');
+const address = cms.settings('address');
+const contact = cms.settings('contact');
+const person = cms.settings('person');
+const profiles = items(cms.settings('social').profiles).map((p) => text(p.url)).filter(Boolean);
+const personProfile = text(person.profileUrl);
+const places = items(cms.settings('area').places).map((p) => text(p.name)).filter(Boolean);
+const lat = Number.parseFloat(text(address.lat));
+const lng = Number.parseFloat(text(address.lng));
+const hours = items(cms.settings('hours').items);
+const shareImage = defaultShareImage(cms);
+const personImage = cms.media(person.image);
+const personPage = cms.pages.find((p) => p.sections.some((s) => s.type === 'person'));
+
+const clean = <T extends Record<string, unknown>>(o: T) =>
+  Object.fromEntries(Object.entries(o).filter(([, v]) => v !== '' && v !== undefined && !(Array.isArray(v) && v.length === 0)));
 
 const grafiek = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': bedrijf.type,
+    clean({
+      '@type': 'ProfessionalService',
       '@id': url(schemaId.bedrijf),
-      name: bedrijf.naam,
-      description: bedrijf.beschrijving,
+      name: text(company.name),
+      description: text(company.description),
       url: url('/'),
-      telephone: bedrijf.telefoon,
-      email: bedrijf.email,
-      logo: { '@type': 'ImageObject', url: url(bedrijf.logo.src), width: bedrijf.logo.breedte, height: bedrijf.logo.hoogte },
-      image: url(ogPad(standaardDeelbeeld)),
-      address: {
+      telephone: text(contact.phone) ? phoneE164(text(contact.phone)) : '',
+      email: text(contact.email),
+      logo: { '@type': 'ImageObject', url: url('/logo-512.png'), width: 512, height: 512 },
+      image: shareImage ? url(ogPath(shareImage)) : undefined,
+      address: clean({
         '@type': 'PostalAddress',
-        streetAddress: adres.straat,
-        postalCode: adres.postcode,
-        addressLocality: adres.plaats,
-        addressRegion: adres.regio,
-        addressCountry: adres.land,
-      },
-      geo: { '@type': 'GeoCoordinates', latitude: bedrijf.geo.lat, longitude: bedrijf.geo.lng },
-      areaServed: bedrijf.werkgebied,
-      founder: { '@id': url(schemaId.persoon) },
-      sameAs: bedrijf.profielen,
-    },
-    {
-      '@type': 'Person',
-      '@id': url(schemaId.persoon),
-      name: persoon.naam,
-      jobTitle: persoon.functie,
-      url: url(persoon.pagina),
-      image: url(persoon.foto),
-      worksFor: { '@id': url(schemaId.bedrijf) },
-      sameAs: persoon.profielen,
-    },
+        streetAddress: text(address.street),
+        postalCode: text(address.postcode),
+        addressLocality: text(address.city),
+        addressRegion: text(address.region),
+        addressCountry: text(address.country),
+      }),
+      geo: Number.isFinite(lat) && Number.isFinite(lng) ? { '@type': 'GeoCoordinates', latitude: lat, longitude: lng } : undefined,
+      areaServed: places.map((name, i) => ({ '@type': i === 0 ? 'City' : 'AdministrativeArea', name })),
+      openingHours: hours.map((h) => `${text(h.days)} ${text(h.hours)}`),
+      founder: text(person.name) ? { '@id': url(schemaId.persoon) } : undefined,
+      sameAs: profiles.filter((p) => p !== personProfile),
+    }),
+    ...(text(person.name)
+      ? [
+          clean({
+            '@type': 'Person',
+            '@id': url(schemaId.persoon),
+            name: text(person.name),
+            jobTitle: text(person.jobTitle),
+            url: personPage ? url(personPage.path === '/' ? '/' : `${personPage.path}/`) : undefined,
+            image: personImage ? url(ogPath(personImage)) : undefined,
+            worksFor: { '@id': url(schemaId.bedrijf) },
+            sameAs: personProfile ? [personProfile] : [],
+          }),
+        ]
+      : []),
     {
       '@type': 'WebSite',
       '@id': url(schemaId.website),
-      name: bedrijf.naam,
+      name: text(company.name),
       url: url('/'),
       inLanguage: 'nl-NL',
       publisher: { '@id': url(schemaId.bedrijf) },
