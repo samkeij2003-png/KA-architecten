@@ -36,6 +36,9 @@ const style = continuation
       <div class="body-text" style={`${lead ? 'margin-top: 28px; ' : ''}font-size: 16px;`} {...sasaField(section.id, 'body', 'richtext')}>
         <RichText value={d.body} />
       </div>
+      {text(d.signature) && (
+        <p style="margin-top: 24px; font-family: var(--font-display); font-size: 18px; color: var(--ink);" {...sasaField(section.id, 'signature')}>{text(d.signature)}</p>
+      )}
       {l && finalHref && (
         <p style="margin-top: 28px;">
           {isButton ? (

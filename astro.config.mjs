@@ -7,7 +7,7 @@ import { cmsLastmod } from './src/lib/cms-lastmod.ts';
 
 /**
  * Twee standen:
- *  - gewoon (de echte site): statisch, inhoud uit Mijn SASA bij de build (CMS_URL + CMS_TOKEN);
+ *  - gewoon (de echte site): statisch, inhoud uit Mijn SASA bij de build (MIJN_SASA_URL + MIJN_SASA_TOKEN);
  *  - SASA_PREVIEW=1 (het voorbeeld in Mijn SASA): op aanvraag gerenderd, concepten, noindex.
  */
 const preview = process.env.SASA_PREVIEW === '1';

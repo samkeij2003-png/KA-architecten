@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
-  # Door het CMS getriggerd bij publiceren (Payload revalidate-hook -> GitHub API)
+  # Mijn SASA stuurt dit bij publiceren (client_payload: run_id, site).
   repository_dispatch:
     types: [cms-publish]
 
@@ -17,14 +17,31 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  # Mijn SASA (het CMS van SASA). Geheimen in de repo-instellingen:
+  #   MIJN_SASA_URL    bijv. https://mijn.sasa.nl
+  #   MIJN_SASA_TOKEN  inhoud-sleutel uit Mijn SASA → Beheer → Website bewerken
+  MIJN_SASA_URL: ${{ secrets.MIJN_SASA_URL }}
+  MIJN_SASA_TOKEN: ${{ secrets.MIJN_SASA_TOKEN }}
+  MIJN_SASA_SITE: ka-architecten
+  RUN_ID: ${{ github.event.client_payload.run_id }}
+  LOG_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Mijn SASA laten weten dat de bouw begint
+        if: env.RUN_ID != ''
+        run: |
+          curl -fsS -X POST "$MIJN_SASA_URL/api/publish/status" \
+            -H "Authorization: Bearer $MIJN_SASA_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"site\":\"$MIJN_SASA_SITE\",\"run_id\":\"$RUN_ID\",\"status\":\"building\",\"log_url\":\"$LOG_URL\"}" || true
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Volledige geschiedenis: lastmod in de sitemap komt uit git log
+          # Volledige geschiedenis: lastmod in de sitemap komt voor nieuws e.d. uit git log
           fetch-depth: 0
 
       - name: Setup Node
@@ -39,8 +56,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Live CMS-URL komt uit repo-secret. Leeg = cms.ts valt terug op
-          # localhost en geeft een lege array, build blijft groen.
+          # Oud Payload-CMS (alleen nog voor Nieuws). Leeg = geen berichten, build blijft groen.
           CMS_URL: ${{ secrets.CMS_URL }}
           CMS_SITE_SLUG: ka-architecten
 
@@ -59,3 +75,17 @@ jobs:
       - name: Deploy naar GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  report:
+    # Altijd: ook als de bouw of het live zetten mislukt.
+    needs: [build, deploy]
+    if: always() && github.event.client_payload.run_id != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mijn SASA laten weten hoe het ging
+        run: |
+          STATUS=failed
+          if [ "${{ needs.deploy.result }}" = "success" ]; then STATUS=live; fi
+          curl -fsS -X POST "$MIJN_SASA_URL/api/publish/status" \
+            -H "Authorization: Bearer $MIJN_SASA_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"site\":\"$MIJN_SASA_SITE\",\"run_id\":\"$RUN_ID\",\"status\":\"$STATUS\",\"log_url\":\"$LOG_URL\"}"
