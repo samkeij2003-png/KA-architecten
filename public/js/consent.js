@@ -42,6 +42,12 @@
     document.head.appendChild(s);
   }
 
+  // Gebeurtenissen van de site (bijv. generate_lead na het contactformulier).
+  // Alleen met toestemming; anders zou de wachtrij later alsnog verstuurd worden.
+  window.kaEvent = function (name) {
+    if (loaded && read() === 'ja') gtag('event', name);
+  };
+
   function stopGa() {
     if (loaded) gtag('consent', 'update', { analytics_storage: 'denied' });
     // Eerder geplaatste GA-cookies weghalen (op dit domein en het hoofddomein).

@@ -241,6 +241,8 @@ const WEB3FORMS_KEY = 'ac85915f-ff2e-4452-94b7-b52fca9734b5';
         if (!response.ok || result.success !== true) throw new Error('Verzenden mislukt');
 
         form.reset();
+        // Aanvraag meten in GA4 (key event); alleen als de bezoeker cookies accepteerde.
+        (window as { kaEvent?: (name: string) => void }).kaEvent?.('generate_lead');
         showStatus(
           '<strong>Bedankt voor uw bericht.</strong><br />We hebben het goed ontvangen en nemen zo snel mogelijk contact met u op.',
           false,
