@@ -43,6 +43,8 @@ jobs:
           # localhost en geeft een lege array, build blijft groen.
           CMS_URL: ${{ secrets.CMS_URL }}
           CMS_SITE_SLUG: ka-architecten
+          # GA4-meet-ID (G-…), repo-variabele. Leeg = geen meetcode op de site.
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

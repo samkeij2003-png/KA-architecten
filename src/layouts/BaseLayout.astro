@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Schema from '../components/Schema.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import { pub } from '../utils/asset';
@@ -90,13 +91,13 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <ViewTransitions />
     <slot name="head" />
 
-    {gaId && <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline></script>}
-    {gaId && <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`}></script>}
+    {gaId && <script src={pub('/js/consent.js')} data-ga-id={gaId} is:inline></script>}
   </head>
   <body class={bodyClass}>
     <Header />
     <slot />
-    <Footer />
+    <Footer cookies={!!gaId} />
+    {gaId && <CookieBanner />}
 
     <script src={pub('/js/site.js')} is:inline></script>
   </body>
