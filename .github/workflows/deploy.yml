@@ -43,6 +43,8 @@ jobs:
           # localhost en geeft een lege array, build blijft groen.
           CMS_URL: ${{ secrets.CMS_URL }}
           CMS_SITE_SLUG: ka-architecten
+          # Google Analytics 4: laadt pas na toestemming in de cookiebanner. Leeg = geen banner, geen meting.
+          PUBLIC_GA_ID: G-5NQHQWFGPW
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

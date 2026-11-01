@@ -2,7 +2,13 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Schema from '../components/Schema.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { ViewTransitions } from 'astro:transitions';
+// Fonts vanaf de eigen site: geen verzoeken naar Google zonder toestemming.
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/ibm-plex-mono/400.css';
 import '../styles/global.css';
 import { pub } from '../utils/asset';
 import { ogPad, standaardDeelbeeld, type Kruimel } from '../data/seo';
@@ -36,6 +42,7 @@ const ogImageUrl = new URL(ogPad(ogImage), Astro.site).toString();
 // Altijd met trailing slash: dat is de URL die GitHub Pages zonder redirect serveert.
 const canonicalRaw = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = canonicalRaw.endsWith('/') ? canonicalRaw : `${canonicalRaw}/`;
+// Google Analytics 4 (G-...), alleen na toestemming in de cookiebanner. De ID staat in .github/workflows/deploy.yml.
 const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
 ---
 
@@ -83,20 +90,16 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     <link rel="apple-touch-icon" href={pub('/apple-touch-icon.png')} sizes="180x180" />
     <meta name="theme-color" content="#f5f3ef" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
 
     <ViewTransitions />
     <slot name="head" />
 
-    {gaId && <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline></script>}
-    {gaId && <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`}></script>}
   </head>
   <body class={bodyClass}>
     <Header />
     <slot />
-    <Footer />
+    <Footer cookies={!!gaId} />
+    {gaId && <CookieBanner gaId={gaId} />}
 
     <script src={pub('/js/site.js')} is:inline></script>
   </body>
