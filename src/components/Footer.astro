@@ -8,6 +8,10 @@ interface Props {
 
 const { cookies = false } = Astro.props;
 const year = new Date().getFullYear();
+
+/** Backlink naar SASA; de UTM laat in Google Analytics zien hoeveel klikken van deze site komen. */
+const sasaUrl =
+  'https://sasa-online.nl/?utm_source=ka-architecten.nl&utm_medium=referral&utm_campaign=website-gemaakt-door&utm_content=footer';
 ---
 
 <footer class="site-footer">
@@ -52,6 +56,6 @@ const year = new Date().getFullYear();
   </div>
   <div class="footer-base">
     <span>KA.architecten · Architect Peter Keijsers · Tilburg</span>
-    <span><a href={route("/algemene-voorwaarden")} style="color: inherit; text-decoration: none; opacity: 0.7;">Privacyverklaring</a> · {cookies && <><a href="#cookie-instellingen" style="color: inherit; text-decoration: none; opacity: 0.7;">Cookie-instellingen</a> · </>}© {year}</span>
+    <span><a href={route("/algemene-voorwaarden")} style="color: inherit; text-decoration: none; opacity: 0.7;">Privacyverklaring</a> · {cookies && <><a href="#cookie-instellingen" style="color: inherit; text-decoration: none; opacity: 0.7;">Cookie-instellingen</a> · </>}© {year} · Website gemaakt door <a href={sasaUrl} target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; text-underline-offset: 3px;">SASA</a></span>
   </div>
 </footer>
